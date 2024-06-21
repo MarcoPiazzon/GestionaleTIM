@@ -1,0 +1,347 @@
+{% extends "header.html"%}
+{% block title %} Login {% endblock %}
+{% block content %}
+
+
+
+<div class="mx-auto" style="text-align: center;">
+        <h1 ><b >Crea Prova </b></h1>
+</div>
+
+<div class="container mx-auto border rounded-lg shadow m-3">
+    <form action="/myarea/insertprova", method="post">
+        <div class ="row">
+            <div class="col-sm p-4 ">
+                <div class="card m-1 p-2" >  
+                    <div class="form-group row">
+                        <label for="tipo" class="col-sm-2 col-form-label">Tipo</label>
+                        <div class="col-sm-10">
+                        <select class="form-select  form-control" id="tipo" name="tipo" required>
+                            <option value="Scritto" >Scritto</option>
+                            <option value="Orale" >Orale</option>
+                            <option value="Progetto" >Progetto</option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="peso" class="col-sm-2 col-form-label">Peso</label>
+                        <div class="col-sm-10">
+                        <input type="number" class="form-control" min="1" max="100" name="peso" id="peso" placeholder="peso" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="nome" class="col-sm-2 col-form-label">Nome Prova</label>
+                        <div class="col-sm-10">
+                            <input type="text" class=" form-control" name="nome" id="nome" placeholder="nome" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="codmodulo" class="col-sm-2 col-form-label">Modulo</label>
+                        <div class="col-sm-10">
+                        <select class="form-select form-control" id="codmodulo" name="codmodulo" required>
+                            {% for mod in moddoc %}
+                                <option value="{{mod.idmodulo}}" >{{mod.nome}} ({{mod.nome_1}} )</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                        <div class="form-check m-1">
+                            <input class="form-check-input" type="checkbox" name="isparziale" value="True" id="isparziale">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Parziale
+                            </label>
+                        </div>
+                    </div>
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div class="flashes mt-2">
+                        {% for category, message in messages %}
+                        {% if 'prove_msg' in message %}
+                            <div class="alert alert-{% if category=='error' %}danger{% else %}success{% endif %} alert-dismissible fade show {{ category }}" role="alert">
+                                {{ message|replace('prove_msg: ','') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span> 
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+
+            </div>
+            <button class ="btn btn-success" type="submit">Add Prova</button>
+        </div>        
+    </form>    
+    
+</div>
+<div class="mx-auto" style="text-align: center;">
+    <h1 ><b >Inserisci appello </b></h1>
+</div>
+<div class="container mx-auto border rounded-lg shadow m-3">
+    <form action="/myarea/insertappello", method="post" >
+        <div class ="row">
+            <div class="col-sm p-4 ">
+                <div class="card m-1 p-2">
+                    <div class="form-group row">
+                        <label for="codprova" class="col-sm-2 col-form-label">Prova</label>
+                        <div class="col-sm-10">
+                            <select class="form-select form-control" id="codprova" name="codprova" required>
+                                {% for prov in modify_es %}
+                                <option value="{{prov.idprova}}" >{{prov.nome}} ({{prov.nomecors}} {{prov.nomemod}} )</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                    <label for="aula" class="col-sm-2 col-form-label">Aule</label>
+                    <div class="col-sm-10">
+                        <input  class="form-control"type="text" name="aula" id="aula" placeholder="aula" required>
+                    </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ora" class="col-sm-2 col-form-label">Orario</label>
+                        <div class="col-sm-10">
+
+                        <input class="form-control" type="time" name="ora" id="ora" placeholder="ora" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="dataProva" class="col-sm-2 col-form-label">Data Prova</label>
+                        <div class="col-sm-10">
+
+                        <input class="form-control" type="date" name="dataProva"  id="dataProva" placeholder="Data della prova"required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="datainizioisc" class="col-sm-2 col-form-label">Inizio iscrizioni</label>
+                        <div class="col-sm-10">
+
+                        <input class="form-control" type="date" name="datainizioisc"  id="datainizioisc" placeholder="Data inizio iscrizioni"required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="datafineisc" class="col-sm-2 col-form-label">Fine Iscrizioni</label>
+                        <div class="col-sm-10">
+
+                        <input class="form-control" type="date" name="datafineisc"  id="datafineisc" placeholder="Data fine iscrizioni"required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="datascadenza" class="col-sm-2 col-form-label">Scadenza Voto</label>
+                        <div class="col-sm-10">
+                            
+                        <input class="form-control" type="date" name="datascadenza"  id="datascadenza" placeholder="Data scadenza" required>
+                        </div>
+                    </div>
+                </div>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flashes mt-2">
+                    {% for category, message in messages %}
+                    {% if 'appelli_msg' in message %}
+                        <div class="alert alert-{% if category=='error' %}danger{% else %}success{% endif %} alert-dismissible fade show {{ category }}" role="alert">
+                            {{ message|replace('appelli_msg: ','') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span> 
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+            <button class ="btn btn-success" type="submit">Add Appello</button>
+        </div>        
+    </form>    
+</div>
+        {% for c in modify_es %}
+                     <!-- Modal per updateAppello -->
+                    <div class="modal fade" id="updateAppello-{{c.idprova}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog  modal-dialog-centered ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modifica appello {{ c.nomecors }} {{ c.nomemod }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="/myarea/updatees/{{c.idprova}}", method="post">
+                                    <div class="modal-body">
+                                        <div class ="row">
+                                            <div class="col-sm p-4 ">
+                                                <div class="card m-1 p-2">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-2 col-form-label"for="tipo">Tipo</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-select form-control" id="tipo" name="tipo">
+                                                                <option value="scritto" >Scritto {% if c.tipo =='scritto' %}  (corrente){% endif %}</option>
+                                                                <option value="orale" >Orale {% if c.tipo =='orale' %}  (corrente){% endif %}</option>
+                                                                <option value="progetto" >Progetto {% if c.tipo =='progetto' %}  (corrente){% endif %}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                      <div class="form-group row">
+                                                        <label for="peso" class="col-sm-2 col-form-label">Peso</label>
+                                                        <div class="col-sm-10">
+                                                            <input class="form-control"type="number" name="peso" id="peso" placeholder="peso" value="{{c.peso}}">
+                                                        </div>
+                                                      </div>
+                                                      <div class="form-group row">
+                                                        <label for="nome" class="col-sm-2 col-form-label">Nome</label>
+                                                        <div class="col-sm-10">
+                                                            <input class="form-control" type="text" name="nome" id="nome" placeholder="nome" value="{{c.nome}}">
+                                                        </div>
+                                                      </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class ="btn btn-warning m-2" type="submit">Aggiorna modifiche</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal per deleteAppello -->
+                    <div class="modal fade" id="deleteAppello-{{c.idprova}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog  modal-dialog-centered ">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Cancellazione Prova</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              Sei sicuro di voler cancellare la prova di <b>{{ c.nomecors }} {{ c.nomemod }} | {{ c.nome}} ({{ c.tipo }})</b>
+                            </div>
+                            <div class="modal-footer">
+                              <form action="/myarea/removeProva/{{ c.idprova }}" method="post" class="d-inline-block">
+                                <button class ="btn btn-danger"type="submit" name="codprova" value="{{ c.idprova }}">Confermo</button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal lista appelli -->
+                    <div class="modal fade" id="listAppelli-{{c.idprova}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog  modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Lista Appelli >  {{ c.nomecors }} {{ c.nomemod }} > {{c.tipo}} </h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                      <tr>
+                                        <th scope="col">Data</th>                                           
+                                        <th scope="col">Inizio Iscrizioni</th>
+                                        <th scope="col">Fine Iscrizioni</th>
+                                        <th scope="col">Scadenza </th>
+                                        <th scope="col">Aula</th>
+                                        <th scope="col">Ora</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for app in appellis %}
+                                        {% if app.codprova == c.idprova %}
+                                        <tr>
+                                            <th scope="row"><a href="/esami/appelli/{{app.idappello}}">{{app.dataprova}}</a></th>
+                                            <td>{{app.datainizioisc}}</td>
+                                            <td>{{app.datafineisc}}</td>
+                                            <td>{{app.datascadenza}}</td>
+                                            <td>{{app.aula}}</td>
+                                            <td>{{app.ora}}</td>
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                  </table>
+
+                                    </tbody>
+                                </div>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="mx-auto" style="text-align: center;">
+    <h1 ><b >Dettagli Corsi</b></h1>
+</div>
+
+<div class="container mx-auto border rounded-lg shadow m-3 p-3">
+<div class="row">
+    <div class="col-4">
+      <div class="list-group" id="list-tab" role="tablist">
+        {% for corso in cors %}
+            <a class="list-group-item list-group-item-action " id="list-home-list" data-toggle="list" href="#list-{{corso.idcorso}}" role="tab" aria-controls="home">{{corso.nome}}</a>
+        {% endfor%}
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="tab-content" id="nav-tabContent">
+        {% for cor in cors %}
+        <div class="tab-pane fade show border-bootom-0" id="list-{{cor.idcorso}}" role="tabpanel" aria-labelledby="list-home-list">
+
+                <table class="table shadow">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Modulo</th>                                           
+                        <th scope="col">Nome</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Peso </th>
+                        <th scope="col">Appelli</th>
+                        <th scope="col"><a href="/corsidoc/corso/{{cor.idcorso}}" class="btn btn-info">Dettagli Utenti</a></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for prov in cor.prove %}
+                        <tr>
+                            <th>{{prov[4]}}</a></th>
+                            <td>{{prov[0]}}</td>
+                            <td>{{prov[2]}}</td>
+                            <td>{{prov[3]}}%</td>
+                            <td><img src="https://www.pngrepo.com/png/27133/180/list.png"  data-toggle="modal" data-target="#listAppelli-{{prov[1]}}" alt="lista" width="24px" height="24px"></td>
+                            <td><img src="https://www.pngrepo.com/png/372738/180/update.png"  data-toggle="modal" data-target="#updateAppello-{{prov[1]}}" alt="edit" width="24px" height="24px">
+                                <img src="https://www.pngrepo.com/png/440696/180/trashcan.png"  data-toggle="modal"data-target="#deleteAppello-{{prov[1]}}"alt="delete" width="24px" height="24px"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

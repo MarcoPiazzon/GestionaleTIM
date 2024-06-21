@@ -1,0 +1,113 @@
+{% extends "header.html"%}
+{% block title %} Voto {% endblock %}
+{% block content %}
+<div class="container-fluid mx-auto border rounded-lg shadow m-3">
+
+    <div class="mx-auto m-3" >
+        Appello del corso <b>{{appp.nomecors}} {{ appp.nomemod }}</b> | Prova: <b>{{ appp.nome }} </b>| Modalità: <b>{{ appp.tipo}} </b>
+</div>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Data Appello</th>
+            <th scope="col">Data Inizio Iscrizioni</th>
+            <th scope="col">Data Fine Iscrizioni</th>
+            <th scope="col">Data Scadenza Voto</th>
+            <th scope="col">Orario</th>
+            <th scope="col">Aula</th>
+            <th> <form action="/esami/deleteappello/{{appp.idappello}}" method="post">
+                <button type="submit" class="btn btn-danger">Elimina Appello</button>
+            </form></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <form action="/esami/updateappello/{{appp.idappello}}", method='post'>
+                <td><input type="date" name="dataprova" id="dataprova" value="{{ appp.dataprova }}"></td>
+                <td><input type="date" name="datainizioisc" id="datainizioisc" value="{{ appp.datainizioisc }}"></td>
+                <td><input type="date" name="datafineisc" id="datafineisc" value="{{ appp.datafineisc }}"></td>
+                <td><input type="date" name="datascadenza" id="datascadenza" value="{{ appp.datascadenza }}"></td>
+                <td><input type="time" name="ora" id="ora" value="{{appp.ora}}"></td>
+                <td><input type="text" name="aula" id="aula" value="{{ appp.aula }}"></td>
+                <td><button type="submit" class="btn btn-warning">Aggiorna Appello</button></td>
+            </form>
+        </tr>
+    </tbody>
+  </table>
+
+  <hr>
+  <div class="mx-auto m-3" >
+      <b>STUDENTI ISCRITTI</b>
+</div>
+<table class="table">
+        <thead class="table-dark">
+            <tr>
+                <td>Matricola</td>
+                <td>Nome</td>
+                <td>Cognome</td>
+                <td>Voto</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in es %}
+            <tr>
+                <form action="/esami/confirmes/{{appp.idappello}}", method="post">
+                    <td>
+                        {{c.idutente}}
+                        <input value="{{c.idutente}}" name="codstudente" id="codstudente" type="hidden"> </input> 
+                    </td>
+                    <td>{{c.nome}} </td>
+                    <td>{{c.cognome}} </td>  
+                    <td><input type="number" name="voto" id="voto" placeholder="voto" min="0" max ="30" required> 
+                        <td><button type="submit" class="btn btn-success">Conferma voto</button></td>
+                    </form>
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+        <hr>
+        <div class="mx-auto m-3 " >
+            <b >Voti Registrati</b>
+            <form action="/appelli/{{appp.idappello}}/users/download" method="post" class="d-inline-block">
+                <button type="submit" class="btn btn-info ">Export PDF</button>
+            </form>
+  </div>
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <td>Matricola</td>
+                <td>Nome</td>
+                <td>Cognome</td>
+                <td>Voto</td>
+                <td>Data Registrazione</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for st in allstu %}
+            <tr {% if st.voto < 18 %} class="table-danger" {% endif %}>             
+                <form action="/esami/deletes/{{st.idprovaregistrata}}", method="post">
+                    <td>{{ st.idutente }}</td>
+                    <td>{{ st.nome }}</td>
+                    <td>{{ st.cognome }}</td>
+                    <td>{{ st.voto }}</td>
+                    <td>{{ st.dataregistrazione }}</td>
+                    <input type="number" name="appello" id="appello" value="{{appp.idappello}}" hidden>
+                    <td><button type="submit" class ="btn btn-danger">Cancella voto</button></td>
+                </form>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+    
+    
+    
+    
+    
+    
+    
+    {% endblock %}

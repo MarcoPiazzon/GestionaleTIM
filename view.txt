@@ -1,0 +1,379 @@
+viste 
+moduli-> appelli- >prove
+corsilaurea -> corsi -> moduli
+
+trigger
+modifica/rimozione appello/prove -> notifica utente ???
+logging azioni?
+qualcosa su corsiseguiti ?
+
+checks
+inserimento appelli/prove ?
+
+//Floyd-Warshall
+//n <-- n. righe
+//creo matrice B dimensione (n x n)
+for i to n:
+    for j to n:
+        for k to n:
+            d[i,j] = min{d[i,j], d[i,k]+d[k,j]};
+
+return B
+
+
+//Kruskall
+A = vuoto
+for each u app V[G]: --> creazione dei singleton
+    make_set(u)
+ordina archi in ordine decrescente
+Q = |V|
+while Q != vuoto:
+    estrai vertice p da qualcosa
+    if find_set(u) != find_set(v): --> se non forma un ciclo
+        A U p
+
+//Prim
+Q <- V[G]
+for each u app Q:
+    key[u] = +inf
+    pre[u] = 0
+key[r] = 0;
+
+while Q != vuoto:
+    u <- extractMin(Q)
+    for each v app Adj[u]: 
+        if v app Q and w(u,v) < key[v] then:
+            pre[v] <- u;
+            key[u] <- w(u,v)
+return A = {(u, pre[u]) app E | u app V \ {r}}
+
+//Dijkstra
+for each u app V[G]:
+    d[u] = +inf;
+    pre[u] = nil;
+d[s] <- 0;
+
+Q <- V[G]
+S <- vuoto
+
+while Q != vuoto:
+    u <- extractMin(Q)
+    S <- S U {u}
+    for each v app Adj[u]:
+        relax(u,v, w(u,v))
+return (d, grafo_predecessori)
+
+//Bellman-ford
+
+init_ss(G,s)
+for i = 1 to |V(G)| - 1
+    for each (u,v) app E[G]:
+        relax(u,v, w(u,v))
+for each (u,v) app E[G]:
+    if d[v] > d[u] + w(u,v):
+        return false;
+return true;
+
+
+//Binary Search Tree
+
+search(u, k):
+    if(u == null or u.key == k)
+        return u
+    else:
+        if(k < u.key):
+            return search(u.left, k)
+        else:
+            return search(u.right, k)
+    
+min(u):
+    while(u != null):
+        u  = u.left;
+    return u;
+
+max(u):
+    while(u != null):
+        u = u.right
+    return u
+
+successore():
+    if(u.right != null):
+        return min(u.right)
+    else:
+        y = x.p
+        while y != null and x == y.right:
+            x = y
+            y = y.p
+        return y
+
+predecessore():
+    if(u.left != null):
+        return max(u.left)
+    else:
+        y = x.p
+        while y != null and x == y.left:
+            x = y
+            y= y.p
+        return y
+
+insert(T, z):
+    y = null
+    x = T.root
+    while(x != null):
+        y = x
+        if z.key < x.key:
+            x = x.left
+        else
+            x = x.right
+    z.p = y
+    if y == null:
+        T.root = z
+    else:
+        if z.key < y.key:
+            y.left = z
+        else:
+            y.right = z
+
+delete(T, z): //O(h), h altezza dell'albero binario di ricerca
+
+    //caso base
+    if(T == null):
+        return T;
+
+    //La chiave da eliminare è più piccola della radice, quindi cerca nella parte sx
+    if(z < T.key):
+        T.left = delete(T.left, z)
+        return T
+
+    //La chiave da eliminare è più grande della radice, quindi cerca nella parte dx
+    else if(z > T.key):
+        T.right = delete(T.right, z)
+        return T
+    
+    //Se la chiave è come la chiave della radice, allora questo nodo verrà eliminato, casi con nodi aventi un solo figlio o nessuno
+    if(T.left == null):
+        temp = T.right
+        delete T
+        return temp
+    else if (T.right == null):
+        temp = T.left
+        delete T
+        return temp
+    
+    //Nodi con due figli, ottengo il successore inorder (il più piccolo nell sottoalbero dx)
+    succParent = T
+    succ = T.right
+    while(succ.left != null):
+        succParent = succ
+        succ = succ.left
+    
+    //copia il contenuto del successore inorder in questo nodo 
+    T.key = succ.key
+
+    //Elimina il successore inorder
+    if(succParent.left == succ)
+        succParent.left = succ.right
+    else:
+        succParent.right = succ.right
+    
+    delete succ
+    return T
+
+//Heap
+
+parent:
+    return floor(i/2);
+left(i):
+    return i*2+1;
+right(i):
+    return i*2+2;
+
+maxHeap(A,i):
+    l = left(i)
+    r = right(i)
+
+    int massimo = i
+
+    if(l < A.heapsize && A[l] > A[massimo]):
+        massimo = l
+    if(r < A.heapsize && A[r] > A[massimo]):
+        massimo = r
+    
+    if( i != massimo):
+        swap A[i] e A[massimo]
+        maxHeap(A, massimo)
+
+build_max_heap(A):
+    A.heapsize = A.length
+    for i = floor(A.length/2) down to 1:
+        maxHeap(A,i)
+
+heapSort:
+    build_max_heap(A)
+    for i = A.length down to 2:
+        swap A[1] con A[i]
+        A.heapsize--
+        maxHeap(A, i)
+
+//code di priorità
+
+maximum:
+    if A.length < 1
+        return error
+    return A[1]
+
+extract_max
+    int temp = A[1]
+    swap A[1] e A[A.length]
+    A.heapsize--
+    maxHeap(A, 1)
+    return max
+
+increase_key(A, size, key):
+    if key < A[i]
+        error
+    A[i] = key
+    while(i > 1 and A[parent(i)] < A[i]):
+        swap A[i] e A[parent]
+        i = parent(i)
+
+insert(key):
+    A.heapsize++
+    A[A.heapsize] = -inf
+    increase_keey(A, A.heapsize, key)
+
+mergesort(A,p,r):
+    if(p < r):
+        int q = (p+r)/2
+        mergesort(A,p, q)
+        mergesort(A, q+1, r)
+        merge(A, p, q, r)
+
+merge(A, p, q, r):
+    n1 = q-p + 1
+    n2 = r-q
+    creo array di dimensione n1 e n2
+
+    for i = 1 n1:
+        n1[i] = A[p+i-1]
+    
+    for j = 1 to n2:
+        n2[j] = A[q+j]
+    
+    L[n1+1] = inf;
+    L[n2+1] = inf;
+
+    for k = p to r:
+        if L[i] <= R[j]:
+            A[k] = L[i]
+            i++
+        else:
+            A[k] = R[j]
+            j++
+
+
+quickSort(A, p, r):
+    if p < r:
+        q = partition(A, p, r)
+        quickSort(A, p, q-1)
+        quickSort(A, p, q+1)
+
+partition(A, p ,r):
+    x = A[r]
+    i = p-1
+    for j = p to r-1
+        if A[j]<= x:
+            i++
+            swap A[i] e A[j]
+    swap A[i+1] e A[r]
+    return i++
+
+LCS-topDown(x,y):
+    n = X.length
+    m = Y.length
+    matrice c dimensioni n *m inizializzata a -1
+    return tdLCSaux(X,Y,c,n,m);
+
+tdLCSaux(X,Y,c,i,j):
+    if( c[i,j] == -1):
+        if(i == 0 or j == 0):
+            c[i,j] = 0
+        else:
+            if( x(i) == y(i)):
+                c[i,j] = tdLCSaux(X,Y,c,i-1,j-1) +1;
+            else:
+                c[i,j] = max(tdLCSaux(X,Y,c,i-1,j), tdLCSaux(X,Y,c,i,j-1))
+    return c[i,j];
+
+CutRod-BottomUP(p,n):
+    r vettore di dimensione n
+    for i = 0 to n:
+        r[i] = -1
+    return CutRod-BottomUPaux(p,n, r)
+
+CutRod-BottomUPaux(P, j, r):
+    if(r[j] < 0):
+        if(j == 0):
+            r[j] = 0
+        else:
+            q = -1
+            for i = 0 to j:
+                q = max(q,p[i] + CutRod-BottomUPaux(p, j-1,r))
+            r[j] = q
+    return r[j]
+
+//mergesort c++
+
+void mymerge(vector<int>& arr, int p, int med, int r){
+    vector<int> aux;
+    int i = p, 
+    j = med +1;
+
+    while(i <= med && j < r){
+        if(arr[i] <= arr[j]){
+            aux.push_back(arr[i]);
+            ++i;
+        }
+        else{
+            aux.push_back(arr[j]);
+            ++j;
+        }
+    }
+
+    if(i <= med){
+        for(j = med; j >= i; --j){
+            arr[r] = arr[j];
+            --r;
+        }
+    }
+
+    for(i = 0; i < aux.size(); ++i){
+        arr[p + 1] = aux[i];
+    }
+}
+
+void mergesort(vector<int>& arr, int p, int r){
+    if(p < r){
+        int med = p+r/2;
+        mergesort(arr, p, med);
+        mergesort(arr, med+1, r);
+        mymerge(arr, p, med, r);
+    }
+}
+
+Il tipo PNode `e cos`ı definito:
+struct Node {
+    int key;
+    Node* p;
+    Node* left;
+    Node* right;
+    Node(int val, Node* parent = nullptr, Node* sx = nullptr, Node* dx = nullptr)
+    : key{val}, p{parent}, left{sx}, right{dx} {}
+};
+typedef Node* PNode;
+struct Tree {
+    PNode root;
+    Tree(PNode r = nullptr)
+    : root{r} {}
+};
+typedef Tree* PTree;

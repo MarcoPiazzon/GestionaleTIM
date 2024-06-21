@@ -1,0 +1,26 @@
+{% extends "header.html"%}
+{% block title %}Corso Laurea{% endblock %}
+{% block content %}
+<div class="mx-auto" style="width: 400px;">
+  <h1 >
+<b >{{ corsl.nome }} - {{ corsl.annoaccademico.year }} </b>
+</h1>
+</div>
+
+<div class="container mx-auto border rounded-lg shadow m-3">
+  <div class ="row">
+    {% for mod in c %}
+      <div class="col-sm p-4 ">
+
+        <div class="card m-1" style="width: 18rem; height: 10rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{ mod.nome_1 }}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">{{ mod.annoaccademico.year }}</h6>
+            <a href="/corsi/corso/{{mod.idcorso}}" class="card-link">Corso</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+</div>
+  {% endblock %}

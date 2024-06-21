@@ -1,0 +1,71 @@
+{% extends "header.html"%}
+{% block title %}Corso{% endblock %}
+{% block content %}
+
+<div class="mx-auto" style="width: 400px;">
+  <h1 >
+<b >{{ corso.nome }} - {{ corso.cfu }} CFU</b>
+</h1>
+</div>
+<div class="container">
+  {% for mod in modul %}
+  <div class="card mt-5 rounded-lg p-2 shadow">
+    <div class="card-header text-center">
+      {{ mod.nome_1 }} | Docente: {{ mod.nome }} {{ mod.cognome }}
+    </div>
+    <div class="card-body ">
+      {% for appello in appelli %}
+        {% if appello.codmodulo == mod.idmodulo %}
+          <h6 class="title">Tipo: {{ appello.tipo }}</h6>
+            <p class="card-text ">
+              Peso: {{ appello.peso }}%
+              Data: {{ appello.dataprova }}
+              Validità: {{ appello.datascadenza }}
+            <p>
+              {% if current_user.is_authenticated %}
+                {% if appello.dataprova > today_date %}
+                  {% if appello.idappello not in pren %}
+                    <form action="/corsi/addprova/{{ corso.idcorso }}" method="post" class="d-inline-block">
+                      <button type="submit" name="idappello" value="{{ appello.idappello}}">Iscriviti</button>
+                    </form>
+                  {% else %}
+                    <img src="https://www.pngrepo.com/png/410398/180/check.png" height="20px" width="20px"> 
+                    (Iscritto)
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal-{{appello.idappello}}">
+                      Annulla Iscrizione 
+                    </button>
+                    <div class="modal fade" id="exampleModal-{{appello.idappello}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog  modal-dialog-centered ">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Cancellazione iscrizione</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            Sei sicuro di voler cancellare la tua iscrizione all'appello di <b>{{ corso.nome}} {{ mod.nome_1}} in data {{ appello.dataprova}}</b>
+                          </div>
+                          <div class="modal-footer">
+                            <form action="/corsi/removeprova/{{ corso.idcorso }}" method="post" class="d-inline-block">
+                              <button class ="btn btn-danger"type="submit" name="codappello" value="{{ appello.idappello }}">Confermo</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                  {% else %}
+                    <button disabled="disabled" >Iscriviti</button>
+                {% endif %}
+            {% endif %}
+            </p>
+          <hr>
+          </p>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

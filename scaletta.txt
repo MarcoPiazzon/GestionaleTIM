@@ -1,0 +1,32 @@
+1. Creazione pagina portafoglio
+2. Caricamento file excel + popolamento db
+3. Creazione home page
+4. Quando premo sul portafoglio devo andare in "myarea", gli eventi
+
+
+<table class="table">
+        <thead class="table-dark">
+            <tr>
+                <td>Nome Corso</td>
+                <td>Corso di Laurea</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+            {% for contatto in contattiUtente %}
+            <tr>
+                <td>
+                    <p>{{ contatto.nome }} </p>
+                    <p>{{ contatto.cognome }} </p>
+                    <p>{{ contatto.tel }} </p>
+                    <p>{{ contatto.email }} </p>
+                </td>
+            </tr>
+            
+            {% endfor %}
+    </table>
+
+
+come continuare:
+
+Cambiare la schermata portafoglio, dove hai una main page con la ricerca del singolo cliente, per poi caricarti tutti i dati del cliente + le trattative in corso/passate del cliente.
+ 

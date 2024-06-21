@@ -1,0 +1,190 @@
+{% extends "header.html"%}
+{% block title %}Admin{% endblock %}
+{% block content %}
+<div id="accordion">
+
+    <div class="card">
+        <div class="card-header">
+          <a class="card-link" data-toggle="collapse" href="#collapseUtenti">
+            Users
+          </a>
+        </div>
+        <div id="collapseUtenti" class="collapse " data-parent="#accordion">
+          <div class="card-body">
+            <div class="container-fuild ml-5 mr-5 border">
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <td>Id </td>
+                            <td>Nome</td>
+                            <td>Email</td>
+                            <td>Ruolo</td>
+                            <td>Corso Laurea</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    {% for us in all_users %}
+                    <tr>
+                        <td>
+                            {{ us.idutente }} 
+                        </td>
+                        <td>{{ us.nome }} {{ us.cognome }}</td>
+                        <td>{{ us.email }}</td>
+                        <td>{{ us.ruolo }}</td>
+                        <td>{{ us.nome_1 }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+                <div class="container-fluid ml-5 ml-5 p-2 border ">
+                    <form action="/admin/insertuser", method="post">
+                        <select name="ruolo" id="ruolo" placeholder="ruolo">
+                          <option value="s">Studente</option>
+                          <option value="d">Docente</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                        <input type="text" name="nome" id="nome" placeholder="nome">
+                        <input type="text" name="cognome" id="cognome" placeholder="cognome">
+                        <input type="number" name="telefono" id="telefono" placeholder="telefono">
+                        <input type="password" name="password"id="password" placeholder="password">
+                        <input type="email" name="email"id="email" placeholder="email">
+                        <input type="date" name="data" id="data" placeholder="data">
+                        <button type="submit">Add user</button>
+                    </form>
+                </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a class="card-link" data-toggle="collapse" href="#collapseCorsiL">
+            CorsiLaurea
+          </a>
+        </div>
+        <div id="collapseCorsiL" class="collapse " data-parent="#accordion">
+          <div class="card-body">
+            <div class="container-fuild ml-5 mr-5 border">
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <td>Id </td>
+                            <td>Nome</td>
+                            <td>Anno</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    {% for us in all_corsil %}
+                    <tr>
+                        <td>
+                            {{ us.idcorsolaurea }} 
+                        </td>
+                        <td>{{ us.nome }} </td>
+                        <td>{{ us.annoaccademico }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="container-fluid ml-5 ml-5 p-2 border ">
+                <form action="/admin/insertcorsol", method="post">
+                    <input type="text" name="nome" id="nome" placeholder="nome">
+                    <input type="date" name="annoaccademico" id="annoaccademico" placeholder="annoaccademico">
+                    <button type="submit">Add Corso Laurea</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <a class="card-link" data-toggle="collapse" href="#collapseCorsi">
+            Corsi
+          </a>
+        </div>
+        <div id="collapseCorsi" class="collapse " data-parent="#accordion">
+          <div class="card-body">
+            <div class="container-fuild ml-5 mr-5 border">
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <td>Id </td>
+                            <td>Nome</td>
+                            <td>Corso Laurea</td>
+                            <td>CFU</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    {% for us in all_corsi %}
+                    <tr>
+                        <td>
+                            {{ us.idcorso }} 
+                        </td>
+                        <td> {{ us.nome }} </td>
+                        <td>[{{ us.idcorsolaurea}}]{{ us.nome_1 }}</td>
+                        <td>{{ us.cfu }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="container-fluid ml-5 ml-5 p-2 border ">
+                <form action="/admin/insertcorso", method="post">
+                    <input type="text" name="nome" id="nome" placeholder="nome">
+                    <input type="number" name="cfu" id="cfu" min="0" placeholder="CFU">
+                    <select name="codcorsolaurea" id="codcorsolaurea">
+                      {% for corsol in all_corsil %}
+                        <option value="{{ corsol.idcorsolaurea }}" >{{ corsol.nome }}</option>
+                      {% endfor %}
+                    </select>
+                    <button type="submit">Add Corso</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <a class="card-link" data-toggle="collapse" href="#collapseModuli">
+            Moduli
+          </a>
+        </div>
+        <div id="collapseModuli" class="collapse " data-parent="#accordion">
+          <div class="card-body">
+            <div class="container-fuild ml-5 mr-5 border">
+                <table class="table">
+                    <thead class="table-dark">
+                        <tr>
+                            <td>Id </td>
+                            <td>Nome</td>
+                            <td>Cod Docente</td>
+                            <td>Cod Esame</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    {% for us in all_moduli%}
+                    <tr>
+                        <td>{{ us.idmodulo }} </td>
+                        <td>{{ us.nomemod }} </td>
+                        <td>{{ us.nomedoc}} {{ us.cognome }} </td>
+                        <td>{{ us.nomecor }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="container-fluid ml-5 ml-5 p-2 border ">
+                <form action="/admin/insertmodulo", method="post">
+                    <input type="text" name="nome" id="nome" placeholder="nome">
+                    <input type="number" name="coddocente" id="coddocente" placeholder="coddocente">
+                      <select name="codcorso" id="codcorso">
+                        {% for es in all_corsi %}
+                        <option value="{{ es.idcorso }}">{{ es.nome }}</option>
+                        {% endfor %}
+                      </select>
+                    <button type="submit">Add Modulo</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+{% endblock %}

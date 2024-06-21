@@ -1,0 +1,8 @@
+python-dotenv
+SQLAlchemy
+Flask
+psycopg2-binary
+passlib
+WeasyPrint 
+flask-bcrypt
+

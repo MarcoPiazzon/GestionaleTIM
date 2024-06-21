@@ -1,0 +1,9 @@
+#failed{
+    background-color: lightcoral;
+}
+#passed{
+    background-color: lightgreen;
+}
+.expired{
+    opacity: 0.5;
+}

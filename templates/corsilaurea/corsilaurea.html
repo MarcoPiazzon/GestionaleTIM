@@ -1,0 +1,25 @@
+{% extends "header.html"%}
+{% block title %}Corsi di Laurea{% endblock %}
+{% block content %}
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <td>Nome CorsoLaurea</td>
+            <td>Anno accademico</td>
+        </tr>
+    </thead>
+    <tbody></tbody>
+        {% for c in courselaurea %}
+        <tr>
+            <td>
+                <a href="/corsilaurea/corsolaurea/{{c.idcorsolaurea}}" > {{ c.nome }} </a>
+            </td>
+            <td>{{ c.annoaccademico }}</td>
+        </tr>
+        
+        {% endfor %}
+  </table>
+
+
+{% endblock %}
