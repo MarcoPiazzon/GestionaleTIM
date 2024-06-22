@@ -19,7 +19,7 @@ def goToPortafoglio(id):
     #getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == cliente.c.id)).fetchall()  
     # chiamata da fare successivamente quando verrà cambiata l'interfaccia grafica, permette di ricevere tutte le trattative dato un cliente
     print(clienti)
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti))
+    return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), trattative=[])
 
 
 def getFase(andtra, value):
@@ -101,9 +101,7 @@ def addPortafoglio():
     # Iterate the loop to read the cell values
 
     # Return HTML snippet that will render the table
-    
-    
-    return render_template("/portafoglio/portafoglio.html", clienti=[]) 
+    return render_template("/portafoglio/portafoglio.html", clienti=[], trattative =[]) 
 
 """"
   idUtente = current_user.get_id(),

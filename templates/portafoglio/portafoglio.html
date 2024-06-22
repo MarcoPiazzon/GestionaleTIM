@@ -3,112 +3,99 @@
 {% block content %}
 
 <style>
-    .dropbtn {
-      background-color: #04AA6D;
-      color: white;
-      padding: 16px;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-    }
-    
-    .dropbtn:hover, .dropbtn:focus {
-      background-color: #3e8e41;
-    }
-    
-    #myInput {
-      box-sizing: border-box;
-      background-image: url('searchicon.png');
-      background-position: 14px 12px;
-      background-repeat: no-repeat;
-      font-size: 16px;
-      padding: 14px 20px 12px 45px;
-      border: none;
-      border-bottom: 1px solid #ddd;
-    }
-    
-    #myInput:focus {outline: 3px solid #ddd;}
-    
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-    
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f6f6f6;
-      min-width: 230px;
-      overflow: auto;
-      border: 1px solid #ddd;
-      z-index: 1;
-    }
-    
-    .dropdown-content a {
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
-    
-    .dropdown a:hover {background-color: #ddd;}
-    
-    .show {display: block;}
-    </style>
-    </head>
-    <body style="background-color:white;">
-    
-    <h2>Search/Filter Dropdown</h2>
-    <p>Click on the button to open the dropdown menu, and use the input field to search for a specific dropdown link.</p>
-    
-    <div class="dropdown">
-      <button onclick="myFunction()" class="dropbtn">Dropdown</button>
-      <div id="myDropdown" class="dropdown-content">
-        <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-        {% for cliente in clienti %}
-            <a href="#about">{{cliente.RagioneSociale}}</a>
+  .dropdown {
+  margin: 20px;
+}
+
+html,
+body{
+    height: 100%;
+    overflow: hidden;
+}
+
+.cont{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropdown-menu {
+  max-height: 20rem;
+}
+</style>
+<div class="cont">
+  <div id="menu" class="dropdown-menu" aria-labelledby="dropdown_coins" style="position: inherit; display: block; overflow: hidden;"><!-- Da sistemare questo inherit-->
+    <form class="px-4 py-2">
+        <input type="search" class="form-control" id="searchCoin" placeholder="Ragione Sociale" autofocus="autofocus" value="">
+    </form>
+    <div id="menuItems" style="overflow: auto;">
+        {% for cliente in clienti%}
+          <input type="button" class="dropdown-item" type="button" value='{{cliente.ragioneSociale}}'/>
         {% endfor %}
-
-      </div>
     </div>
-    
-    <script>
-    /* When the user clicks on the button,
-    toggle between hiding and showing the dropdown content */
-    function myFunction() {
-      document.getElementById("myDropdown").classList.toggle("show");
-    }
-    
-    function filterFunction() {
-      const input = document.getElementById("myInput");
-      const filter = input.value.toUpperCase();
-      const div = document.getElementById("myDropdown");
-      const a = div.getElementsByTagName("a");
-      for (let i = 0; i < a.length; i++) {
-        txtValue = a[i].textContent || a[i].innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          a[i].style.display = "";
-        } else {
-          a[i].style.display = "none";
-        }
-      }
-    }
-    </script>
-    
-    </body>
+    <div id="empty" class="dropdown-header">Nessun nome trovato</div>
+</div>
 
+</div>
+
+<script>
+//If it does show the symbol, else hide it
+function filter(word) {
+    let length = items.length
+    let collection = []
+    let hidden = 0
+    for (let i = 0; i < length; i++) {
+    if (items[i].value.toLowerCase().startsWith(word)) {
+        $(items[i]).show()
+    }
+    else {
+        $(items[i]).hide()
+        hidden++
+    }
+    }
+
+    //If all items are hidden, show the empty view
+    if (hidden === length) {
+    $('#empty').show()
+    }
+    else {
+    $('#empty').hide()
+    }
+}
+
+$('#menuItems').on('click', function(){
+  console.log("dentro 2")
+    $(this).show()
+
+})
+
+//If the user clicks on any item, set the title of the button as the text of the item
+$('.dropdown-item').on('click', function(){
+  console.log("premo dentro")
+  console.log($(this)[0].value)
+    $('#searchCoin').value= ($(this)[0].value)
+    //$("#dropdown_coins").dropdown('toggle');
+    $('#menuItems').hide()
+})
+$('#menu').show()
+</script>
 
     <script>
     $(document).ready(function(){
-      $("#myInput").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("#myTable tr").filter(function() {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      $("#searchCoin").on("keyup", function() {
+        console.log($(this)[0].value);
+        var val = $(this)[0].value.toLowerCase();
+        $("#menuItems input").filter(function() {
+          $(this).toggle($(this)[0].value.toLowerCase().indexOf(val) > -1)
         });
       });
     });
+
+    
     </script>
-      <input class="form-control" id="myInput" type="text" placeholder="Cerca per un qualsiasi valore">
+
+    <!--<input class="form-control" id="myInput" type="text" placeholder="Cerca per un qualsiasi valore">
     <table class="table table-dark">
         <thead>
             <tr>
@@ -139,14 +126,77 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table>-->
+
+    {% if trattative%}
+
+    <table class="table table-dark">
+      <thead>
+          <tr>
+              <th>
+                  <th scope="col">Fisso</th>
+                  <th scope="col">Mobile</th>
+                  <th scope="col">Totale</th>
+                  <th scope="col">Stato</th>
+                  <th scope="col">dataChiusura</th>
+                  <th scope="col">Altre informazioni</th>
+              </th>
+          </tr>
+      </thead>
+      <tbody id="myTable">
+        {% for trattativa in trattative%}
+          <tr>
+              <td>{% if trattativa.fisso %} {{ trattativa.fisso}} {% else %} 0.0 {%endif%}</td>
+              <td>{% if trattativa.mobile %} {{ trattativa.mobile}} {% else %} 0.0 {%endif%}</td>
+              <td>{% if trattativa.totale %} {{ trattativa.totale}} {% else %} 0.0 {%endif%}</td>
+              <td>{% if trattativa.dataChiusura %} {{trattativa.dataChiusura}} {%else%} Data non presente {%endif%}</td>
+              <form action="/portafoglio/getTrattativa", method="get">
+                  <input type="number" name="appello" id="appello" value="{{cliente.idPortafoglio}}" hidden>
+                  <td><button type="submit" class ="btn btn-danger">Apri trattative</button></td>
+              </form>
+              <td><button>Premi qui</button></td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+
+   
+
+  {%endif%}
 
 
 
-    <p> Ciao, inserisci nuove trattative</p>
+  
+
+   <script>
+    dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
+  evt.preventDefault();
+};
+
+dropContainer.ondrop = function(evt) {
+  // pretty simple -- but not for IE :(
+  fileInput.files = evt.dataTransfer.files;
+
+  // If you want to use some of the dropped files
+  const dT = new DataTransfer();
+  dT.items.add(evt.dataTransfer.files[0]);
+  dT.items.add(evt.dataTransfer.files[3]);
+  fileInput.files = dT.files;
+
+  evt.preventDefault();
+};
+   </script>
+
+    <!--<p> Ciao, inserisci nuove trattative</p>
     <form action="/portafoglio/addTrattativa" method="post" enctype="multipart/form-data">
+        <div id="dropContainer" style="border:1px solid black;height:100px;">
+          Drop Here
+      </div>
+        Should update here:
         <input type="file" name="file"
             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
         <input type="submit" value="Upload">
-    </form>
+    </form>-->
+  
 {% endblock %}
