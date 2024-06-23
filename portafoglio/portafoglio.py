@@ -5,6 +5,9 @@ from home import *
 from model import *
 import openpyxl
 from datetime import date
+
+current_cliente = [] #informazioni del cliente selezionato dalla ricerca
+
 @portafoglio_bp.route('/')
 def home():
     return render_template ("/portafoglio/portafoglio.html")
@@ -14,12 +17,24 @@ def home():
 @login_required
 def goToPortafoglio(id):
     
-    clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
+    clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
     
     #getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == cliente.c.id)).fetchall()  
     # chiamata da fare successivamente quando verrà cambiata l'interfaccia grafica, permette di ricevere tutte le trattative dato un cliente
     print(clienti)
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), trattative=[])
+    return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), current_cliente=current_cliente, trattative=[])
+
+@portafoglio_bp.route('/getCliente', methods=['POST'])
+@login_required
+def getCliente():
+    name = request.form['searchCoin']
+    current_cliente = conn.execute(select(cliente).where(cliente.c.ragioneSociale == name)).fetchone()
+    print("test")
+    clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
+    # da sistemare fase, convertire il valore nel suo relativo valore stringa
+    getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == list(current_cliente)[0])).fetchall()
+
+    return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), current_cliente=current_cliente, current_len=len(current_cliente), trattative=getTrattative, t_len=len(getTrattative))
 
 
 def getFase(andtra, value):
@@ -35,7 +50,6 @@ def getCategoria(getCateOff, value):
 @portafoglio_bp.route('/addTrattativa',methods=['POST'])
 @login_required
 def addPortafoglio():
-    print("sono quya")
     # Read the File using Flask request
     file = request.files['file']
  
@@ -75,7 +89,7 @@ def addPortafoglio():
                     zona = list[5],
                     tipo = (list[6]),
                     nomeOpportunita = list[7],
-                    dataCreazioneOpportunita = None,
+                    dataCreazioneOpportunita = list[8], # da testare
                     fix = list[9],
                     mobile = list[10],
                     categoriaOffertaIT = getCategoria(getCateOff, list[11]),

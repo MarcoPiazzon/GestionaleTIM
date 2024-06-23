@@ -28,5 +28,23 @@
 
 come continuare:
 
-Cambiare la schermata portafoglio, dove hai una main page con la ricerca del singolo cliente, per poi caricarti tutti i dati del cliente + le trattative in corso/passate del cliente.
+Dati da visualizzare nella trattativa,
+
+codiceCtrDigitali: codice
+codiceSalesHub: uno o più codice
+areaManager: nome
+zona: nome
+tipo: nome
+nomeOpportunità: frase di testo
+dataCreazioneOpprtunita: data
+fix: numero
+categoriaOffertaIt: testo
+lineeFoniaFix: numero
+aom: numero (sempre vuoto)
+mnp: numero (quasi sempre vuoto)
+al: numero (sempre vuoto)
+noteSpecialista: testo
+probabilità: numero
+inPaf: si/no
+fornitore: testo
  
