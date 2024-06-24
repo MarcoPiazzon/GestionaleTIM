@@ -8,14 +8,14 @@
     </head>
     <body>
         <nav class="bg-dark">
-            <a href="{{ url_for('myarea_bp.myarea') }}">
+            <a href="{{ url_for('myarea_bp.myarea',) }}">
                 <img src="https://moodle.unive.it/pluginfile.php/1/core_admin/logocompact/300x300/1532349652/logo_unive.jpg" alt="unive-logo" >
                 {% if current_user.is_authenticated %}
                 <span>Hello {{ current_user.getnames }}</span>
             </a>
-            <a href="{{ url_for('home_bp.home') }}" class="btn btn-info" >Portafogli</a>
-            <a href="{{ url_for('home_bp.home') }}" class="btn btn-info" >Calendario</a>
-            <a href="{{ url_for('home_bp.home') }}" class="btn btn-info" >Contatti</a>
+            <a href="{{ url_for('home_bp.home', variable=1) }}" class="btn btn-info" >Portafogli</a>
+            <a href="{{ url_for('calendario_bp.home') }}" class="btn btn-info" >Calendario</a>
+            <a href="{{ url_for('home_bp.home', variable=2) }}" class="btn btn-info" >Contatti</a>
             <a href="{{ url_for('login_bpp.logoutuser') }}" class="btn btn-info" role="button">Logout</a>
             {% else %}
             <a href="{{ url_for('login_bpp.login') }}" class="btn btn-info" role="button">Login</a>

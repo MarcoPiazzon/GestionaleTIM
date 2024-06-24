@@ -10,6 +10,7 @@ from corsilaurea.corsilaurea import corsilaurea_bp
 from esami.esami import esami_bp
 from corsidoc.corsidoc import corsidoc_bp
 from portafoglio.portafoglio import portafoglio_bp 
+from calendario.calendario import calendario_bp
 from model import *
 import datetime
 import pandas
@@ -38,6 +39,7 @@ app.register_blueprint(corsilaurea_bp,url_prefix='/corsilaurea')
 app.register_blueprint(esami_bp,url_prefix='/esami')
 app.register_blueprint(corsidoc_bp,url_prefix='/corsidoc')
 app.register_blueprint(portafoglio_bp, url_prefix='/portafoglio')
+app.register_blueprint(calendario_bp, url_prefix='/calendario')
 
 
 @app.route('/')

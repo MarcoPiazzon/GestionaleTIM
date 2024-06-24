@@ -4,331 +4,261 @@
 
 <style>
   .dropdown {
-  margin: 20px;
-}
+    margin: 20px;
+  }
 
 
-.cont{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+  .dropdown-menu {
+    max-height: 20rem;
+  }
 
-.dropdown-menu {
-  max-height: 20rem;
-}
-
-.hiddenRow {
+  .hiddenRow {
     padding: 0 !important;
-}
+  }
 </style>
-<div class="cont">
-  <div id="menu" class="dropdown-menu" aria-labelledby="dropdown_coins" style="position: inherit; display: block; overflow: hidden;"><!-- Da sistemare questo inherit-->
-    <form class="px-4 py-2" action="/portafoglio/getCliente" method="POST">
-        <input type="search" class="form-control" id="searchCoin" name="searchCoin" placeholder="Ragione Sociale" autofocus="autofocus" value="">
-        <button class ="btn btn-info" type="submit">Cerca</button>
-    </form>
-    <div id="menuItems" style="overflow: auto;">
+<div class="row">
+  <div class="container px-4 mt-4">
+    <div id="menu" class="dropdown-menu" aria-labelledby="dropdown_coins"
+      style="position: inherit; display: block; overflow: hidden;"><!-- Da sistemare questo inherit-->
+      <form class="px-4 py-2" action="/portafoglio/getCliente" method="POST">
+        <input type="search" class="form-control" id="searchCoin" name="searchCoin" placeholder="Ragione Sociale"
+          autofocus="autofocus" value="">
+        <button class="btn btn-info" type="submit">Cerca</button>
+      </form>
+      <div id="menuItems" style="overflow: auto;">
         {% for cliente in clienti%}
-          <input type="button" class="dropdown-item" type="button" value='{{cliente.ragioneSociale}}'/>
+        <input type="button" class="dropdown-item" type="button" value='{{cliente.ragioneSociale}}' />
         {% endfor %}
+      </div>
+      <div id="empty" class="dropdown-header">Nessun nome trovato</div>
     </div>
-    <div id="empty" class="dropdown-header">Nessun nome trovato</div>
+
   </div>
-  
 </div>
-<div id="info" class="cont">
+{% if current_cliente %}
 
-  {% if current_cliente %}
+<!-- Prima era container-xl-->
+<div class="row">
+  <div class="container px-4 mt-4">
 
-    {% for i in range(0, current_len) %}
+    <!-- Account details card-->
+    <div class="card mb-4">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <form action="/portafoglio/modify" method="POST">
+          <input type="hidden" name="idCliente" id="idCliente" value="{{current_cliente[0]}}">
+          <!-- Form Group (username)-->
+          <div class="mb-3">
+            <label class="small mb-1" for="inputUsername">Ragione Sociale</label>
+            <input class="form-control" name="ragioneSociale" id="inputUsername" type="text" placeholder="Enter your username"
+              value="{{current_cliente[5]}}">
+          </div>
+          <!-- Form Row-->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (first name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputFirstName">Cf</label>
+              <input class="form-control" name="cf" id="inputFirstName" type="text" placeholder="Enter your first name"
+                value="{{current_cliente[4]}}">
+            </div>
+            <!-- Form Group (last name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputLastName">Presidio</label>
+              <input class="form-control" name="presidio" id="inputLastName" type="text" placeholder="Enter your last name"
+                value="{{current_cliente[6]}}">
+            </div>
+          </div>
+          <!-- Form Row        -->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (organization name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputOrgName">Indirizzo</label>
+              <input class="form-control" name="indirizzo" id="inputOrgName" type="text" placeholder="Enter your organization name"
+                value="{{current_cliente[7]}}">
+            </div>
+            <!-- Form Group (location)-->
+            <div class="col-md-3">
+              <label class="small mb-1" for="inputLocation">CAP</label>
+              <input class="form-control" name="capPrincipale" id="inputLocation" type="text" placeholder="Enter your location"
+                value="{{current_cliente[9]}}">
+            </div>
+            <div class="col-md-3">
+              <label class="small mb-1" for="inputLocation">Comune</label>
+              <input class="form-control" name="comunePrincipale" id="inputLocation" type="text" placeholder="Enter your location"
+                value="{{current_cliente[10]}}">
+            </div>
+          </div>
+          <!-- Form Row-->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (phone number)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputPhone">Numero sedi</label>
+              <input class="form-control" name="sediTot" id="inputPhone" type="tel" placeholder="Enter your phone number"
+                value="{{current_cliente[12]}}">
+            </div>
+            <!-- Form Group (birthday)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Numero dipendenti</label>
+              <input class="form-control"name="dipendenti" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="{{current_cliente[20]}}">
+            </div>
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Numero linee totali</label>
+              <input class="form-control" name="nLineeTot" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="{{current_cliente[13]}}">
+            </div>
 
-      <p>{{current_cliente[i]}}, </p>
+          </div>
+          <!-- Form Row-->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (phone number)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputPhone">Fisso</label>
+              <input class="form-control" name="fisso" id="inputPhone" type="tel" placeholder="Enter your phone number"
+                value="{{current_cliente[14]}}">
+            </div>
+            <!-- Form Group (birthday)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Mobile</label>
+              <input class="form-control" name="mobile" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="{{current_cliente[15]}}">
+            </div>
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Totale</label>
+              <input class="form-control" name="totale" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="{{current_cliente[16]}}">
+            </div>
+          </div>
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (phone number)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputPhone">Fatturato Cerved</label>
+              <input class="form-control" name="fatturatoCerved" id="inputPhone" type="tel" placeholder="Enter your phone number"
+                value="{{current_cliente[17]}}">
+            </div>
+            <!-- Form Group (birthday)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Fatturato TIM</label>
+              <input class="form-control" name="fatturatoTim" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="{{current_cliente[19]}}">
+            </div>
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">clienteOffMobScadenza</label>
+              <input class="form-control" name="clienteOffMobScadenza" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="{{current_cliente[18]}}">
+            </div>
+          </div>
+          <!-- Save changes button-->
+          <button class="btn btn-primary" type="submit">Save changes</button>
+        </form>
+      </div>
+    </div>
 
-    {% endfor %}
 
-  {%endif%}
+  </div>
 </div>
+{%endif%}
+
 <table class="table table-condensed" style="border-collapse:collapse;">
   <thead>
-      <tr>
-          <th>Fisso</th>
-          <th>Mobile</th>
-          <th>Totale</th>
-          <th>Andamento</th>
-          <th>Data</th>
-      </tr>
+    <tr>
+      <th>Fisso</th>
+      <th>Mobile</th>
+      <th>Totale</th>
+      <th>Andamento</th>
+      <th>Data</th>
+    </tr>
   </thead>
   <tbody>
     {% if trattative%}
-      {% for i in range (0, t_len) %}
-        <tr data-bs-toggle="collapse" data-bs-target="#demo1" class="accordion-toggle">
-          <td>{{trattative[i].fisso}}</td>
-          <td>{{trattative[i].mobile}}</td>
-          <td>{{trattative[i].totale}}</td>
-          <td>{{trattative[i].fase}}</td>
-          <td>{{trattative[i].dataChiusura}}</td> <!--controllare se la trattativa è chiusa-->
-      </tr>
-      <tr >
-          <td colspan="6" class="hiddenRow"><div class="accordian-body collapse" id="demo1"> Demo1 </div> </td>
-      </tr>
-   
-      {% endfor %}
+    {% for i in range (0, t_len) %}
+    <tr data-bs-toggle="collapse" data-bs-target="#demo{{i}}" class="accordion-toggle">
+      <td>{{trattative[i].fisso}}{{i}}</td>
+      <td>{{trattative[i].mobile}}</td>
+      <td>{{trattative[i].totale}}</td>
+      <td>{{trattative[i].fase}}</td>
+      <td>{{trattative[i].dataChiusura}}</td> <!--controllare se la trattativa è chiusa-->
+    </tr>
+    <tr>
+      <td colspan="6" class="hiddenRow">
+        <div class="accordian-body collapse" id="demo{{i}}"> Demo1 </div>
+      </td>
+    </tr>
+
+    {% endfor %}
 
     {%endif%}
 
   </tbody>
 </table>
-<!--
-<div id="trattative">
-  <div class="container">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            Employee
-          </div>
-          <div class="panel-body">
-            <table class="table table-condensed table-striped">
-      <thead>
-          <tr>
-            <th></th>
-            <th>Fist Name</th>
-            <th>Last Name</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Status</th>
-          </tr>
-      </thead>
-  
-      <tbody>
-          <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
-             <td><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></td>
-              <td>Carlos</td>
-              <td>Mathias</td>
-              <td>Leme</td>
-              <td>SP</td>
-              <td>new</td>
-          </tr>
-        
-          <tr>
-              <td colspan="12" class="hiddenRow">
-                <div class="accordian-body collapse" id="demo1"> 
-                <table class="table table-striped">
-                        <thead>
-                          <tr class="info">
-                            <th>Job</th>
-                            <th>Company</th>
-                            <th>Salary</th>		
-                            <th>Date On</th>	
-                            <th>Date off</th>	
-                            <th>Action</th>	
-                          </tr>
-                        </thead>	
-                        
-                        <tbody>
-                          
-                          <tr data-toggle="collapse"  class="accordion-toggle" data-target="#demo10">
-                            <td> <a href="#">Enginner Software</a></td>
-                            <td>Google</td>
-                            <td>U$8.00000 </td>
-                            <td> 2016/09/27</td>
-                            <td> 2017/09/27</td>
-                            <td> 
-                              <a href="#" class="btn btn-default btn-sm">
-                                    <i class="glyphicon glyphicon-cog"></i>
-                                </a>
-                            </td>
-                          </tr>
-                          
-                           <tr>
-              <td colspan="12" class="hiddenRow">
-                <div class="accordian-body collapse" id="demo10"> 
-                <table class="table table-striped">
-                        <thead>
-                          <tr>
-                            <td><a href="#"> XPTO 1</a></td>
-                            <td>XPTO 2</td>
-                            <td>Obs</td>
-                          </tr>
-                          <tr>
-                            <th>item 1</th>
-                            <th>item 2</th>
-                            <th>item 3 </th>
-                            <th>item 4</th>
-                            <th>item 5</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>item 1</td>
-                            <td>item 2</td>
-                            <td>item 3</td>
-                            <td>item 4</td>
-                            <td>item 5</td>
-                            <td>
-                                <a href="#" class="btn btn-default btn-sm">
-                                  <i class="glyphicon glyphicon-cog"></i>
-                                </a>
-                            </td>
-                          </tr>
-                        </tbody>
-                   </table>
-                
-                </div> 
-            </td>
-          </tr>
-                                                      
-                          <tr>
-                            <td>Scrum Master</td>
-                            <td>Google</td>
-                            <td>U$8.00000 </td>
-                            <td> 2016/09/27</td>
-                            <td> 2017/09/27</td>
-                            <td> <a href="#" class="btn btn-default btn-sm">
-                                    <i class="glyphicon glyphicon-cog"></i>
-                                </a>
-                            </td>
-                          </tr>
-                          
-                              
-                          <tr>
-                            <td>Back-end</td>
-                            <td>Google</td>
-                            <td>U$8.00000 </td>
-                            <td> 2016/09/27</td>
-                            <td> 2017/09/27</td>
-                            <td> <a href="#" class="btn btn-default btn-sm">
-                                    <i class="glyphicon glyphicon-cog"></i>
-                                </a>
-                            </td>
-                          </tr>
-                          
-                              
-                          <tr>
-                            <td>Front-end</td>
-                            <td>Google</td>
-                            <td>U$8.00000 </td>
-                            <td> 2016/09/27</td>
-                            <td> 2017/09/27</td>
-                            <td> <a href="#" class="btn btn-default btn-sm">
-                                    <i class="glyphicon glyphicon-cog"></i>
-                                </a>
-                            </td>
-                          </tr>
-                  
-                 
-                        </tbody>
-                   </table>
-                
-                </div> 
-            </td>
-          </tr>
-        
-        
-        
-          <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
-               <td><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></td>
-               <td>Silvio</td>
-              <td>Santos</td>
-              <td>São Paulo</td>
-              <td>SP</td>
-            <td> new</td>
-          </tr>
-          <tr>
-              <td colspan="6" class="hiddenRow"><div id="demo2" class="accordian-body collapse">Demo2</div></td>
-          </tr>
-          <tr data-toggle="collapse" data-target="#demo3" class="accordion-toggle">
-              <td><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-eye-open"></span></button></td>
-              <td>John</td>
-              <td>Doe</td>
-              <td>Dracena</td>
-              <td>SP</td>
-            <td> New</td>
-          </tr>
-          <tr>
-              <td colspan="6" class="hiddenRow"><div id="demo3" class="accordian-body collapse">Demo3 sadasdasdasdasdas</div></td>
-          </tr>
-      </tbody>
-  </table>
-              </div>
-          
-            </div> 
-          
-        </div>
-    </div>
-         
-  
-  
-</div>
-  -->
+
 <script>
 
-//non funxziona un cazzo :)
-$('.accordian-body').on('show.bs.collapse', function () {
+  //non funxziona un cazzo :)
+  $('.accordian-body').on('show.bs.collapse', function () {
     $(this).closest("table")
-        .find(".collapse.in")
-        .not(this)
-        .collapse('toggle')
-})
+      .find(".collapse.in")
+      .not(this)
+      .collapse('toggle')
+  })
 
-//If it does show the symbol, else hide it
-function filter(word) {
+  //If it does show the symbol, else hide it
+  function filter(word) {
     let length = items.length
     let collection = []
     let hidden = 0
     for (let i = 0; i < length; i++) {
-    if (items[i].value.toLowerCase().startsWith(word)) {
+      if (items[i].value.toLowerCase().startsWith(word)) {
         $(items[i]).show()
-    }
-    else {
+      }
+      else {
         $(items[i]).hide()
         hidden++
-    }
+      }
     }
 
     //If all items are hidden, show the empty view
     if (hidden === length) {
-    $('#empty').show()
+      $('#empty').show()
     }
     else {
-    $('#empty').hide()
+      $('#empty').hide()
     }
-}
+  }
 
-$('#searchCoin').on('click', function(){
-  console.log("dentro 2")
+  $('#searchCoin').on('click', function () {
+    console.log("dentro 2")
     $('#menuItems').show()
-  
-})
 
-//If the user clicks on any item, set the title of the button as the text of the item
-$('.dropdown-item').on('click', function(){
-  
-  console.log($(this)[0].value)
-   
-  document.getElementById("searchCoin").value= ($(this)[0].value)
-   
+  })
+
+  //If the user clicks on any item, set the title of the button as the text of the item
+  $('.dropdown-item').on('click', function () {
+
+    console.log($(this)[0].value)
+
+    document.getElementById("searchCoin").value = ($(this)[0].value)
+
     //$("#dropdown_coins").dropdown('toggle');
     $('#menuItems').hide()
-})
+  })
 </script>
 
-    <script>
-    $(document).ready(function(){
-      $("#searchCoin").on("keyup", function() {
-        console.log($(this)[0].value);
-        var val = $(this)[0].value.toLowerCase();
-        $("#menuItems input").filter(function() {
-          $(this).toggle($(this)[0].value.toLowerCase().indexOf(val) > -1)
-        });
+<script>
+  $(document).ready(function () {
+    $("#searchCoin").on("keyup", function () {
+      console.log($(this)[0].value);
+      var val = $(this)[0].value.toLowerCase();
+      $("#menuItems input").filter(function () {
+        $(this).toggle($(this)[0].value.toLowerCase().indexOf(val) > -1)
       });
     });
+  });
 
-    
-    </script>
 
-    <!--<input class="form-control" id="myInput" type="text" placeholder="Cerca per un qualsiasi valore">
+</script>
+
+<!--<input class="form-control" id="myInput" type="text" placeholder="Cerca per un qualsiasi valore">
     <table class="table table-dark">
         <thead>
             <tr>
@@ -361,13 +291,13 @@ $('.dropdown-item').on('click', function(){
         </tbody>
     </table>-->
 
-    
 
 
 
-  
 
-   <!--<script>
+
+
+<!--<script>
     dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
   evt.preventDefault();
 };
@@ -396,5 +326,5 @@ dropContainer.ondrop = function(evt) {
             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
         <input type="submit" value="Upload">
     </form>-->
-  
+
 {% endblock %}

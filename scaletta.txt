@@ -47,4 +47,76 @@ noteSpecialista: testo
 probabilità: numero
 inPaf: si/no
 fornitore: testo
- 
+
+
+//portafoglio
+
+Quando premo su "portafogli" nel header, entro automaticamente nel portafoglio più recente
+Devo avere la Possibilità di vedere anche gli scorsi portafogli
+Possibilità di aggiungere un cliente manualmente
+
+
+//Calendario
+
+Join tabella appuntamento, trattativa, appuntamentohatrattativa;
+Creare inserimento appuntamento
+Creare interfaccia
+
+
+
+[
+  {
+    "title": "All Day Event",
+    "start": "2024-06-01"
+  },
+  {
+    "title": "Long Event",
+    "start": "2024-06-07",
+    "end": "2024-06-10"
+  },
+  {
+    "groupId": "999",
+    "title": "Repeating Event",
+    "start": "2024-06-09T16:00:00+00:00"
+  },
+  {
+    "groupId": "999",
+    "title": "Repeating Event",
+    "start": "2024-06-16T16:00:00+00:00"
+  },
+  {
+    "title": "Conference",
+    "start": "2024-06-23",
+    "end": "2024-06-25"
+  },
+  {
+    "title": "Meeting",
+    "start": "2024-06-24T10:30:00+00:00",
+    "end": "2024-06-24T12:30:00+00:00"
+  },
+  {
+    "title": "Lunch",
+    "start": "2024-06-24T12:00:00+00:00"
+  },
+  {
+    "title": "Birthday Party",
+    "start": "2024-06-25T07:00:00+00:00"
+  },
+  {
+    "url": "http://google.com/",
+    "title": "Click for Google",
+    "start": "2024-06-28"
+  },
+  {
+    "title": "Meeting",
+    "start": "2024-06-24T14:30:00+00:00"
+  },
+  {
+    "title": "Happy Hour",
+    "start": "2024-06-24T17:30:00+00:00"
+  },
+  {
+    "title": "Dinner",
+    "start": "2024-06-24T20:00:00+00:00"
+  }
+]

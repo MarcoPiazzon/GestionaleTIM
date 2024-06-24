@@ -11,7 +11,6 @@ conn=engine.connect()
 
 andamentotrattativa = Table('andamentotrattativa',metadata, autoload_with=engine) 
 appuntamento = Table('appuntamento',metadata, autoload_with=engine)
-calendario = Table('calendario',metadata, autoload_with=engine)
 categoria = Table('categoria',metadata, autoload_with=engine)
 cliente = Table('cliente',metadata, autoload_with=engine)
 clienteappuntamento = Table('clienteappuntamento',metadata, autoload_with=engine)

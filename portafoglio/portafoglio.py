@@ -33,7 +33,63 @@ def getCliente():
     clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
     # da sistemare fase, convertire il valore nel suo relativo valore stringa
     getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == list(current_cliente)[0])).fetchall()
+    print(getTrattative)
+    return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), current_cliente=current_cliente, current_len=len(current_cliente), trattative=getTrattative, t_len=len(getTrattative))
 
+@portafoglio_bp.route('/modify', methods=['POST'])
+@login_required
+def modifyCliente():
+ 
+    try:
+        idCliente = request.form['idCliente']
+        ragioneSociale = request.form['ragioneSociale']
+        cf = request.form['cf']
+        presidio = request.form['presidio']
+        indirizzoPrincipale = request.form['indirizzo']
+        capPrincipale = request.form['capPrincipale']
+        comunePrincipale = request.form['comunePrincipale']
+        sediTot = request.form['sediTot']
+        dipendenti = request.form['dipendenti']
+        nLineeTot = request.form['nLineeTot']
+        fisso = request.form['fisso']
+        mobile = request.form['mobile']
+        totale = request.form['totale']
+        fatturatoCerved = request.form['fatturatoCerved']
+        fatturatoTim = request.form['fatturatoTim']
+        clienteOffMobScadenza = request.form['clienteOffMobScadenza']
+        print(idCliente)
+        conn.execute(
+            update(cliente).where(cliente.c.idCliente==idCliente).values(
+                idCliente = idCliente,
+                ragioneSociale = ragioneSociale,
+                cf = cf,
+                presidio = presidio,
+                indirizzoPrincipale = indirizzoPrincipale,
+                capPrincipale = capPrincipale,
+                comunePrincipale = comunePrincipale,
+                sediTot = sediTot,
+                dipendenti = dipendenti,
+                nLineeTot = nLineeTot,
+                fisso = fisso,
+                mobile = mobile,
+                totale = totale,
+                fatturatoCerved = fatturatoCerved,
+                fatturatoTim = fatturatoTim,
+                clienteOffMobScadenza = clienteOffMobScadenza,
+            )
+        )
+        conn.commit()
+        print("tutto bvene")
+    except Exception as error:
+        print("rip")
+        conn.rollback()
+
+    current_cliente = conn.execute(select(cliente).where(cliente.c.ragioneSociale == ragioneSociale)).fetchone()
+    print("test")
+    clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
+    # da sistemare fase, convertire il valore nel suo relativo valore stringa
+    getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == list(current_cliente)[0])).fetchall()
+    print(getTrattative)
     return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), current_cliente=current_cliente, current_len=len(current_cliente), trattative=getTrattative, t_len=len(getTrattative))
 
 

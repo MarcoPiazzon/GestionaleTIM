@@ -5,20 +5,30 @@ from model import *
 from login.login import bcrypt
 import openpyxl
 from datetime import date
-@home_bp.route('/')
-def home():
-    #corsilaurea_all = conn.execute(select(corsilaurea)).fetchall()
-    contattiUtente = conn.execute(select(contatto)).fetchall()
-    """conn.execute(insert(utente).values(
-        nome = 'Marco',
-        cognome= 'Piazzon',
-        email= 'mp@gmail.com',
-        psw=bcrypt.generate_password_hash('mp@gmail.com'+'ciao').decode('utf-8'),
-        ))
-    conn.commit()"""
-    getPortafogliUtente = conn.execute(select(portafoglio).where(portafoglio.c.idUtente == current_user.get_id())).fetchall()
-    print(getPortafogliUtente)
-    return render_template ("/home/home.html",contattiUtente=contattiUtente, getP=getPortafogliUtente, len=len(getPortafogliUtente))
+
+@home_bp.route('/<int:variable>/', methods=['GET', 'POST'])
+def home(variable):
+    print(variable == 1)
+    if(variable == 1):
+        getIdLastPortafogliUtente = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchone()[0]
+        print(getIdLastPortafogliUtente)
+        print("Ho fatto anche questo")
+        clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == getIdLastPortafogliUtente)).fetchall()
+        return render_template("/portafoglio/portafoglio.html", clienti=clienti)
+    else:
+        #corsilaurea_all = conn.execute(select(corsilaurea)).fetchall()
+        contattiUtente = conn.execute(select(contatto)).fetchall()
+        """conn.execute(insert(utente).values(
+            nome = 'Marco',
+            cognome= 'Piazzon',
+            email= 'mp@gmail.com',
+            psw=bcrypt.generate_password_hash('mp@gmail.com'+'ciao').decode('utf-8'),
+            ))
+        conn.commit()"""
+        getPortafogliUtente = conn.execute(select(portafoglio).where(portafoglio.c.idUtente == current_user.get_id())).fetchall()
+        print(getPortafogliUtente)
+        print("ho fatto questo")
+        return render_template ("/home/home.html",contattiUtente=contattiUtente, getP=getPortafogliUtente, len=len(getPortafogliUtente))
 
 
 @home_bp.route('/portafoglio/<int:id>')
