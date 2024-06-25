@@ -58,15 +58,19 @@ def modifyCliente():
         fatturatoTim = request.form['fatturatoTim']
         clienteOffMobScadenza = request.form['clienteOffMobScadenza']
         print(idCliente)
+        print(sediTot)
+        print(type(sediTot))
+        
+
         conn.execute(
             update(cliente).where(cliente.c.idCliente==idCliente).values(
                 idCliente = idCliente,
                 ragioneSociale = ragioneSociale,
                 cf = cf,
-                presidio = presidio,
+                #presidio = presidio, gestire la foreign key
                 indirizzoPrincipale = indirizzoPrincipale,
                 capPrincipale = capPrincipale,
-                comunePrincipale = comunePrincipale,
+                # comunePrincipale = comunePrincipale, gestire la foreign key
                 sediTot = sediTot,
                 dipendenti = dipendenti,
                 nLineeTot = nLineeTot,
@@ -82,6 +86,7 @@ def modifyCliente():
         print("tutto bvene")
     except Exception as error:
         print("rip")
+        print(error.__cause__)
         conn.rollback()
 
     current_cliente = conn.execute(select(cliente).where(cliente.c.ragioneSociale == ragioneSociale)).fetchone()

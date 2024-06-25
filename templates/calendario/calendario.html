@@ -6,44 +6,44 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
 <script>
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            aspectRatio: 4,
-            height: 600,
-            events: [
-                {% for event in events %}
+  document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      aspectRatio: 4,
+      height: 600,
+      events: [
+        {% for event in events %}
                 {
-                title: '{{event.titolo}}',
-                start: '{{event.dataApp}}',
-                end: '{{event.dataApp}}',
-                extendedProps: {
-                    description: '{{event.varieDiscussioni}}',
-                    preventivoDaFare: '{{event.preventivoDaFare}}',
-                    dataApp: '{{event.dataApp}}',
-                    idAppuntamento: '{{event.idAppuntamento}}',
-                },
+        title: '{{event.titolo}}',
+        start: '{{event.dataApp}}',
+        end: '{{event.dataApp}}',
+        extendedProps: {
+          description: '{{event.varieDiscussioni}}',
+          preventivoDaFare: '{{event.preventivoDaFare}}',
+          dataApp: '{{event.dataApp}}',
+          idAppuntamento: '{{event.idAppuntamento}}',
+        },
 
-            },
-            {% endfor %}
+      },
+      {% endfor %}
             ],
 
-        eventClick: function (info) {
-            info.jsEvent.preventDefault(); // don't let the browser navigate
-            console.log(info.event.extendedProps);
-            document.getElementById("title").value = info.event.title;
-            if (info.event.extendedProps) {
-                document.getElementById("idapp").value = info.event.extendedProps.idAppuntamento;
-                document.getElementById("description").value = info.event.extendedProps.description;
-                document.getElementById("preventivoDaFare").value = info.event.extendedProps.preventivoDaFare;
-                document.getElementById("dataApp").value = info.event.extendedProps.dataApp;
-            } else {
-                alert("non esiste");
-            }
-        }
+    eventClick: function (info) {
+      info.jsEvent.preventDefault(); // don't let the browser navigate
+      console.log(info.event.extendedProps);
+      document.getElementById("title").value = info.event.title;
+      if (info.event.extendedProps) {
+        document.getElementById("idapp").value = info.event.extendedProps.idAppuntamento;
+        document.getElementById("description").value = info.event.extendedProps.description;
+        document.getElementById("preventivoDaFare").value = info.event.extendedProps.preventivoDaFare;
+        document.getElementById("dataApp").value = info.event.extendedProps.dataApp;
+      } else {
+        alert("non esiste");
+      }
+    }
         });
-    calendar.render();
+  calendar.render();
     });
 
 
@@ -52,64 +52,81 @@
 </head>
 
 <body>
-    <div id='calendar'></div>
-    <div class="row">
-        <div class="container px-4 mt-4">
-      
-          <!-- Account details card-->
-          <div class="card mb-4">
-            <div class="card-header"></div>
-            <div class="card-body">
-              <form action="/calendario/modify" method="POST">
-                <input type="hidden" name="idapp" id="idapp" value="">
-                <!-- Form Group (username)-->
-                <div class="mb-3">
-                  <label class="small mb-1" for="inputUsername">Titolo</label>
-                  <input class="form-control" name="titolo" id="title" type="text" placeholder="Enter your username"
-                    value="">
-                </div>
-                <!-- Form Row-->
-                <div class="row gx-3 mb-3">
-                  <!-- Form Group (first name)-->
-                  <div class="col">
-                    <label class="small mb-1" for="inputFirstName">Varie discussioni</label>
-                    <textarea class="form-control" name="varieDiscussioni" id="description" rows="3"></textarea>
-                  </div>
-                </div>
-                <!-- Form Row        -->
-                <div class="row gx-3 mb-3">
-                    <!-- Form Group (first name)-->
-                    <div class="col">
-                      <label class="small mb-1" for="inputFirstName">Preventivo da fare</label>
-                      <textarea class="form-control" name="preventivoDaFare" id="preventivoDaFare" rows="3"></textarea>
-                    </div>
-                  </div>
-                <!-- Form Row-->
-                <div class="row gx-3 mb-3">
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">Date</label>
-                    <input class="form-control" name="dataApp" id="dataApp" type="date" name="birthday"
-                      placeholder="Enter your birthday" value="">
-                  </div>
-                </div>
-                <!-- Save changes button-->
-                <button class="btn btn-primary" type="submit">Save changes</button>
-              </form>
+  <div id='calendar'></div>
+  <div class="row">
+    <div class="container px-4 mt-4">
+
+      <!-- Account details card-->
+      <div class="card mb-4">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <form action="/calendario/modify" method="POST">
+            <input type="hidden" name="idapp" id="idapp" value="">
+            <!-- Form Group (username)-->
+            <div class="mb-3">
+              <label class="small mb-1" for="inputUsername">Titolo</label>
+              <input class="form-control" name="titolo" id="title" type="text" placeholder="Enter your username"
+                value="">
             </div>
-          </div>
-      
-      
+            <!-- Form Row-->
+            <div class="row gx-3 mb-3">
+              <!-- Form Group (first name)-->
+              <div class="col">
+                <label class="small mb-1" for="inputFirstName">Varie discussioni</label>
+                <textarea class="form-control" name="varieDiscussioni" id="description" rows="3"></textarea>
+              </div>
+            </div>
+            <!-- Form Row        -->
+            <div class="row gx-3 mb-3">
+              <!-- Form Group (first name)-->
+              <div class="col">
+                <label class="small mb-1" for="inputFirstName">Preventivo da fare</label>
+                <textarea class="form-control" name="preventivoDaFare" id="preventivoDaFare" rows="3"></textarea>
+              </div>
+            </div>
+            <!-- Form Row        -->
+            <div class="row gx-3 mb-3">
+              <input type="hidden" name="idtrattativa" id="idtrattativa" value="">
+              <!-- Form Group (first name)-->
+              <div class="col">
+                <label class="small mb-1" for="inputFirstName">Trattativa assocciata</label>
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>Scegli una trattativa attiva</option>
+                  {% if trattative%}
+                    {% for t in trattative%}
+                      <option value="{{t.codiceCtrDigitali}}">{{t.codiceCtrDigitali}}</option>
+                    {% endfor %}
+                  {% endif %}
+                  
+                </select>
+              </div>
+            </div>
+            <!-- Form Row-->
+            <div class="row gx-3 mb-3">
+              <div class="col-md-4">
+                <label class="small mb-1" for="inputBirthday">Date</label>
+                <input class="form-control" name="dataApp" id="dataApp" type="date" name="birthday"
+                  placeholder="Enter your birthday" value="">
+              </div>
+            </div>
+            <!-- Save changes button-->
+            <button class="btn btn-primary" type="submit">Save changes</button>
+          </form>
         </div>
       </div>
+
+
+    </div>
+  </div>
 </body>
 
 <script>
-    /*document.getElementById("modify").addEventListener("click", function () {
-        this.innerHTML = (this.innerHTML === "conferma") ? "modifica appuntamento" : "conferma";
-        var isModified = this.innerHTML === "modifica appuntamento";
-        document.getElementById("title").disabled = isModified;
-        document.getElementById("description").disabled = isModified;
-        document.getElementById("preventivoDaFare").disabled = isModified;
-    });*/
+  /*document.getElementById("modify").addEventListener("click", function () {
+      this.innerHTML = (this.innerHTML === "conferma") ? "modifica appuntamento" : "conferma";
+      var isModified = this.innerHTML === "modifica appuntamento";
+      document.getElementById("title").disabled = isModified;
+      document.getElementById("description").disabled = isModified;
+      document.getElementById("preventivoDaFare").disabled = isModified;
+  });*/
 </script>
 {% endblock %}

@@ -10,7 +10,8 @@ from datetime import date
 @calendario_bp.route('/')
 def home():
     events = conn.execute(select(appuntamento)).fetchall()
-    return render_template ("/calendario/calendario.html", events=events)
+    trattative = conn.execute(select(trattativa).where(trattativa.c.fase == 1)).fetchall()
+    return render_template ("/calendario/calendario.html", events=events, trattative = trattative)
 
 @calendario_bp.route('/modify', methods=['POST'])
 def modifyAppuntamento():
@@ -32,8 +33,11 @@ def modifyAppuntamento():
         print("tutto bvene")
     except Exception as error:
         print("rip")
+        print(error.__cause__)
         conn.rollback()
 
     events = conn.execute(select(appuntamento)).fetchall()
-    return render_template ("/calendario/calendario.html", events=events)
+    trattative = conn.execute(select(trattativa).where(trattativa.c.fase == 1)).fetchall()
+    print(trattative)
+    return render_template ("/calendario/calendario.html", events=events, trattative=trattative)
 
