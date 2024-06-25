@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.14/index.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.14/index.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -32,6 +33,8 @@
     eventClick: function (info) {
       info.jsEvent.preventDefault(); // don't let the browser navigate
       console.log(info.event.extendedProps);
+      document.getElementById("modifica").style.display = "block";
+      document.getElementById("crea").style.display = "none";
       document.getElementById("title").value = info.event.title;
       if (info.event.extendedProps) {
         document.getElementById("idapp").value = info.event.extendedProps.idAppuntamento;
@@ -52,8 +55,12 @@
 </head>
 
 <body>
-  <div id='calendar'></div>
   <div class="row">
+    <div class="container px-4 mt-4">
+      <div id='calendar'></div>
+    </div>
+  </div>
+  <div class="row" id="modifica" style="display: none;">
     <div class="container px-4 mt-4">
 
       <!-- Account details card-->
@@ -93,11 +100,11 @@
                 <select class="form-select" aria-label="Default select example">
                   <option selected>Scegli una trattativa attiva</option>
                   {% if trattative%}
-                    {% for t in trattative%}
-                      <option value="{{t.codiceCtrDigitali}}">{{t.codiceCtrDigitali}}</option>
-                    {% endfor %}
+                  {% for t in trattative%}
+                  <option value="{{t.codiceCtrDigitali}}">{{t.codiceCtrDigitali}}</option>
+                  {% endfor %}
                   {% endif %}
-                  
+
                 </select>
               </div>
             </div>
@@ -111,6 +118,8 @@
             </div>
             <!-- Save changes button-->
             <button class="btn btn-primary" type="submit">Save changes</button>
+            <button class="btn btn-primary" type="button" id="btnElimina">Elimina appuntamento</button>
+            <button class="btn btn-primary" type="button" id="btnCrea">Aggiungi appuntamento</button>
           </form>
         </div>
       </div>
@@ -118,15 +127,98 @@
 
     </div>
   </div>
+  <div class="row" id="crea">
+    <div class="container px-4 mt-4">
+
+      <!-- Account details card-->
+      <div class="card mb-4">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <form action="/calendario/add" method="POST">
+            <input type="hidden" name="idapp" id="idapp" value="">
+            <!-- Form Group (username)-->
+            <div class="mb-3">
+              <label class="small mb-1" for="inputUsername">Titolo</label>
+              <input class="form-control" name="titolo" id="title" type="text" placeholder="Enter your username"
+                value="" required>
+            </div>
+            <!-- Form Row-->
+            <div class="row gx-3 mb-3">
+              <!-- Form Group (first name)-->
+              <div class="col">
+                <label class="small mb-1" for="inputFirstName">Varie discussioni</label>
+                <textarea class="form-control" name="varieDiscussioni" id="description" rows="3"></textarea>
+              </div>
+            </div>
+            <!-- Form Row        -->
+            <div class="row gx-3 mb-3">
+              <!-- Form Group (first name)-->
+              <div class="col">
+                <label class="small mb-1" for="inputFirstName">Preventivo da fare</label>
+                <textarea class="form-control" name="preventivoDaFare" id="preventivoDaFare" rows="3"></textarea>
+              </div>
+            </div>
+            <!-- Form Row        -->
+            <div class="row gx-3 mb-3">
+              <input type="hidden" name="idtrattativa" id="idtrattativa" value="">
+              <!-- Form Group (first name)-->
+              <div class="col">
+                <label class="small mb-1" for="inputFirstName">Trattativa assocciata</label>
+                <select class="form-select" aria-label="Default select example">
+                  <option selected>Scegli una trattativa attiva</option>
+                  {% if trattative%}
+                  {% for t in trattative%}
+                  <option value="{{t.codiceCtrDigitali}}">{{t.codiceCtrDigitali}}</option>
+                  {% endfor %}
+                  {% endif %}
+
+                </select>
+              </div>
+            </div>
+            <!-- Form Row-->
+            <div class="row gx-3 mb-3">
+              <div class="col-md-4">
+                <label class="small mb-1" for="inputBirthday">Date</label>
+                <input class="form-control" name="dataApp" id="dataAppAdd" type="date" name="birthday"
+                  placeholder="Enter your birthday" value="" required>
+              </div>
+            </div>
+            <!-- Save changes button-->
+            <button class="btn btn-primary" type="button" id="submitAppuntamento">Crea appuntamento</button>
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
 </body>
 
 <script>
-  /*document.getElementById("modify").addEventListener("click", function () {
-      this.innerHTML = (this.innerHTML === "conferma") ? "modifica appuntamento" : "conferma";
-      var isModified = this.innerHTML === "modifica appuntamento";
-      document.getElementById("title").disabled = isModified;
-      document.getElementById("description").disabled = isModified;
-      document.getElementById("preventivoDaFare").disabled = isModified;
-  });*/
+  document.getElementById("btnCrea").addEventListener("click", function () {
+    document.getElementById("modifica").style.display = "none";
+    document.getElementById("crea").style.display = "block";
+  });
+
+  document.getElementById("btnElimina").addEventListener("click", function(){
+    Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      var xhr = new XMLHttpRequest();
+      val = document.getElementById("idapp").value;
+      xhr.open("POST", '/calendario/remove/'+val, true);
+      xhr.send();
+      location.reload();
+    }
+});
+  });
 </script>
 {% endblock %}

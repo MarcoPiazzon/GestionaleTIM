@@ -19,9 +19,8 @@ def goToPortafoglio(id):
     
     clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
     
-    #getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == cliente.c.id)).fetchall()  
     # chiamata da fare successivamente quando verrà cambiata l'interfaccia grafica, permette di ricevere tutte le trattative dato un cliente
-    print(clienti)
+
     return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), current_cliente=current_cliente, trattative=[])
 
 @portafoglio_bp.route('/getCliente', methods=['POST'])

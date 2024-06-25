@@ -51,8 +51,6 @@ fornitore: testo
 
 //portafoglio
 
-Quando premo su "portafogli" nel header, entro automaticamente nel portafoglio più recente
-Devo avere la Possibilità di vedere anche gli scorsi portafogli
 Possibilità di aggiungere un cliente manualmente
 
 

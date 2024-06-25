@@ -105,7 +105,7 @@ def addPortafoglio():
     # Return HTML snippet that will render the table
     
     
-    return render_template("/portafoglio/portafoglio.html") 
+    return redirect(url_for('portafoglio_bp.home'))
 
 """"
   idUtente = current_user.get_id(),
