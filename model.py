@@ -32,7 +32,7 @@ class User(UserMixin):
         self.id=id
         self.email=email
         res =conn.execute(select(utente).where(utente.c.email==email)).fetchone()._asdict()
-        res2 = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchone()._asdict()
+        res2 = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == id).order_by(portafoglio.c.dataInserimento.desc())).fetchone()._asdict()
         self.idPort = res2['idPortafoglio']
         self.nome = res['nome']
         self.cognome = res['cognome']

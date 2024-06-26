@@ -11,14 +11,13 @@ def home(variable):
     print(variable == 1)
     contatti = conn.execute(select(contatto)).fetchall()
     if(variable == 1):
-        getIdLastPortafogliUtente = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchone()[0]
-        print(getIdLastPortafogliUtente)
-        current_user.idPortafoglio = getIdLastPortafogliUtente
+        #getIdLastPortafogliUtente = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchone()[0]
+        
         print("aggiorno")
-        print(current_user.idPortafoglio)
+        print(current_user.idPort)
         print("Ho fatto anche questo")
-        clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == getIdLastPortafogliUtente)).fetchall()
-        return render_template("/portafoglio/portafoglio.html", clienti=clienti, contatti=contatti, idPort=getIdLastPortafogliUtente)
+        clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == current_user.idPort)).fetchall()
+        return render_template("/portafoglio/portafoglio.html", clienti=clienti, contatti=contatti, idPort=current_user.idPort)
     else:
         #corsilaurea_all = conn.execute(select(corsilaurea)).fetchall()
         contattiUtente = conn.execute(select(contatto)).fetchall()

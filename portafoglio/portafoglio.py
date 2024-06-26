@@ -25,6 +25,8 @@ def goToPortafoglio(id):
 @login_required
 def getCliente():
     idPort = request.form['idPort']
+    print("ciuaiaiaia")
+    print(current_user.idPort)
     id=request.form['idSearch']
     current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == id)).fetchone()
     print("test")
