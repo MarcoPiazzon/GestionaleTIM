@@ -1,0 +1,146 @@
+1. Creazione pagina portafoglio
+2. Caricamento file excel + popolamento db
+3. Creazione home page
+4. Quando premo sul portafoglio devo andare in "myarea", gli eventi
+
+
+<table class="table">
+        <thead class="table-dark">
+            <tr>
+                <td>Nome Corso</td>
+                <td>Corso di Laurea</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+            {% for contatto in contattiUtente %}
+            <tr>
+                <td>
+                    <p>{{ contatto.nome }} </p>
+                    <p>{{ contatto.cognome }} </p>
+                    <p>{{ contatto.tel }} </p>
+                    <p>{{ contatto.email }} </p>
+                </td>
+            </tr>
+            
+            {% endfor %}
+    </table>
+
+
+come continuare:
+
+Dati da visualizzare nella trattativa,
+
+codiceCtrDigitali: codice
+codiceSalesHub: uno o più codice
+areaManager: nome
+zona: nome
+tipo: nome
+nomeOpportunità: frase di testo
+dataCreazioneOpprtunita: data
+fix: numero
+categoriaOffertaIt: testo
+lineeFoniaFix: numero
+aom: numero (sempre vuoto)
+mnp: numero (quasi sempre vuoto)
+al: numero (sempre vuoto)
+noteSpecialista: testo
+probabilità: numero
+inPaf: si/no
+fornitore: testo
+
+
+//portafoglio
+
+Possibilità di aggiungere un cliente manualmente
+
+
+//Calendario
+
+Join tabella appuntamento, trattativa, appuntamentohatrattativa;
+Creare inserimento appuntamento
+Creare interfaccia
+
+
+
+[
+  {
+    "title": "All Day Event",
+    "start": "2024-06-01"
+  },
+  {
+    "title": "Long Event",
+    "start": "2024-06-07",
+    "end": "2024-06-10"
+  },
+  {
+    "groupId": "999",
+    "title": "Repeating Event",
+    "start": "2024-06-09T16:00:00+00:00"
+  },
+  {
+    "groupId": "999",
+    "title": "Repeating Event",
+    "start": "2024-06-16T16:00:00+00:00"
+  },
+  {
+    "title": "Conference",
+    "start": "2024-06-23",
+    "end": "2024-06-25"
+  },
+  {
+    "title": "Meeting",
+    "start": "2024-06-24T10:30:00+00:00",
+    "end": "2024-06-24T12:30:00+00:00"
+  },
+  {
+    "title": "Lunch",
+    "start": "2024-06-24T12:00:00+00:00"
+  },
+  {
+    "title": "Birthday Party",
+    "start": "2024-06-25T07:00:00+00:00"
+  },
+  {
+    "url": "http://google.com/",
+    "title": "Click for Google",
+    "start": "2024-06-28"
+  },
+  {
+    "title": "Meeting",
+    "start": "2024-06-24T14:30:00+00:00"
+  },
+  {
+    "title": "Happy Hour",
+    "start": "2024-06-24T17:30:00+00:00"
+  },
+  {
+    "title": "Dinner",
+    "start": "2024-06-24T20:00:00+00:00"
+  }
+]
+
+
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Licenze Google', 'Offerta Google WorkSpace (sia catena CRM/PRM sia TDS)');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Licenze Microsoft', 'Offerta Microsoft 365 (PRM/CRM e TDS) e altre licenze Microsoft (Sql Server, Dynamics 365, etc.) - specificare il tipo di licenze (365, Sql, etc.) nel campo "Nome Opportunità"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Licenze - altro', 'Licenze sw di altri Vendor (non Google e non Microsoft): Veeam, etc. etc. - specificare il tipo di licenze (Veeam, etc.) nel campo "Nome Opportunità"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Cloud TIM', 'Offerta TIM Cloud (TIM Cloud Flex, TIM Hosting Evoluto, TIM SDC, etc.), TIM Service Recovery, offerta DCS, etc. - specificare l'offerta nel  campo "Nome Opportunità"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Cloud Google', 'Offerta Google Cloud Platform');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Offerta Way', 'Offerte WAY: TIM Your WAY, Agritracker, etc. etc. - specificare l'offerta nel  campo "Nome Opportunità"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Offerta Omitech', 'Offerte Omitech: posta, servizi professionali, etc. - specificare l'offerta nel  campo "Nome Opportunità"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Offerta TXT/Ennova', 'Offerte di Ennova/TXT: Cisco Meraki, Skillo Sentinel, MDM, etc. - specificare l'offerta nel  campo "Nome Opportunità"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Offerta Noovle', 'Offerte di Servizi professionali, Salesforce, etc. - specificare l'offerta nel  campo "Nome Opportunità"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Offerta Telsy', 'Offerte Telsy (a listino o forntore): Telsy Skills, TIM Protezione dispositivi, TIM Risposta attacchi Cyber, etc. - specificare l'offerta nel  campo "Nome Opportunità"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Sicurezza altro', 'Offerte di Sicurezza a listino (MySecurityArea, offerte Swascan, etc.) o su base fornitore (es. Mead Informatica), ad esclusione delle offerte Telsy  - specificare l'offerta nel  campo "Nome Opportunità"; in caso di offerte fornitore, specificare il fornitore nel campo "Fornitore"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('TIM Digital Store altro', 'Offerte TDS non comprese nelle voci precedenti - specificare l'offerta nel  campo "Nome Opportunità"');
+INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Offerte fornitore/Listino altro', 'Offerte fornitore o a Listino non comprese nelle voci precedenti - specificare l'offerta nel  campo "Nome Opportunità"; specificare il fornitore nel campo "Fornitore"');
+'
+
+
+agguingere trattativa manualmente
+aggiungere clienti manualmente, grafica fatta manca il backend
+eliminare un portafoglio
+eliminare una trattativa
+creazione contatti (importazione da excel non funzionante)
+creazione sidebar con contatti
+sistemare footer
+sistemare login

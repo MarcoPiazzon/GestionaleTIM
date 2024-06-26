@@ -13,9 +13,12 @@ def home(variable):
     if(variable == 1):
         getIdLastPortafogliUtente = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchone()[0]
         print(getIdLastPortafogliUtente)
+        current_user.idPortafoglio = getIdLastPortafogliUtente
+        print("aggiorno")
+        print(current_user.idPortafoglio)
         print("Ho fatto anche questo")
         clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == getIdLastPortafogliUtente)).fetchall()
-        return render_template("/portafoglio/portafoglio.html", clienti=clienti, contatti=contatti)
+        return render_template("/portafoglio/portafoglio.html", clienti=clienti, contatti=contatti, idPort=getIdLastPortafogliUtente)
     else:
         #corsilaurea_all = conn.execute(select(corsilaurea)).fetchall()
         contattiUtente = conn.execute(select(contatto)).fetchall()
@@ -31,6 +34,17 @@ def home(variable):
         print("ho fatto questo")
         return render_template ("/home/home.html",contattiUtente=contattiUtente, getP=getPortafogliUtente, len=len(getPortafogliUtente), contatti=contatti)
 
+@home_bp.route("/delete/<int:id>", methods=['POST'])
+@login_required
+def removePortafoglio(id):
+    print("rimuovo")
+    try:
+        conn.execute(delete(portafoglio).where(portafoglio.c.idPortafoglio == id))
+        conn.commit()
+
+    except Exception as error:
+        print(error.__cause__)
+    return redirect(url_for('home_bp.home', variable=0))
 
 @home_bp.route('/portafoglio/<int:id>')
 @login_required
@@ -40,6 +54,69 @@ def goToPortafoglio(id):
     clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
     return render_template("/portafoglio/portafoglio.html", clienti=clienti)
 
+@home_bp.route('/addContatti', methods=['POST'])
+@login_required
+def addContatti():
+    print("sono quya, contatti")
+    # Read the File using Flask request
+    file = request.files['file']
+ 
+    # Parse the data as a Pandas DataFrame type
+    #data = pandas.read_excel(file)
+ 
+    # Define variable to load the dataframe
+    dataframe = openpyxl.load_workbook(file)
+    
+    # Define variable to read sheet
+    dataframe1 = dataframe.active
+    
+    #idUtente = current_user.get_id(), potrebbe tornare utile più tardi
+
+    try:
+        print("sono qua 1")
+        for col in range(1, dataframe1.max_row):
+            list = []
+            for row in dataframe1.iter_cols(1, dataframe1.max_column):
+                list.append(row[col].value)
+            print("sono qua 3")
+            print(len(list))
+            print(list)
+            print(list[13])
+            try:
+                conn.execute(insert(contatto).values(
+                    nome = None,
+                    secondoNome = None,
+                    cognome = None,
+                    viaUfficio1 = None,
+                    viaUfficio2 = None,
+                    viaUfficio3 = None,
+                    citta = None,
+                    provincia = None,
+                    cap = None,
+                    numUfficio = None,
+                    numufficio2 = None,
+                    telefonoPrincipale = None,
+                    faxAbitazione = None,
+                    abitazione = None,
+                    abitazione2 = None,
+                    cellulare = None,
+                    note = None,
+                    numeroID = None,
+                    paginaWeb = None,
+                    email1 = None,
+                    email2 = None
+                ))
+            except Exception as error:
+                print("diocane")
+                print(error.__cause__)
+        print("okokoko")
+        
+        conn.commit()
+    except Exception as error:
+        print("rip")
+        print(error.__cause__)
+        conn.rollback()
+    return redirect(url_for('home_bp.home', variable=0))
 
 @home_bp.route('/addPortafoglio',methods=['POST'])
 @login_required
@@ -100,9 +177,6 @@ def addPortafoglio():
     except:
         print("rip")
         conn.rollback()
-    # Iterate the loop to read the cell values
-
-    # Return HTML snippet that will render the table
     
     
     return redirect(url_for('portafoglio_bp.home'))

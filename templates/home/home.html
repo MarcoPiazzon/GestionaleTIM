@@ -85,9 +85,15 @@
         <hr>
         <ul class="list-group">
             {% for p in getP %}
-            <div class="list-group-item">
+            <div class="list-group-item pull-right">
+                
                 <a style="text-align: center;" href="/home/portafoglio/{{ p.idPortafoglio }}"> {{ p.dataInserimento }}
                 </a>
+                <form action="/home/delete/{{p.idPortafoglio}}" method="POST">
+                  <button class="btn btn-danger" id="deleteButton" type="submit" style="float: right;">Elimina</button>
+                </form>
+                  
+               
             </div>
             {% endfor %}
 
@@ -112,5 +118,15 @@
     </div>
     {% endif %}
 
+    <div class="container px-4 mt-4">
 
+      <h1 class="page-header text-center"> Aggiungi contatti</h1>
+
+      <form action="/home/addContatti" method="post" enctype="multipart/form-data">
+          <input type="file" name="file"
+              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+          <input type="submit" value="Upload">
+      </form>
+
+  </div>
 {% endblock %}

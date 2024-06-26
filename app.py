@@ -44,7 +44,7 @@ app.register_blueprint(calendario_bp, url_prefix='/calendario')
 
 @app.route('/')
 def main():
-    return redirect(url_for('home_bp.home'))
+    return redirect(url_for('portafoglio_bp.home'))
     
 
 @app.errorhandler(500)    

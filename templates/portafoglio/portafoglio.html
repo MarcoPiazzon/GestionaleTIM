@@ -3,42 +3,107 @@
 {% block content %}
 
 <style>
+  #myUL {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: scroll;
+    max-height: 200px;
+  }
 
+  #myUL li a {
+    border: 1px solid #ddd;
+    margin-top: -1px;
+    /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block
+  }
+
+  #myUL li a:hover:not(.header) {
+    background-color: #eee;
+  }
 
   .hiddenRow {
     padding: 0 !important;
   }
 </style>
+
 <div class="row">
   <div class="container px-4 mt-4">
-
-    <div class="dropdown-menu" id="menu" aria-labelledby="dropdown_coins">
-    <form class="px-4 py-2" action="/portafoglio/getCliente" method="POST">
-      <input type="search" class="form-control" id="searchCoin" name="searchCoin" placeholder="Ragione Sociale"
-        autofocus="autofocus" value="">
-      <button class="btn btn-info" type="submit">Cerca</button>
-    </form>
-    <div id="menuItems" style="overflow: auto;">
-      {% for cliente in clienti%}
-      <input type="button" class="dropdown-item" type="button" value='{{cliente.ragioneSociale}}' />
-      {% endfor %}
+    <div class="row">
+      <div class="col-12 col-md-11">
+        <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" onclick="showUp(this)"
+          placeholder="Search for names.." title="Type in a name">
+      </div>
+      <div class="col-6 col-md-1">
+        <form action="/portafoglio/getCliente" method="POST">
+          <input type="hidden" name="idPort" value="{{idPort}}">
+          <input type="hidden" name="idSearch" id="idSearch">
+          <button class="btn btn-danger" type="submit">Cerca</button>
+        </form>
+      </div>
     </div>
-    <div id="empty" class="dropdown-header">Nessun nome trovato</div>
-  </div>
-  </div>
 
+    <ul id="myUL" class="vertical-scrollable">
+      {% if clienti %}
+      {% for cliente in clienti%}
+      <input type="hidden" value="{{cliente.idCliente}}">
+      <input type="button" class="dropdown-item" type="button" onclick="getName(this)"
+        value='{{cliente.ragioneSociale}}' />
+      {% endfor %}
+      {%endif%}
+    </ul>
+  </div>
 </div>
+<script>
+
+  function showUp(el) {
+    el.value = "";
+    document.getElementById("myUL").style.display = "block";
+  }
+
+  function myFunction() {
+    var input, filter, ul, li, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myUL");
+    input = ul.getElementsByTagName("input");
+    for (i = 0; i < input.length; i++) {
+
+      txtValue = input[i].value;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        input[i].style.display = "";
+      } else {
+        input[i].style.display = "none";
+      }
+    }
+  }
+
+  function getName(el) {
+    document.getElementById("idSearch").value = el.previousElementSibling.value;
+    document.getElementById("myInput").value = el.value;
+    document.getElementById("myUL").style.display = "none";
+  }
+
+
+
+</script>
+
 {% if current_cliente %}
 
 <!-- Prima era container-xl-->
 <div class="row">
-  <div class="container px-4 mt-4">
+  <div class="container px-4 mt-4" id="modifica">
     <h1 class="page-header text-center">{{current_cliente[5]}}</h1>
     <!-- Account details card-->
     <div class="card mb-4">
       <div class="card-header"></div>
       <div class="card-body">
-        <form action="/portafoglio/modify" method="POST">
+        <form action="/portafoglio/modifyCliente" method="POST">
           <input type="hidden" name="idCliente" id="idCliente" value="{{current_cliente[0]}}">
           <!-- Form Group (username)-->
           <div class="mb-3">
@@ -127,23 +192,144 @@
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">Fatturato Cerved</label>
               <input class="form-control" name="fatturatoCerved" id="inputPhone" type="tel"
-                placeholder="Enter your phone number" value="{% if current_cliente[17]%}{{current_cliente[17]}} {%else%}0.0{% endif%}">
+                placeholder="Enter your phone number"
+                value="{% if current_cliente[17]%}{{current_cliente[17]}} {%else%}0.0{% endif%}">
             </div>
             <!-- Form Group (birthday)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">Fatturato TIM</label>
               <input class="form-control" name="fatturatoTim" id="inputBirthday" type="text" name="birthday"
-                placeholder="Enter your birthday" value="{% if current_cliente[19]%}{{current_cliente[19]}} {%else%}0.0{% endif%}">
+                placeholder="Enter your birthday"
+                value="{% if current_cliente[19]%}{{current_cliente[19]}} {%else%}0.0{% endif%}">
             </div>
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">clienteOffMobScadenza</label>
               <input class="form-control" name="clienteOffMobScadenza" id="inputBirthday" type="text" name="birthday"
-                placeholder="Enter your birthday" value="{% if current_cliente[18]%}{{current_cliente[18]}} {%else%}0.0{% endif%}">
+                placeholder="Enter your birthday"
+                value="{% if current_cliente[18]%}{{current_cliente[18]}} {%else%}0.0{% endif%}">
             </div>
           </div>
           <!-- Save changes button-->
-          <button class="btn btn-primary" type="submit">Save changes</button>
-          
+          <button class="btn btn-primary" type="submit">Salva le modifiche</button>
+          <button class="btn btn-primary" type="button" style="float: right;" id="btnCrea">Aggiungi cliente</button>
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="container px-4 mt-4" id="crea" style="display: none;">
+    <h1 class="page-header text-center" id="h1RagioneSociale"></h1>
+    <!-- Account details card-->
+    <div class="card mb-4">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <form action="/portafoglio/add" method="POST">
+          <input type="hidden" name="idCliente" id="idCliente" value="">
+          <!-- Form Group (username)-->
+          <div class="mb-3">
+            <label class="small mb-1" for="inputUsername">Ragione Sociale</label>
+            <input class="form-control" name="ragioneSociale" id="inputUsernameAdd" type="text"
+              placeholder="Enter your username" value="" onkeyup="changeText(this)">
+          </div>
+          <!-- Form Row-->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (first name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputFirstName">Cf</label>
+              <input class="form-control" name="cf" id="inputFirstName" type="text" placeholder="Enter your first name"
+                value="">
+            </div>
+            <!-- Form Group (last name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputLastName">Presidio</label>
+              <input class="form-control" name="presidio" id="inputLastName" type="text"
+                placeholder="Enter your last name" value="">
+            </div>
+          </div>
+          <!-- Form Row        -->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (organization name)-->
+            <div class="col-md-6">
+              <label class="small mb-1" for="inputOrgName">Indirizzo</label>
+              <input class="form-control" name="indirizzo" id="inputOrgName" type="text"
+                placeholder="Enter your organization name" value="">
+            </div>
+            <!-- Form Group (location)-->
+            <div class="col-md-3">
+              <label class="small mb-1" for="inputLocation">CAP</label>
+              <input class="form-control" name="capPrincipale" id="inputLocation" type="text"
+                placeholder="Enter your location" value="">
+            </div>
+            <div class="col-md-3">
+              <label class="small mb-1" for="inputLocation">Comune</label>
+              <input class="form-control" name="comunePrincipale" id="inputLocation" type="text"
+                placeholder="Enter your location" value="">
+            </div>
+          </div>
+          <!-- Form Row-->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (phone number)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputPhone">Numero sedi</label>
+              <input class="form-control" name="sediTot" id="inputPhone" type="tel"
+                placeholder="Enter your phone number" value="">
+            </div>
+            <!-- Form Group (birthday)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Numero dipendenti</label>
+              <input class="form-control" name="dipendenti" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="">
+            </div>
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Numero linee totali</label>
+              <input class="form-control" name="nLineeTot" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="">
+            </div>
+
+          </div>
+          <!-- Form Row-->
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (phone number)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputPhone">Fisso</label>
+              <input class="form-control" name="fisso" id="inputPhone" type="tel" placeholder="Enter your phone number"
+                value="">
+            </div>
+            <!-- Form Group (birthday)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Mobile</label>
+              <input class="form-control" name="mobile" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="">
+            </div>
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Totale</label>
+              <input class="form-control" name="totale" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="">
+            </div>
+          </div>
+          <div class="row gx-3 mb-3">
+            <!-- Form Group (phone number)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputPhone">Fatturato Cerved</label>
+              <input class="form-control" name="fatturatoCerved" id="inputPhone" type="tel"
+                placeholder="Enter your phone number" value="">
+            </div>
+            <!-- Form Group (birthday)-->
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">Fatturato TIM</label>
+              <input class="form-control" name="fatturatoTim" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="">
+            </div>
+            <div class="col-md-4">
+              <label class="small mb-1" for="inputBirthday">clienteOffMobScadenza</label>
+              <input class="form-control" name="clienteOffMobScadenza" id="inputBirthday" type="text" name="birthday"
+                placeholder="Enter your birthday" value="">
+            </div>
+          </div>
+          <!-- Save changes button-->
+          <button class="btn btn-primary" type="submit">Aggiungi cliente</button>
+
         </form>
       </div>
     </div>
@@ -153,144 +339,193 @@
 </div>
 {%endif%}
 
+{% if trattative%}
 <div class="row">
-  
+
   <div class="container px-4 mt-4">
     <h1 class="page-header text-center"> Trattative</h1>
     <table class="table table-condensed" style="border-collapse:collapse;">
       <thead>
         <tr>
-          <th>Fisso</th>
-          <th>Mobile</th>
-          <th>Totale</th>
+          <th>Nome</th>
           <th>Andamento</th>
           <th>Data</th>
         </tr>
       </thead>
       <tbody>
-        {% if trattative%}
+
         {% for i in range (0, t_len) %}
         <tr data-bs-toggle="collapse" data-bs-target="#demo{{i}}" class="accordion-toggle">
-          <td>{{trattative[i].fisso}}{{i}}</td>
-          <td>{{trattative[i].mobile}}</td>
-          <td>{{trattative[i].totale}}</td>
+          <td>{{trattative[i].nomeOpportunita}}</td>
           <td>{{trattative[i].fase}}</td>
-          <td>{{trattative[i].dataChiusura}}</td> <!--controllare se la trattativa è chiusa-->
+          <td>{{trattative[i].dataChiusura}}</td>
         </tr>
         <tr>
           <td colspan="6" class="hiddenRow">
-            <div class="accordian-body collapse" id="demo{{i}}"> Demo1 </div>
+            <div class="accordian-body collapse" id="demo{{i}}">
+              <div class="container px-4 mt-4" id="modifica">
+                <h1 class="page-header text-center">{{trattative[i].nomeOpportunita}}</h1>
+                <!-- Account details card-->
+                <div class="card mb-4">
+                  <div class="card-header"></div>
+                  <div class="card-body">
+                    <form action="/portafoglio/modifyTrattativa" method="POST">
+                      <input type="hidden" name="idCliente" id="idCliente" value="{{current_cliente[0]}}">
+                      <!-- Form Group (username)-->
+                      <div class="mb-3">
+                        <label class="small mb-1" for="inputUsername">Ragione Sociale</label>
+                        <input class="form-control" name="ragioneSociale" id="inputUsername" type="text"
+                          placeholder="Enter your username" value="{{trattative[i].codiceCtrDigitali}}">
+                      </div>
+                      <!-- Form Row-->
+                      <div class="row gx-3 mb-3">
+                        <!-- Form Group (first name)-->
+                        <div class="col-md-6">
+                          <label class="small mb-1" for="inputFirstName">Cf</label>
+                          <input class="form-control" name="cf" id="inputFirstName" type="text"
+                            placeholder="Enter your first name" value="{{trattative[i].codiceSalesHub}}">
+                        </div>
+                        <!-- Form Group (last name)-->
+                        <div class="col-md-6">
+                          <label class="small mb-1" for="inputLastName">Presidio</label>
+                          <input class="form-control" name="presidio" id="inputLastName" type="text"
+                            placeholder="Enter your last name" value="{{trattative[i].zona}}">
+                        </div>
+                      </div>
+                      <!-- Form Row        -->
+                      <div class="row gx-3 mb-3">
+                        <!-- Form Group (organization name)-->
+                        <div class="col-md-6">
+                          <label class="small mb-1" for="inputOrgName">Indirizzo</label>
+                          <input class="form-control" name="indirizzo" id="inputOrgName" type="text"
+                            placeholder="Enter your organization name" value="{{trattative[i].tipo}}">
+                        </div>
+                        <!-- Form Group (location)-->
+                        <div class="col-md-3">
+                          <label class="small mb-1" for="inputLocation">CAP</label>
+                          <input class="form-control" name="capPrincipale" id="inputLocation" type="date"
+                            placeholder="Enter your location" value="{{trattative[i].dataCreazioneOpportunita}}">
+                        </div>
+                        <div class="col-md-3">
+                          <label class="small mb-1" for="inputLocation">Comune</label>
+                          <input class="form-control" name="comunePrincipale" id="inputLocation" type="text"
+                            placeholder="Enter your location" value="{{trattative[i].fix}}">
+                        </div>
+                      </div>
+                      <!-- Form Row-->
+                      <div class="row gx-3 mb-3">
+                        <!-- Form Group (phone number)-->
+                        <div class="col-md-4">
+                          <label class="small mb-1" for="inputPhone">Numero sedi</label>
+                          <input class="form-control" name="sediTot" id="inputPhone" type="tel"
+                            placeholder="Enter your phone number" value="{{trattative[i].mobile}}">
+                        </div>
+                        <!-- Form Group (birthday)-->
+                        <div class="col-md-4">
+                          <label class="small mb-1" for="inputBirthday">Numero dipendenti</label>
+                          <input class="form-control" name="dipendenti" id="inputBirthday" type="text" name="birthday"
+                            placeholder="Enter your birthday" value="{{trattative[i].categoriaOffertaIT}}">
+                        </div>
+                        <div class="col-md-4">
+                          <label class="small mb-1" for="inputBirthday">Numero linee totali</label>
+                          <input class="form-control" name="nLineeTot" id="inputBirthday" type="text" name="birthday"
+                            placeholder="Enter your birthday" value="{{trattative[i].it}}">
+                        </div>
+
+                      </div>
+                      <!-- Form Row-->
+                      <div class="row gx-3 mb-3">
+                        <!-- Form Group (phone number)-->
+                        <div class="col-md-4">
+                          <label class="small mb-1" for="inputPhone">Fisso</label>
+                          <input class="form-control" name="fisso" id="inputPhone" type="tel"
+                            placeholder="Enter your phone number" value="{{trattative[i].lineeFoniaFix}}">
+                        </div>
+                        <!-- Form Group (birthday)-->
+                        <div class="col-md-4">
+                          <label class="small mb-1" for="inputBirthday">Mobile</label>
+                          <input class="form-control" name="mobile" id="inputBirthday" type="text" name="birthday"
+                            placeholder="Enter your birthday" value="{{trattative[i].aom}}">
+                        </div>
+                        <div class="col-md-4">
+                          <label class="small mb-1" for="inputBirthday">Totale</label>
+                          <input class="form-control" name="totale" id="inputBirthday" type="text" name="birthday"
+                            placeholder="Enter your birthday" value="{{trattative[i].mnp}}">
+                        </div>
+                      </div>
+                      <div class="row gx-3 mb-3">
+                        <!-- Form Group (phone number)-->
+                        <div class="col-md-4">
+                          <label class="small mb-1" for="inputPhone">Fatturato Cerved</label>
+                          <input class="form-control" name="fatturatoCerved" id="inputPhone" type="tel"
+                            placeholder="Enter your phone number" value="{{trattative[i].al}}">
+                        </div>
+                        <!-- Form Group (birthday)-->
+                        <div class="col-md-4">
+                          <label class="small mb-1" for="inputBirthday">Fatturato TIM</label>
+                          <input class="form-control" name="fatturatoTim" id="inputBirthday" type="date" name="birthday"
+                            placeholder="Enter your birthday" value="{{trattative[i].dataChiusura}}">
+                        </div>
+                        <div class="col-md-4">
+                          <label class="small mb-1" for="inputBirthday">clienteOffMobScadenza</label>
+                          <input class="form-control" name="clienteOffMobScadenza" id="inputBirthday" type="text"
+                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].noteSpecialista}}">
+                        </div>
+                      </div>
+                      <!-- Save changes button-->
+                      <button class="btn btn-primary" type="submit">Salva le modifiche</button>
+
+                    </form>
+                  </div>
+                </div>
+
+
+              </div>
+              {{trattative[i].categoriaOffertaIT}},{{trattative[i].dataChiusura}}, {{trattative[i].fase}},
+              {{trattative[i].probabilita}}
+            </div>
           </td>
         </tr>
 
         {% endfor %}
 
-        {%endif%}
+
 
       </tbody>
     </table>
   </div>
 </div>
+{%else%}
+<div class="row">
+
+  <div class="container px-4 mt-4">
+    <h1 class="page-header text-center"> Trattative</h1>
+    <p>Qui è un po' vuoto, vuoi aggiungere delle trattative?</p>
+    <form action="/portafoglio/addTrattativa" method="post" enctype="multipart/form-data">
+      <div id="dropContainer" style="border:1px solid black;height:100px;">
+        Drop Here
+      </div>
+      Should update here:
+      <input type="file" name="file"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+      <input type="submit" value="Upload">
+    </form>
+  </div>
+</div>
+
+{%endif%}
 <script>
-  $('#menu').show();
-
-
-  //non funxziona un cazzo :)
-  $('.accordian-body').on('show.bs.collapse', function () {
-    $(this).closest("table")
-      .find(".collapse.in")
-      .not(this)
-      .collapse('toggle')
-  })
-
-  //If it does show the symbol, else hide it
-  function filter(word) {
-    let length = items.length
-    let collection = []
-    let hidden = 0
-    for (let i = 0; i < length; i++) {
-      if (items[i].value.toLowerCase().startsWith(word)) {
-        $(items[i]).show()
-      }
-      else {
-        $(items[i]).hide()
-        hidden++
-      }
-    }
-
-    //If all items are hidden, show the empty view
-    if (hidden === length) {
-      $('#empty').show()
-    }
-    else {
-      $('#empty').hide()
-    }
+  function changeText(el) {
+    document.getElementById("h1RagioneSociale").innerText = el.value;
   }
 
-  $('#searchCoin').on('click', function () {
-    console.log("dentro 2")
-    $('#menuItems').show()
-
-  })
-
-  //If the user clicks on any item, set the title of the button as the text of the item
-  $('.dropdown-item').on('click', function () {
-
-    console.log($(this)[0].value)
-
-    document.getElementById("searchCoin").value = ($(this)[0].value)
-
-    //$("#dropdown_coins").dropdown('toggle');
-    $('#menuItems').hide()
-  })
-</script>
-
-<script>
-  $(document).ready(function () {
-    $("#searchCoin").on("keyup", function () {
-      console.log($(this)[0].value);
-      var val = $(this)[0].value.toLowerCase();
-      $("#menuItems input").filter(function () {
-        $(this).toggle($(this)[0].value.toLowerCase().indexOf(val) > -1)
-      });
-    });
+  document.getElementById("btnCrea").addEventListener("click", function () {
+    document.getElementById("modifica").style.display = "None";
+    document.getElementById("crea").style.display = "block";
   });
 
-
 </script>
 
-<!--<input class="form-control" id="myInput" type="text" placeholder="Cerca per un qualsiasi valore">
-    <table class="table table-dark">
-        <thead>
-            <tr>
-                <th>
-                    <th scope="col">RagioneSociale</th>
-                    <th scope="col">Fisso</th>
-                    <th scope="col">Mobile</th>
-                    <th scope="col">Totale</th>
-                    <th scope="col">Trattative</th>
-                    <th scope="col">Altre informazioni</th>
-                </th>
-            </tr>
-        </thead>
-        <tbody id="myTable">
-            {% for cliente in clienti %}
-            <tr>
-                <th scope="row">i</th>
-                <td>{{ cliente.ragioneSociale}} </td>
-                <td>{% if cliente.fisso %} {{ cliente.fisso}} {% else %} 0.0 {%endif%}</td>
-                <td>{% if cliente.mobile %} {{ cliente.mobile}} {% else %} 0.0 {%endif%}</td>
-                <td>{% if cliente.totale %} {{ cliente.totale}} {% else %} 0.0 {%endif%}</td>
-                <form action="/portafoglio/getTrattativa", method="get">
-                    <input type="number" name="appello" id="appello" value="{{cliente.idPortafoglio}}" hidden>
-                    <td><button type="submit" class ="btn btn-danger">Apri trattative</button></td>
-                </form>
-                <td><button>Premi qui</button></td>
-
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>-->
 
 
 
@@ -315,17 +550,8 @@ dropContainer.ondrop = function(evt) {
 
   evt.preventDefault();
 };
-   </script>
+   </script>-->
 
-    <p> Ciao, inserisci nuove trattative</p>
-    <form action="/portafoglio/addTrattativa" method="post" enctype="multipart/form-data">
-        <div id="dropContainer" style="border:1px solid black;height:100px;">
-          Drop Here
-      </div>
-        Should update here:
-        <input type="file" name="file"
-            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-        <input type="submit" value="Upload">
-    </form>-->
+
 
 {% endblock %}

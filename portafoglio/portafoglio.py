@@ -6,7 +6,6 @@ from model import *
 import openpyxl
 from datetime import date
 
-current_cliente = [] #informazioni del cliente selezionato dalla ricerca
 
 @portafoglio_bp.route('/')
 def home():
@@ -16,26 +15,145 @@ def home():
 @portafoglio_bp.route('/portafoglio/<int:id>')
 @login_required
 def goToPortafoglio(id):
-    
     clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
     
     # chiamata da fare successivamente quando verrà cambiata l'interfaccia grafica, permette di ricevere tutte le trattative dato un cliente
 
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), current_cliente=current_cliente, trattative=[])
+    return render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=[], trattative=[], idPort=id)
 
 @portafoglio_bp.route('/getCliente', methods=['POST'])
 @login_required
 def getCliente():
-    name = request.form['searchCoin']
-    current_cliente = conn.execute(select(cliente).where(cliente.c.ragioneSociale == name)).fetchone()
+    idPort = request.form['idPort']
+    id=request.form['idSearch']
+    current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == id)).fetchone()
+    print("test")
+    print(current_cliente)
+    clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == idPort)).fetchall()
+    print("test1")
+    print(clienti)
+    getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == id)).fetchall()
+    print(getTrattative)
+    t_len = 0
+    if(getTrattative is not None):
+        t_len = len(getTrattative)
+    print("devo fare")
+    return render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, current_len=len(current_cliente), trattative=getTrattative, t_len=t_len)
+
+@portafoglio_bp.route('/add', methods=['POST'])
+@login_required
+def addCliente():
+    try:
+        ragioneSociale = request.form['ragioneSociale']
+        cf = request.form['cf']
+        presidio = request.form['presidio']
+        indirizzoPrincipale = request.form['indirizzo']
+        capPrincipale = request.form['capPrincipale']
+        comunePrincipale = request.form['comunePrincipale']
+        sediTot = request.form['sediTot']
+        dipendenti = request.form['dipendenti']
+        nLineeTot = request.form['nLineeTot']
+        fisso = request.form['fisso']
+        mobile = request.form['mobile']
+        totale = request.form['totale']
+        fatturatoCerved = request.form['fatturatoCerved']
+        fatturatoTim = request.form['fatturatoTim']
+        clienteOffMobScadenza = request.form['clienteOffMobScadenza']
+
+        conn.execute(
+            insert(cliente).values(
+                ragioneSociale = ragioneSociale,
+                cf = cf,
+                #presidio = presidio, gestire la foreign key
+                indirizzoPrincipale = indirizzoPrincipale,
+                capPrincipale = capPrincipale,
+                # comunePrincipale = comunePrincipale, gestire la foreign key
+                sediTot = sediTot,
+                dipendenti = dipendenti,
+                nLineeTot = nLineeTot,
+                fisso = fisso,
+                mobile = mobile,
+                totale = totale,
+                fatturatoCerved = fatturatoCerved,
+                fatturatoTim = fatturatoTim,
+                clienteOffMobScadenza = clienteOffMobScadenza,
+            )
+        )
+        conn.commit()
+        print("tutto bvene")
+    except Exception as error:
+        print("rip")
+        print(error.__cause__)
+        conn.rollback()
+
+    #res.lastrowid, deve caricare questo id
+    current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == ragioneSociale)).fetchone()
     print("test")
     clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
     # da sistemare fase, convertire il valore nel suo relativo valore stringa
     getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == list(current_cliente)[0])).fetchall()
     print(getTrattative)
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), current_cliente=current_cliente, current_len=len(current_cliente), trattative=getTrattative, t_len=len(getTrattative))
+    return render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, current_len=len(current_cliente), trattative=getTrattative, t_len=len(getTrattative))
 
-@portafoglio_bp.route('/modify', methods=['POST'])
+@portafoglio_bp.route('/modifyTrattativa', methods=['POST'])
+@login_required
+def modifyTrattativa():
+    try:
+        idUtente = request.form['idUtente']
+        idCliente = request.form['idCliente']
+        codiceCtrDigitali = request.form['codiceCtrDigitali']
+        codiceSalesHub = request.form['codiceSalesHub']
+        areaManager = request.form['areaManager']
+        zona = request.form['zona']
+        tipo = request.form['tipo']
+        nomeOpportunita = request.form['nomeOpportunita']
+        dataCreazioneOpportunita = request.form['dataCreazioneOpportunita']
+        fix = request.form['fix']
+        mobile = request.form['mobile']
+        categoriaOffertaIT = request.form['categoriaOffertaIT']
+        it = request.form['it']
+        lineeFoniaFix = request.form['lineeFoniaFix']
+        aom = request.form['aom']
+        mnp = request.form['mnp']
+        al = request.form['al']
+        dataChiusura = request.form['dataChiusura']
+        fase = request.form['fase']
+        noteSpecialista = request.form['noteSpecialista']
+        probabilita = request.form['probabilita']
+        inPaf = request.form['inPaf']
+        fornitore = request.form['fornitore']
+        
+        
+
+        conn.execute(
+            update(cliente).where(cliente.c.idCliente==idCliente).values(
+                idCliente = idCliente,
+                ragioneSociale = ragioneSociale,
+                cf = cf,
+                #presidio = presidio, gestire la foreign key
+                indirizzoPrincipale = indirizzoPrincipale,
+                capPrincipale = capPrincipale,
+                # comunePrincipale = comunePrincipale, gestire la foreign key
+                sediTot = sediTot,
+                dipendenti = dipendenti,
+                nLineeTot = nLineeTot,
+                fisso = fisso,
+                mobile = mobile,
+                totale = totale,
+                fatturatoCerved = fatturatoCerved,
+                fatturatoTim = fatturatoTim,
+                clienteOffMobScadenza = clienteOffMobScadenza,
+            )
+        )
+        conn.commit()
+        print("tutto bvene")
+    except Exception as error:
+        print("rip")
+        print(error.__cause__)
+        conn.rollback()
+
+
+@portafoglio_bp.route('/modifyCliente', methods=['POST'])
 @login_required
 def modifyCliente():
  

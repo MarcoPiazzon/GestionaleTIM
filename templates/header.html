@@ -11,39 +11,55 @@
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <title>{% block title %}{% endblock%}</title>
 </head>
+<!-- 
+                     -->
 
 <body>
     <nav class="bg-white">
-        
+        {% if current_user.is_authenticated %}
         <div class="row">
-            <a href="{{ url_for('home_bp.home', variable=1) }}">
-                <img src="{{ url_for('static',filename='images/logo.png') }}" style="height:100px; width: 100px;"
-                    alt="unive-logo">
-                {% if current_user.is_authenticated %}
-                <span style="margin-left: 30px;">Benvenuto {{ current_user.getnames }}</span>
-            </a>
-            <div class="container px-4 mt-4">
-                <a href="{{ url_for('home_bp.home', variable=0) }}" class="btn btn-link"
-                    style="color:green"><u>Archivi</u></a>
-                <a href="{{ url_for('home_bp.home', variable=1) }}" class="btn btn-link" style="color:green"><u>Il mio
-                        portafoglio</u></a>
-                <a href="{{ url_for('calendario_bp.home') }}" class="btn btn-link"
-                    style="color:green"><u>Calendario</u></a>
-                <a href="{{ url_for('home_bp.home', variable=1) }}" class="btn btn-link"
-                    style="color:green"><u>Contatti</u></a>
-                <a href="{{ url_for('login_bpp.logoutuser') }}" class="btn btn-link" role="button"
-                    style="color:green"><u>Logout</u></a>
-                {% else %}
-                <a href="{{ url_for('login_bpp.login') }}" class="btn btn-link" role="button"
-                    style="color:green">Login</a>
-                {% endif %}
+            <div class="col-6 col-md-3 text-center">
+                <a href="{{ url_for('home_bp.home', variable=1) }}">
+                    <img src="{{ url_for('static',filename='images/logo.png') }}" style="height:100px; width: 100px;"
+                        alt="unive-logo">
+                    
+                </a>
+            </div>
+
+            <div class="col-6 col-md-6">
+                <div class="container px-4 mt-4 text-center">
+                    <a href="{{ url_for('home_bp.home', variable=0) }}" class="btn btn-link"
+                        style="color:green"><u>Archivi</u></a>
+                    <a href="{{ url_for('home_bp.home', variable=1) }}" class="btn btn-link" style="color:green"><u>Il
+                            mio
+                            portafoglio</u></a>
+                    <a href="{{ url_for('calendario_bp.home') }}" class="btn btn-link"
+                        style="color:green"><u>Calendario</u></a>
+                    <a href="{{ url_for('home_bp.home', variable=1) }}" class="btn btn-link"
+                        style="color:green"><u>Contatti</u></a>
+                    <a href="{{ url_for('login_bpp.logoutuser') }}" class="btn btn-link" role="button"
+                        style="color:green"><u>Logout</u></a>
+
+                    
+                </div>
+
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="container px-4 mt-4 text-center" style="float: right;">
+                    <span>Benvenuto {{ current_user.getnames }}</span>
+                </div>
+                
             </div>
         </div>
-        </div>
+        {%else%}
+        <a href="{{ url_for('login_bpp.login') }}" class="btn btn-link" role="button"
+        style="color:green">Login</a>
+        {%endif%}
     </nav>
 
     {% block content %}
     {% endblock %}
 </body>
+{% extends "footer.html"%}
 
 </html>
