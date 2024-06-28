@@ -53,6 +53,18 @@ def goToPortafoglio(id):
     clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
     return render_template("/portafoglio/portafoglio.html", clienti=clienti)
 
+def filterNumber(val):
+    if(val is None):
+        return None
+    
+    if(val is String):
+        sub = sub.replace(" ", "")
+        sub = list(val)
+        if(len(sub) == 13 and list(val)[0] == '+'): # esempio '+393453659562' --> 3453659562
+            return val[2:]
+    
+    return str(val)
+    
 @home_bp.route('/addContatti', methods=['POST'])
 @login_required
 def addContatti():
@@ -72,41 +84,43 @@ def addContatti():
     #idUtente = current_user.get_id(), potrebbe tornare utile più tardi
 
     try:
-        print("sono qua 1")
+        #print("sono qua 1")
         for col in range(1, dataframe1.max_row):
             list = []
             for row in dataframe1.iter_cols(1, dataframe1.max_column):
                 list.append(row[col].value)
-            print("sono qua 3")
-            print(len(list))
-            print(list)
-            print(list[13])
+            #print("sono qua 3")
+            #print(len(list))
+            #print(list)
+            #print(int(list[13]))
+            #print(type(list[13]))
             try:
                 conn.execute(insert(contatto).values(
-                    nome = None,
-                    secondoNome = None,
-                    cognome = None,
-                    viaUfficio1 = None,
-                    viaUfficio2 = None,
-                    viaUfficio3 = None,
-                    citta = None,
-                    provincia = None,
-                    cap = None,
-                    numUfficio = None,
-                    numufficio2 = None,
-                    telefonoPrincipale = None,
-                    faxAbitazione = None,
-                    abitazione = None,
-                    abitazione2 = None,
-                    cellulare = None,
-                    note = None,
-                    numeroID = None,
-                    paginaWeb = None,
-                    email1 = None,
-                    email2 = None
+                    nome = list[0],
+                    secondoNome = list[1],
+                    cognome = list[2],
+                    viaUfficio1 = list[3],
+                    viaUfficio2 = list[4],
+                    viaUfficio3 = list[5],
+                    citta = list[6],
+                    provincia = list[7],
+                    cap = list[8],
+                    #numUfficio = list[9],
+                    #numUfficio2 = list[10],
+                    telefonoPrincipale = filterNumber(list[11]),
+                    faxAbitazione = filterNumber(list[12]),
+                    abitazione = list[13],
+                    abitazione2 = list[14],
+                    cellulare = filterNumber(list[15]),
+                    note = list[16],
+                    numeroID = list[17],
+                    paginaWeb = list[18],
+                    email1 = list[19],
+                    email2 = list[20]
                 ))
+            
             except Exception as error:
-                print("diocane")
+                print("ERRROREEEEEEEEEEEEEEEEEEEEEEE")
                 print(error.__cause__)
         print("okokoko")
         

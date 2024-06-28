@@ -136,12 +136,12 @@ INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Offerte fornitore/Listin
 '
 
 
-agguingere trattativa manualmente (non capisco perchè il backend non funzioni)
+agguingere trattativa manualmente (fatto)
 aggiungere clienti manualmente, grafica fatta manca il backend (fatto)
 eliminare un portafoglio 
 eliminare una trattativa (fatto)
-modificare una trattativa (da implementare il ritorno + aggiungere form mancanti nel html)
-creazione contatti (importazione da excel non funzionante)
+modificare una trattativa (da implementare il ritorno)
+creazione contatti (fatto)
 creazione sidebar con contatti
 sistemare footer
 sistemare login

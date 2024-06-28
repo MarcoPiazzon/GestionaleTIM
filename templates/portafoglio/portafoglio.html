@@ -387,6 +387,21 @@
                             placeholder="Enter your last name" value="{{trattative[i].zona}}">
                         </div>
                       </div>
+                      <!-- Form Row-->
+                      <div class="row gx-3 mb-3">
+                        <!-- Form Group (first name)-->
+                        <div class="col-md-6">
+                          <label class="small mb-1" for="inputFirstName">areaManager</label>
+                          <input class="form-control" name="areaManagerModify" id="inputFirstName" type="text"
+                            placeholder="Enter your first name" value="{{trattative[i].areaManager}}">
+                        </div>
+                        <!-- Form Group (last name)-->
+                        <div class="col-md-6">
+                          <label class="small mb-1" for="inputLastName">nomeOpportunita</label>
+                          <input class="form-control" name="nomeOpportunitaModify" id="inputLastName" type="text"
+                            placeholder="Enter your last name" value="{{trattative[i].nomeOpportunita}}">
+                        </div>
+                      </div>
                       <!-- Form Row        -->
                       <div class="row gx-3 mb-3">
                         <!-- Form Group (organization name)-->
@@ -467,6 +482,30 @@
                             name="birthday" placeholder="Enter your birthday" value="{{trattative[i].noteSpecialista}}">
                         </div>
                       </div>
+                      <div class="row gx-3 mb-3">
+                        <!-- Form Group (phone number)-->
+                        <div class="col-md-3">
+                          <label class="small mb-1" for="inputPhone">fase</label>
+                          <input class="form-control" name="faseModify" id="inputPhone" type="tel"
+                            placeholder="Enter your phone number" value="{{trattative[i].fase}}">
+                        </div>
+                        <!-- Form Group (birthday)-->
+                        <div class="col-md-3">
+                          <label class="small mb-1" for="inputBirthday">probabilita</label>
+                          <input class="form-control" name="probabilitaModify" id="inputBirthday" type="text" name="birthday"
+                            placeholder="Enter your birthday" value="{{trattative[i].probabilita}}">
+                        </div>
+                        <div class="col-md-3">
+                          <label class="small mb-1" for="inputBirthday">inPaf</label>
+                          <input class="form-control" name="inPafModify" id="inputBirthday" type="text"
+                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].inPaf}}">
+                        </div>
+                        <div class="col-md-3">
+                          <label class="small mb-1" for="inputBirthday">fornitore</label>
+                          <input class="form-control" name="fornitoreModify" id="inputBirthday" type="text"
+                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].fornitore}}">
+                        </div>
+                      </div>
                       <!-- Save changes button-->
                       <button class="btn btn-primary" type="submit">Salva le modifiche</button>
                       <button class="btn btn-danger" onclick="sendData({{trattative[i].idTrattativa}})" type="button" style="float: right;">CIao</button>
@@ -533,7 +572,7 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">dataCreazioneOpportunita</label>
-              <input class="form-control" name="dataCreazioneOpportunitaAdd" id="inputPhone" type="tel"
+              <input class="form-control" name="dataCreazioneOpportunitaAdd" id="inputPhone" type="date"
                 placeholder="Enter your phone number" value="">
             </div>
             <!-- Form Group (birthday)-->
@@ -592,7 +631,7 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">dataChiusura</label>
-              <input class="form-control" name="dataChiusuraAdd" id="inputPhone" type="tel"
+              <input class="form-control" name="dataChiusuraAdd" id="inputPhone" type="date"
                 placeholder="Enter your phone number" value="">
             </div>
             <!-- Form Group (birthday)-->

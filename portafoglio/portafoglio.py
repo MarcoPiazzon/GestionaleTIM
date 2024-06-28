@@ -57,7 +57,8 @@ def removeTrattativa(id):
         print("rip")
         print(error.__cause__)
         conn.rollback()
-    render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=[], trattative=[])
+
+    return render_template("/portafoglio/portafoglio.html", clienti=[], current_cliente=[], trattative=[])
 
 @portafoglio_bp.route('/add', methods=['POST'])
 @login_required
@@ -128,10 +129,10 @@ def modifyTrattativa(id):
         idCliente = request.form['idClienteModify']
         codiceCtrDigitali = request.form['codiceCtrDigitaliModify']
         codiceSalesHub = request.form['codiceSalesHubModify']
-        # areaManager = request.form['areaManager'] mancante
+        areaManager = request.form['areaManagerModify']
         zona = request.form['zonaModify'] 
         tipo = request.form['tipoModify']
-        #nomeOpportunita = request.form['nomeOpportunitaModify'] mancante
+        nomeOpportunita = request.form['nomeOpportunitaModify']
         dataCreazioneOpportunita = request.form['dataCreazioneOpportunitaModify']
         fix = request.form['fixModify']
         mobile = request.form['mobileModify']
@@ -142,37 +143,37 @@ def modifyTrattativa(id):
         mnp = request.form['mnpModify']
         al = request.form['alModify']
         dataChiusura = request.form['dataChiusuraModify']
-        #fase = request.form['fase'] mancante 1
+        fase = request.form['faseModify']
         noteSpecialista = request.form['noteSpecialistaModify']
-        #probabilita = request.form['probabilita'] mancante
-        #inPaf = request.form['inPaf'] mancante
-        #fornitore = request.form['fornitore'] mancante
+        probabilita = request.form['probabilitaModify']
+        inPaf = request.form['inPafModify']
+        fornitore = request.form['fornitoreModify']
         
         conn.execute(
             update(trattativa).where(trattativa.c.idTrattativa==id).values(
-                idUtente = 2,
+                idUtente = current_user.get_id(),
                 idCliente = idCliente,
                 codiceCtrDigitali = codiceCtrDigitali,
                 codiceSalesHub = codiceSalesHub,
-                areaManager = None,
+                areaManager = areaManager,
                 zona = zona,
                 tipo = tipo,
-                nomeOpportunita = None,
+                nomeOpportunita = nomeOpportunita,
                 dataCreazioneOpportunita = dataCreazioneOpportunita,
                 fix = fix,
                 mobile = mobile,
-                categoriaOffertaIT = 1,
+                categoriaOffertaIT = categoriaOffertaIT,
                 it = it,
                 lineeFoniaFix = lineeFoniaFix,
                 aom = aom,
                 mnp = mnp,
                 al = al,
                 dataChiusura = dataChiusura,
-                fase = 1, # da sistemare
+                fase = fase,
                 noteSpecialista = noteSpecialista,
-                probabilita = None,
-                inPaf = None,
-                fornitore = None
+                probabilita = probabilita,
+                inPaf = inPaf,
+                fornitore = fornitore
             )
         )
         conn.commit()
@@ -280,6 +281,8 @@ def addTrattativaForm():
         tipo = request.form['tipoAdd']
         nomeOpportunita = request.form['nomeOpportunitaAdd']
         dataChiusuraOpportunita = request.form['dataCreazioneOpportunitaAdd']
+        print("test data")
+        print(dataChiusuraOpportunita)
         fix = request.form['fixAdd']
         mobile = request.form['mobileAdd']
         categoriaOffertaIT = request.form['categoriaOffertaITAdd']
@@ -297,31 +300,31 @@ def addTrattativaForm():
         
         
         conn.execute(insert(trattativa).values(
-            idUtente = idUtente,
-            idCliente = idCliente,
-            #codiceCtrDigitali = codiceCtrDigitali,
-            #codiceSalesHub = codiceSalesHub,
-            #areaManager = areaManager,
+            idUtente = 2,
+            idCliente = 6,
+            codiceCtrDigitali = codiceCtrDigitali,
+            codiceSalesHub = codiceSalesHub,
+            areaManager = areaManager,
             zona = zona,
-            #tipo = tipo,
-            #nomeOpportunita = nomeOpportunita,
-            #dataChiusuraOpportunita = dataChiusuraOpportunita,
-            #fix = fix,
-            #mobile = mobile,
-            categoriaOffertaIT = 1,
-            #it = it,
-            #lineeFoniaFix = lineeFoniaFix,
-            #aom = aom,
-            #mnp = mnp,
-            #al = al,
-            #dataChiusura = dataChiusura,
-            fase = 1,
-            #noteSpecialista = noteSpecialista,
-            #probabilita = probabilita,
-            #inPaf = inPaf,
-            #fornitore = fornitore
+            tipo = tipo,
+            nomeOpportunita = nomeOpportunita,
+            dataCreazioneOpportunita = dataChiusuraOpportunita,
+            fix = fix,
+            mobile = mobile,
+            categoriaOffertaIT = categoriaOffertaIT,
+            it = it,
+            lineeFoniaFix = lineeFoniaFix,
+            aom = aom,
+            mnp = mnp,
+            al = al,
+            dataChiusura = dataChiusura,
+            fase = fase,
+            noteSpecialista = noteSpecialista,
+            probabilita = probabilita,
+            inPaf = inPaf,
+            fornitore = fornitore
         ))
-        conn.submit()
+        conn.commit()
         
         print("tutto bene add")
     except Exception as error:
