@@ -138,10 +138,19 @@ INSERT INTO `categoria`(`nome`, `descrizione`) VALUES ('Offerte fornitore/Listin
 
 agguingere trattativa manualmente (fatto)
 aggiungere clienti manualmente, grafica fatta manca il backend (fatto)
-eliminare un portafoglio 
+eliminare un portafoglio (fatto)
 eliminare una trattativa (fatto)
 modificare una trattativa (da implementare il ritorno)
 creazione contatti (fatto)
-creazione sidebar con contatti
+creazione sidebar con contatti (non penso serva)
 sistemare footer
 sistemare login
+ottimizzare render template pagina contatto (fatto)
+ottimizzare render template pagina portafoglio
+ottimizzare render template pagina calendario
+ottimizzare render template pagina home
+
+
+database
+controlla le foreign key cancellate durante lo sviluppo
+esporta excel

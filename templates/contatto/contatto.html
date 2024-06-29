@@ -1,0 +1,282 @@
+{% extends "header.html"%}
+{% block title %}Contatti{% endblock %}
+{% block content %}
+
+<style>
+    #myUL {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        overflow-y: scroll;
+        max-height: 200px;
+    }
+
+    #myUL li a {
+        border: 1px solid #ddd;
+        margin-top: -1px;
+        /* Prevent double borders */
+        background-color: #f6f6f6;
+        padding: 12px;
+        text-decoration: none;
+        font-size: 18px;
+        color: black;
+        display: block
+    }
+
+    #myUL li a:hover:not(.header) {
+        background-color: #eee;
+    }
+
+    .hiddenRow {
+        padding: 0 !important;
+    }
+</style>
+
+<div class="row">
+    <div class="container px-4 mt-4">
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="row">
+                    <div class="col-12 col-md-8">
+                        <input class="form-control" type="text" id="myInput" onkeyup="myFunction()"
+                            onclick="showUp(this)" placeholder="Search for names.." title="Type in a name">
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <form action="/contatto/getContatto" method="POST">
+                            <input type="hidden" name="idSearch" id="idSearch">
+                            <button class="btn btn-danger" type="submit">Cerca</button>
+                        </form>
+                    </div>
+                </div>
+                <ul id="myUL" class="vertical-scrollable">
+                    {% if contatti %}
+                    {% for contatto in contatti%}
+                    <input type="hidden" value="{{contatto.idContatto}}">
+                    <input type="button" class="dropdown-item" type="button" onclick="getName(this)"
+                        value='{{contatto.nome}} {%if contatto.secondoNome %}{{contatto.secondoNome}} {%endif%} {{contatto.cognome}}' />
+                    {% endfor %}
+                    {%endif%}
+                </ul>
+            </div>
+            <div class="col-xl-8">
+                <div class="container-xl px-4 mt-4">
+                    <!-- Account page navigation -->
+                    <!--<nav class="nav nav-borders">
+                        <a class="nav-link active ms-0"
+                            href="https://www.bootdey.com/snippets/view/bs5-edit-profile-account-details"
+                            target="__blank">Profile</a>
+                        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-billing-page"
+                            target="__blank">Billing</a>
+                        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-profile-security-page"
+                            target="__blank">Security</a>
+                        <a class="nav-link" href="https://www.bootdey.com/snippets/view/bs5-edit-notifications-page"
+                            target="__blank">Notifications</a>
+                    </nav>
+                    <hr class="mt-0 mb-4">-->
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <!-- Profile picture card -->
+                            <div class="card mb-4 mb-xl-0">
+                                <div class="card-header">Immagine profilo</div>
+                                <div class="card-body text-center">
+                                    <!-- Profile picture image -->
+                                    <img class="img-account-profile rounded-circle mb-2"
+                                        src="http://bootdey.com/img/Content/avatar/avatar1.png" alt=""
+                                        style="height: 50px; width: 50px;">
+                                    <!-- Profile picture help block -->
+                                    <div class="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                                    <!-- Profile picture upload button-->
+                                    <button class="btn btn-primary" type="button">Upload new image</button>
+                                </div>
+                            </div>
+                        </div>
+                        {% if current_contatto %}
+                        <div class="col-xl-8">
+                            <!-- Account details card-->
+                            <div class="card mb-4">
+                                <div class="card-header">Dettagli contatto</div>
+                                <div class="card-body">
+                                    <form action="/contatto/modifyContatto/{{current_contatto.idContatto}}" method="POST">
+                                        <!-- Form Group (username)-->
+                                        <div class="mb-3">
+                                            <label class="small mb-1" for="nome">Nome contatto</label>
+                                            <input class="form-control" name="nome" id="nome" type="text" placeholder=""
+                                                value="{{current_contatto.nome}}">
+                                        </div>
+                                        <!-- Form Row-->
+                                        <div class="row gx-3 mb-3">
+                                            <!-- Form Group (first name)-->
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="secondoNome">secondoNome</label>
+                                                <input class="form-control" name="secondoNome" id="secondoNome"
+                                                    type="text" placeholder="" value="{{current_contatto.secondoNome}}">
+                                            </div>
+                                            <!-- Form Group (last name)-->
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="cognome">cognome</label>
+                                                <input class="form-control" name="cognome" id="cognome" type="text"
+                                                    placeholder="" value="{{current_contatto.cognome}}">
+                                            </div>
+                                        </div>
+                                        <!-- Form Row        -->
+                                        <div class="row gx-3 mb-3">
+                                            <!-- Form Group (organization name)-->
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="viaUfficio1">viaUfficio1</label>
+                                                <input class="form-control" name="viaUfficio1" id="viaUfficio1"
+                                                    type="text" placeholder="" value="{{current_contatto.viaUfficio1}}">
+                                            </div>
+                                            <!-- Form Group (location)-->
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="viaUfficio2">viaUfficio2</label>
+                                                <input class="form-control" name="viaUfficio2" id="viaUfficio2"
+                                                    type="text" placeholder="" value="{{current_contatto.viaUfficio2}}">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="viaUfficio3">viaUfficio3</label>
+                                                <input class="form-control" name="viaUfficio3" id="viaUfficio3"
+                                                    type="text" placeholder="" value="{{current_contatto.viaUfficio3}}">
+                                            </div>
+                                        </div>
+                                        <!-- Form Group (email address)-->
+                                        <div class="mb-3">
+                                            <label class="small mb-1" for="provincia">provincia</label>
+                                            <input class="form-control" name="provincia" id="provincia" type="text"
+                                                placeholder="" value="{{current_contatto.provincia}}">
+                                        </div>
+                                        <!-- Form Row-->
+                                        <div class="row gx-3 mb-3">
+                                            <!-- Form Group (phone number)-->
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="cap">cap</label>
+                                                <input class="form-control" name="cap" id="cap" type="text"
+                                                    placeholder="" value="{{current_contatto.cap}}">
+                                            </div>
+                                            <!-- Form Group (birthday)-->
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="numUfficio">numUfficio</label>
+                                                <input class="form-control" name="numUfficio" id="numUfficio"
+                                                    type="text" name="birthday" placeholder="" value="{{current_contatto.numUfficio}}">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="numUfficio2">numUfficio2</label>
+                                                <input class="form-control" name="numUfficio2" id="numUfficio2"
+                                                    type="text" name="birthday" placeholder="" value="{{current_contatto.numUfficio2}}">
+                                            </div>
+                                        </div>
+                                        <!-- Form Group (username)-->
+                                        <div class="mb-3">
+                                            <label class="small mb-1"
+                                                for="telefonoPrincipale">telefonoPrincipale</label>
+                                            <input class="form-control" name="telefonoPrincipale"
+                                                id="telefonoPrincipale" type="tel" placeholder="" value="{{current_contatto.telefonoPrincipale}}">
+                                        </div>
+                                        <!-- Form Row-->
+                                        <div class="row gx-3 mb-3">
+                                            <!-- Form Group (first name)-->
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="faxAbitazione">faxAbitazione</label>
+                                                <input class="form-control" name="faxAbitazione" id="faxAbitazione"
+                                                    type="text" placeholder="" value="{{current_contatto.faxAbitazione}}">
+                                            </div>
+                                            <!-- Form Group (last name)-->
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="abitazione">abitazione</label>
+                                                <input class="form-control" name="abitazione" id="abitazione"
+                                                    type="text" placeholder="" value="{{current_contatto.abitazione}}">
+                                            </div>
+                                        </div>
+                                        <!-- Form Row        -->
+                                        <div class="row gx-3 mb-3">
+                                            <!-- Form Group (organization name)-->
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="cellulare">cellulare</label>
+                                                <input class="form-control" name="cellulare" id="cellulare" type="text"
+                                                    placeholder="" value="{{current_contatto.cellulare}}">
+                                            </div>
+                                            <!-- Form Group (location)-->
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="note">note</label>
+                                                <input class="form-control" name="note" id="note" type="text"
+                                                    placeholder="" value="{{current_contatto.note}}">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="numeroID">numeroID</label>
+                                                <input class="form-control" name="numeroID" id="numeroID" type="text"
+                                                    placeholder="" value="{{current_contatto.numeroID}}">
+                                            </div>
+                                        </div>
+                                        <!-- Form Row-->
+                                        <div class="row gx-3 mb-3">
+                                            <!-- Form Group (phone number)-->
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="email1">email1</label>
+                                                <input class="form-control" name="email1" id="email1" type="email"
+                                                    placeholder="" value="{{current_contatto.email1}}">
+                                            </div>
+                                            <!-- Form Group (birthday)-->
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="email2">email2</label>
+                                                <input class="form-control" name="email2" id="email2" type="email"
+                                                    name="birthday" placeholder="" value="{{current_contatto.email2}}">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="small mb-1" for="paginaWeb">paginaWeb</label>
+                                                <input class="form-control" name="paginaWeb" id="paginaWeb" type="text"
+                                                    placeholder="" value="{{current_contatto.paginaWeb}}">
+                                            </div>
+                                        </div>
+                                        <!-- Save changes button-->
+                                        <button class="btn btn-primary" type="submit">Save changes</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    function showUp(el) {
+        el.value = "";
+        document.getElementById("myUL").style.display = "block";
+    }
+
+    function myFunction() {
+        var input, filter, ul, li, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("myUL");
+        input = ul.getElementsByTagName("input");
+        for (i = 0; i < input.length; i++) {
+
+            txtValue = input[i].value;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                input[i].style.display = "";
+            } else {
+                input[i].style.display = "none";
+            }
+        }
+    }
+
+    function getName(el) {
+
+        console.log(el);
+        console.log(el.previousElementSibling);
+        document.getElementById("idSearch").value = el.previousElementSibling.value;
+        document.getElementById("myInput").value = el.value;
+        document.getElementById("myUL").style.display = "none";
+    }
+
+
+
+</script>
+{% endblock %}

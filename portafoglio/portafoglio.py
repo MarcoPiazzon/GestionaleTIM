@@ -14,7 +14,7 @@ def home():
 
 @portafoglio_bp.route('/portafoglio/<int:id>')
 @login_required
-def goToPortafoglio(id):
+def goToPortafoglio(idPort):
     clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
     
     # chiamata da fare successivamente quando verrà cambiata l'interfaccia grafica, permette di ricevere tutte le trattative dato un cliente
@@ -145,7 +145,7 @@ def modifyTrattativa(id):
         dataChiusura = request.form['dataChiusuraModify']
         fase = request.form['faseModify']
         noteSpecialista = request.form['noteSpecialistaModify']
-        probabilita = request.form['probabilitaModify']
+        probabilita = (request.form['probabilitaModify'])[:-1]
         inPaf = request.form['inPafModify']
         fornitore = request.form['fornitoreModify']
         
@@ -338,7 +338,6 @@ def addTrattativaForm():
 
     return render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=[], trattative=[], idPort=id)
 
-
 @portafoglio_bp.route('/addTrattativa',methods=['POST'])
 @login_required
 def addPortafoglio():
@@ -393,7 +392,7 @@ def addPortafoglio():
                     dataChiusura = (list[17]),
                     fase = getFase(andtra, list[18])  ,
                     noteSpecialista = (list[19]),
-                    probabilita = list[20],
+                    probabilita = (list[20])*100,
                     inPaf = None,
                     record = list[22],
                     fornitore = list[23],
