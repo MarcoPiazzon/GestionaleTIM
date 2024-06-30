@@ -1,5 +1,5 @@
 {% extends "header.html"%}
-{% block title %}Portaglio{% endblock %}
+{% block title %}Portafoglio{% endblock %}
 {% block content %}
 
 <style>
@@ -37,7 +37,7 @@
     <div class="row">
       <div class="col-12 col-md-11">
         <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" onclick="showUp(this)"
-          placeholder="Search for names.." title="Type in a name">
+          placeholder="Search for names.." title="Type in a name" value="{{current_cliente[5]}}">
       </div>
       <div class="col-6 col-md-1">
         <form action="/portafoglio/getCliente" method="POST">
@@ -91,7 +91,12 @@
     document.getElementById("myUL").style.display = "none";
   }
 
-
+  console.log(document.getElementById("myInput").value);
+  if (document.getElementById("myInput").value === "") {
+    document.getElementById("myUL").style.display = "block";
+  } else {
+    document.getElementById("myUL").style.display = "none";
+  }
 
 </script>
 
@@ -413,8 +418,9 @@
                         <!-- Form Group (location)-->
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputLocation">dataCreazioneOpportunita</label>
-                          <input class="form-control" name="dataCreazioneOpportunitaModify" id="inputLocation" type="date"
-                            placeholder="Enter your location" value="{{trattative[i].dataCreazioneOpportunita}}">
+                          <input class="form-control" name="dataCreazioneOpportunitaModify" id="inputLocation"
+                            type="date" placeholder="Enter your location"
+                            value="{{trattative[i].dataCreazioneOpportunita}}">
                         </div>
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputLocation">fix</label>
@@ -433,8 +439,9 @@
                         <!-- Form Group (birthday)-->
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">categoriaOffertaIT</label>
-                          <input class="form-control" name="categoriaOffertaITModify" id="inputBirthday" type="text" name="birthday"
-                            placeholder="Enter your birthday" value="{{trattative[i].categoriaOffertaIT}}">
+                          <input class="form-control" name="categoriaOffertaITModify" id="inputBirthday" type="text"
+                            name="birthday" placeholder="Enter your birthday"
+                            value="{{trattative[i].categoriaOffertaIT}}">
                         </div>
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">it</label>
@@ -473,8 +480,8 @@
                         <!-- Form Group (birthday)-->
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">dataChiusura</label>
-                          <input class="form-control" name="dataChiusuraModify" id="inputBirthday" type="date" name="birthday"
-                            placeholder="Enter your birthday" value="{{trattative[i].dataChiusura}}">
+                          <input class="form-control" name="dataChiusuraModify" id="inputBirthday" type="date"
+                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].dataChiusura}}">
                         </div>
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">noteSpecialista</label>
@@ -492,13 +499,13 @@
                         <!-- Form Group (birthday)-->
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputBirthday">probabilita</label>
-                          <input class="form-control" name="probabilitaModify" id="inputBirthday" type="text" name="birthday"
-                            placeholder="Enter your birthday" value="{{trattative[i].probabilita}}%">
+                          <input class="form-control" name="probabilitaModify" id="inputBirthday" type="text"
+                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].probabilita}}%">
                         </div>
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputBirthday">inPaf</label>
-                          <input class="form-control" name="inPafModify" id="inputBirthday" type="text"
-                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].inPaf}}">
+                          <input class="form-control" name="inPafModify" id="inputBirthday" type="text" name="birthday"
+                            placeholder="Enter your birthday" value="{{trattative[i].inPaf}}">
                         </div>
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputBirthday">fornitore</label>
@@ -508,7 +515,8 @@
                       </div>
                       <!-- Save changes button-->
                       <button class="btn btn-primary" type="submit">Salva le modifiche</button>
-                      <button class="btn btn-danger" onclick="sendData({{trattative[i].idTrattativa}})" type="button" style="float: right;">CIao</button>
+                      <button class="btn btn-danger" onclick="sendData({{trattative[i].idTrattativa}})" type="button"
+                        style="float: right;">CIao</button>
                     </form>
                   </div>
                 </div>
@@ -687,18 +695,20 @@
         Drop Here
       </div>
       Should update here:
+      <input type="hidden" name="addTrattativaIdCliente" value="{{current_cliente[0]}}">
       <input type="file" name="file"
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
       <input type="submit" value="Upload">
     </form>
+
   </div>
 </div>
-
+<a href="{{ url_for('.getExcel', id=idPort)}}">Scarica il file excel </a>
 {%endif%}
 <script>
-  function sendData(val){
+  function sendData(val) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", '/portafoglio/remove/'+val, true);
+    xhr.open("POST", '/portafoglio/remove/' + val, true);
     xhr.send();
     location.reload();
   }

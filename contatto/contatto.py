@@ -14,7 +14,7 @@ def home(id):
 
     # valore di default, indica che non sto cercando nessun utente
     if(id != 0):
-        current_contatto = conn.execute(select(contatto).where(contatto.c.idContatto == id)).fetchone()
+        current_contatto = conn.execute(select(contatto).where(contatto.c.idContatto == id and contatto.c.idUtente == current_user.get_id())).fetchone()
     contatti = conn.execute(select(contatto).order_by(contatto.c.nome)).fetchall()
     return render_template("/contatto/contatto.html", contatti=contatti, current_contatto=current_contatto)
     
@@ -51,6 +51,7 @@ def modifyCliente(id):
     try:
         conn.execute(update(contatto).where(contatto.c.idContatto == id).values(
             nome = nome,
+            idUtente = current_user.get_id(),
             secondoNome = secondoNome,
             cognome = cognome,
             viaUfficio1 = viaUfficio1,

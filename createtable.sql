@@ -9,6 +9,7 @@ CREATE TABLE Utente(
 
 CREATE TABLE Contatto(
     idContatto int NOT NULL AUTO_INCREMENT,
+    idUtente int NOT NULL,
     nome varchar(255),
     secondoNome varchar(255),
     cognome varchar(255),

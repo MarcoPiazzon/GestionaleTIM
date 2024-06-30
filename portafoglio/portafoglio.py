@@ -1,53 +1,65 @@
 from portafoglio import portafoglio_bp
-from flask import Blueprint,render_template, url_for, redirect, request
+from flask import Blueprint,render_template, url_for, redirect, request, Response
 from flask_login import *
 from home import *
 from model import *
 import openpyxl
 from datetime import date
+import io
+import xlwt
+import psycopg2
+import psycopg2.extras
 
-
-@portafoglio_bp.route('/')
-def home():
-    return render_template ("/portafoglio/portafoglio.html")
+#idPort: idPortafoglio
+#id: idCliente
+@portafoglio_bp.route('/<int:idPort>/<int:id>')
+def home(idPort, id):
+    print("dentro home portafoglio")
+    print(idPort)
+    print(id)
+    print(type(idPort))
+    print(type(id))
+    print(id is None)
+    current_user.idPort = idPort
+    clienti = None
+    current_cliente = None
+    trattative = None
+    t_len = 0
+    current_len = 0
+    if(idPort != 0):
+        #fare la query in modo che prenda solo ragioneSociale e idCliente
+        clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == idPort)).fetchall()
+    if(id != 0):
+        current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == id)).fetchone()
+        trattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == id)).fetchall()
+        print(current_cliente)
+        print(trattative)
+        if not (trattative is None):
+            t_len = len(trattative)
+    return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort)
 
 
 @portafoglio_bp.route('/portafoglio/<int:id>')
 @login_required
-def goToPortafoglio(idPort):
-    clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
-    
+def goToPortafoglio(id):
     # chiamata da fare successivamente quando verrà cambiata l'interfaccia grafica, permette di ricevere tutte le trattative dato un cliente
-
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=[], trattative=[], idPort=id)
+    return home(id, 0)
 
 @portafoglio_bp.route('/getCliente', methods=['POST'])
 @login_required
 def getCliente():
+    #print(request.form)
     idPort = request.form['idPort']
-    print("ciuaiaiaia")
-    print(current_user.idPort)
     id=request.form['idSearch']
-    current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == id)).fetchone()
-    print("test")
-    print(current_cliente)
-    clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == idPort)).fetchall()
-    print("test1")
-    print(clienti)
-    getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == id)).fetchall()
-    print(getTrattative)
-    t_len = 0
-    if(getTrattative is not None):
-        t_len = len(getTrattative)
-    print("devo fare")
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, current_len=len(current_cliente), trattative=getTrattative, t_len=t_len, idPort=idPort)
+    
+    return home(idPort, id)
 
 @portafoglio_bp.route('/remove/<int:id>', methods=['POST'])
 @login_required
 def removeTrattativa(id):
     print("test trattativa")
     print(id)
-
+    getIdCliente = conn.execute(select(trattativa.c.idCliente).where(trattativa.c.idTrattativa == id)).fetchone()[0]
     try:
         print("")
         conn.execute(delete(trattativa).where(trattativa.c.idTrattativa == id))
@@ -57,8 +69,8 @@ def removeTrattativa(id):
         print("rip")
         print(error.__cause__)
         conn.rollback()
-
-    return render_template("/portafoglio/portafoglio.html", clienti=[], current_cliente=[], trattative=[])
+    
+    return home(current_user.idPort, getIdCliente)
 
 @portafoglio_bp.route('/add', methods=['POST'])
 @login_required
@@ -111,13 +123,9 @@ def addCliente():
     
 
     #res.lastrowid, deve caricare questo id
-    current_cliente = conn.execute(select(cliente).where(cliente.c.ragioneSociale == ragioneSociale)).fetchone()
-    print("test")
-    clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == current_user.idPort)).fetchall()
-    # da sistemare fase, convertire il valore nel suo relativo valore stringa
-    getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == list(current_cliente)[0])).fetchall()
-    print(getTrattative)
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, current_len=len(current_cliente), trattative=getTrattative, t_len=len(getTrattative))
+    idCliente = conn.execute(select(cliente.c.idCliente).where(cliente.c.ragioneSociale == ragioneSociale)).fetchone()[0]
+    
+    return home(current_user.idPort, idCliente)
 
 @portafoglio_bp.route('/modifyTrattativa/<int:id>', methods=['POST'])
 @login_required
@@ -184,11 +192,8 @@ def modifyTrattativa(id):
         print(error.__cause__)
         conn.rollback()
 
-    clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
-    
-    # chiamata da fare successivamente quando verrà cambiata l'interfaccia grafica, permette di ricevere tutte le trattative dato un cliente
 
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=[], trattative=[])
+    return home(current_user.idPort, idCliente)
 
 
 @portafoglio_bp.route('/modifyCliente', methods=['POST'])
@@ -244,14 +249,7 @@ def modifyCliente():
         print(error.__cause__)
         conn.rollback()
 
-    current_cliente = conn.execute(select(cliente).where(cliente.c.ragioneSociale == ragioneSociale)).fetchone()
-    print("test")
-    clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
-    # da sistemare fase, convertire il valore nel suo relativo valore stringa
-    getTrattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == list(current_cliente)[0])).fetchall()
-    print(getTrattative)
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, len=len(clienti), current_cliente=current_cliente, current_len=len(current_cliente), trattative=getTrattative, t_len=len(getTrattative))
-
+    return home(current_user.idPort, idCliente)
 
 def getFase(andtra, value):
     for v in andtra:
@@ -298,10 +296,9 @@ def addTrattativaForm():
         inPaf = request.form['inPafAdd']
         fornitore = request.form['fornitoreAdd']
         
-        
         conn.execute(insert(trattativa).values(
             idUtente = 2,
-            idCliente = 6,
+            idCliente = idCliente,
             codiceCtrDigitali = codiceCtrDigitali,
             codiceSalesHub = codiceSalesHub,
             areaManager = areaManager,
@@ -332,18 +329,14 @@ def addTrattativaForm():
         print(error.__cause__)
         conn.rollback()
     
-    clienti = conn.execute(select(cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == id)).fetchall()
-    
-    # chiamata da fare successivamente quando verrà cambiata l'interfaccia grafica, permette di ricevere tutte le trattative dato un cliente
-
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=[], trattative=[], idPort=id)
+    return home(current_user.idPort, idCliente)
 
 @portafoglio_bp.route('/addTrattativa',methods=['POST'])
 @login_required
 def addPortafoglio():
     # Read the File using Flask request
     file = request.files['file']
- 
+    idCliente = request.form['addTrattativaIdCliente']
     # Parse the data as a Pandas DataFrame type
     #data = pandas.read_excel(file)
  
@@ -406,7 +399,67 @@ def addPortafoglio():
     # Iterate the loop to read the cell values
 
     # Return HTML snippet that will render the table
-    return render_template("/portafoglio/portafoglio.html", clienti=[], trattative =[]) 
+    return home(current_user.idPort, idCliente)
+
+@portafoglio_bp.route('/getExcel/<int:id>')
+def getExcel(id):
+    print("sto creando il file")
+    print(id)
+    res = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
+
+    output = io.BytesIO()
+
+    workbook = xlwt.Workbook()
+
+    sh = workbook.add_sheet('Report Portafoglio')
+
+    sh.write(0,0,'TIPO CLIENTE')
+    sh.write(0,1,'CF')
+    sh.write(0,2,'RAG_SOC_CLI')
+    sh.write(0,3,'PRESIDIO')
+    sh.write(0,4,'INDIRIZZO PRINCIPALE')
+    sh.write(0,5,'COMUNE_PRINCIPALE')
+    sh.write(0,6,'CAP_PRINCIPALE')
+    sh.write(0,7,'PROVINCIA_DESCR_PRINCIPALE')
+    sh.write(0,8,'PROVINCIA_SIGLA_PRINCIPALE')
+    sh.write(0,9,'SEDI_TOT')
+    sh.write(0,10,'N_LINEE_TOT')
+    sh.write(0,11,'_FISSO')
+    sh.write(0,12,'_MOBILE')
+    sh.write(0,13,'_TOTALE')
+    sh.write(0,14,'FATTURATO_CERVED')
+    sh.write(0,15,'CLIENTE_OFF_MOB_SCADENZA')
+    sh.write(0,16,'FATTURATO_IT_TIM')
+    sh.write(0,17,'DIPENDENTI')
+
+    idx = 0
+    for row in res:
+        print(row)
+        sh.write(idx+1, 0, row['tipoCliente'])
+        sh.write(idx+1, 1, row['cf'])
+        sh.write(idx+1, 2, row['ragioneSociale'])
+        sh.write(idx+1, 3, row['presidio'])
+        sh.write(idx+1, 4, row['indirizzoPrincipale'])
+        sh.write(idx+1, 5, row['comunePrincipale'])
+        sh.write(idx+1, 6, row['capPrincipale'])
+        sh.write(idx+1, 7, row['provinciaDescPrincipale'])
+        sh.write(idx+1, 8, row['provinciaSiglaPrincipale'])
+        sh.write(idx+1, 9, row['sediTot'])
+        sh.write(idx+1, 10, row['nLineeTot'])
+        sh.write(idx+1, 11, row['fisso'])
+        sh.write(idx+1, 12, row['mobile'])
+        sh.write(idx+1, 13, row['totale'])
+        sh.write(idx+1, 14, row['fatturatoCerved'])
+        sh.write(idx+1, 15, row['clienteOffMobScadenza'])
+        sh.write(idx+1, 16, row['fatturatoTim'])
+        sh.write(idx+1, 17, row['dipendenti'])
+        idx += 1
+    
+    workbook.save(output)
+    output.seek(0)
+    
+    return Response(output, mimetype="application/ms-excel", headers={"Content-Disposition":"attachment;filename=report_portafoglio.xls"})
+        
 
 """"
   idUtente = current_user.get_id(),

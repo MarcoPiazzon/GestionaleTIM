@@ -45,7 +45,7 @@ app.register_blueprint(contatto_bp, url_prefix='/contatto')
 
 @app.route('/')
 def main():
-    return redirect(url_for('portafoglio_bp.home'))
+    return redirect(url_for('portafoglio_bp.home', idPort=current_user.idPort, id=0))
     
 
 @app.errorhandler(500)    

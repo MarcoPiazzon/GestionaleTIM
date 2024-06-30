@@ -28,9 +28,9 @@
 
             <div class="col-6 col-md-6">
                 <div class="container px-4 mt-4 text-center">
-                    <a href="{{ url_for('home_bp.home', variable=0) }}" class="btn btn-link"
+                    <a href="{{ url_for('home_bp.home') }}" class="btn btn-link"
                         style="color:green"><u>Archivi</u></a>
-                    <a href="{{ url_for('home_bp.home', variable=1) }}" class="btn btn-link" style="color:green"><u>Il
+                    <a href="{{ url_for('portafoglio_bp.home', idPort=current_user.idPort, id=0) }}" class="btn btn-link" style="color:green"><u>Il
                             mio
                             portafoglio</u></a>
                     <a href="{{ url_for('calendario_bp.home') }}" class="btn btn-link"

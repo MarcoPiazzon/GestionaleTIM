@@ -146,11 +146,15 @@ creazione sidebar con contatti (non penso serva)
 sistemare footer
 sistemare login
 ottimizzare render template pagina contatto (fatto)
-ottimizzare render template pagina portafoglio
-ottimizzare render template pagina calendario
+ottimizzare render template pagina portafoglio (fatto)
+ottimizzare render template pagina calendario (fatto)
 ottimizzare render template pagina home
+
+modificare calendario con scelta orario (fatto)
 
 
 database
 controlla le foreign key cancellate durante lo sviluppo
-esporta excel
+esporta excel(fatto)
+esportare excel con valori corretti(ovvero con scambiare foreign key con i valori associati)
+cercare di stilizzare il file excel con quello originale

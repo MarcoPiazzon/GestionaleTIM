@@ -87,7 +87,7 @@
             {% for p in getP %}
             <div class="list-group-item pull-right">
                 
-                <a style="text-align: center;" href="/home/portafoglio/{{ p.idPortafoglio }}"> {{ p.dataInserimento }}
+                <a style="text-align: center;" href="/portafoglio/{{ p.idPortafoglio }}/0"> {{ p.dataInserimento }}
                 </a>
                 <form action="/home/delete/{{p.idPortafoglio}}" method="POST">
                   <button class="btn btn-danger" id="deleteButton" type="submit" style="float: right;">Elimina</button>

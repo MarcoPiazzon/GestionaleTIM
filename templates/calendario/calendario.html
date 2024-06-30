@@ -31,6 +31,7 @@
           preventivoDaFare: '{{event.preventivoDaFare}}',
           dataApp: '{{event.dataApp}}',
           idAppuntamento: '{{event.idAppuntamento}}',
+          idUtenteCreazione: '{{event.idUtenteCreazione}}'
         },
 
       },
@@ -48,6 +49,7 @@
         document.getElementById("description").value = info.event.extendedProps.description;
         document.getElementById("preventivoDaFare").value = info.event.extendedProps.preventivoDaFare;
         document.getElementById("dataApp").value = info.event.extendedProps.dataApp;
+        document.getElementById("idUtenteCreazione").value = info.event.extendedProps.idUtenteCreazione;
       } else {
         alert("non esiste");
       }
@@ -75,7 +77,13 @@
         <div class="card-header"></div>
         <div class="card-body">
           <form action="/calendario/modify" method="POST">
+            
             <input type="hidden" name="idapp" id="idapp" value="">
+            <div class="mb-3">
+              <label class="small mb-1" for="idUtenteCreazione">Creatore</label>
+              <input class="form-control" name="idUtenteCreazione" id="idUtenteCreazione" type="text" placeholder="Enter your username"
+                value="">
+            </div>
             <!-- Form Group (username)-->
             <div class="mb-3">
               <label class="small mb-1" for="inputUsername">Titolo</label>
@@ -119,7 +127,7 @@
             <div class="row gx-3 mb-3">
               <div class="col-md-4">
                 <label class="small mb-1" for="inputBirthday">Date</label>
-                <input class="form-control" name="dataApp" id="dataApp" type="date" name="birthday"
+                <input class="form-control" name="dataApp" id="dataApp" type="datetime-local" name="birthday"
                   placeholder="Enter your birthday" value="">
               </div>
             </div>
@@ -143,6 +151,7 @@
         <div class="card-body">
           <form action="/calendario/add" method="POST">
             <input type="hidden" name="idapp" id="idapp" value="">
+            <input type="hidden" name="idUtenteCreazione" value="{{current_user.get_id()}}">
             <!-- Form Group (username)-->
             <div class="mb-3">
               <label class="small mb-1" for="inputUsername">Titolo</label>
@@ -186,7 +195,7 @@
             <div class="row gx-3 mb-3">
               <div class="col-md-4">
                 <label class="small mb-1" for="inputBirthday">Date</label>
-                <input class="form-control" name="dataApp" id="dataAppAdd" type="date" name="birthday"
+                <input class="form-control" name="dataApp" id="dataAppAdd" type="datetime-local" name="birthday"
                   placeholder="Enter your birthday" value="" required>
               </div>
             </div>

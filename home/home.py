@@ -6,32 +6,23 @@ from login.login import bcrypt
 import openpyxl
 from datetime import date
 
-@home_bp.route('/<int:variable>/', methods=['GET', 'POST'])
-def home(variable):
-    print(variable == 1)
+@home_bp.route('/', methods=['GET', 'POST'])
+def home():
     contatti = conn.execute(select(contatto)).fetchall()
-    if(variable == 1):
-        #getIdLastPortafogliUtente = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchone()[0]
-        
-        print("aggiorno")
-        print(current_user.idPort)
-        print("Ho fatto anche questo")
-        clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == current_user.idPort)).fetchall()
-        return render_template("/portafoglio/portafoglio.html", clienti=clienti, contatti=contatti, idPort=current_user.idPort)
-    else:
-        #corsilaurea_all = conn.execute(select(corsilaurea)).fetchall()
-        contattiUtente = conn.execute(select(contatto)).fetchall()
-        """conn.execute(insert(utente).values(
-            nome = 'Marco',
-            cognome= 'Piazzon',
-            email= 'mp@gmail.com',
-            psw=bcrypt.generate_password_hash('mp@gmail.com'+'ciao').decode('utf-8'),
-            ))
-        conn.commit()"""
-        getPortafogliUtente = conn.execute(select(portafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchall()
-        print(getPortafogliUtente)
-        print("ho fatto questo")
-        return render_template ("/home/home.html",contattiUtente=contattiUtente, getP=getPortafogliUtente, len=len(getPortafogliUtente), contatti=contatti)
+    
+    #corsilaurea_all = conn.execute(select(corsilaurea)).fetchall()
+    contattiUtente = conn.execute(select(contatto)).fetchall()
+    """conn.execute(insert(utente).values(
+        nome = 'Marco',
+        cognome= 'Piazzon',
+        email= 'mp@gmail.com',
+        psw=bcrypt.generate_password_hash('mp@gmail.com'+'ciao').decode('utf-8'),
+        ))
+    conn.commit()"""
+    getPortafogliUtente = conn.execute(select(portafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchall()
+    print(getPortafogliUtente)
+    print("ho fatto questo")
+    return render_template ("/home/home.html",contattiUtente=contattiUtente, getP=getPortafogliUtente, len=len(getPortafogliUtente), contatti=contatti)
 
 @home_bp.route("/delete/<int:id>", methods=['POST'])
 @login_required
@@ -43,7 +34,7 @@ def removePortafoglio(id):
 
     except Exception as error:
         print(error.__cause__)
-    return redirect(url_for('home_bp.home', variable=0))
+    return redirect(url_for('home_bp.home'))
 
 @home_bp.route('/portafoglio/<int:id>')
 @login_required
@@ -72,31 +63,21 @@ def addContatti():
     # Read the File using Flask request
     file = request.files['file']
  
-    # Parse the data as a Pandas DataFrame type
-    #data = pandas.read_excel(file)
- 
     # Define variable to load the dataframe
     dataframe = openpyxl.load_workbook(file)
     
     # Define variable to read sheet
     dataframe1 = dataframe.active
     
-    #idUtente = current_user.get_id(), potrebbe tornare utile più tardi
-
     try:
-        #print("sono qua 1")
-        for col in range(1, dataframe1.max_row):
+        for col in range(1, 5):
             list = []
             for row in dataframe1.iter_cols(1, dataframe1.max_column):
                 list.append(row[col].value)
-            #print("sono qua 3")
-            #print(len(list))
-            #print(list)
-            #print(int(list[13]))
-            #print(type(list[13]))
             try:
                 conn.execute(insert(contatto).values(
                     nome = list[0],
+                    idUtente = current_user.get_id(),
                     secondoNome = list[1],
                     cognome = list[2],
                     viaUfficio1 = list[3],
