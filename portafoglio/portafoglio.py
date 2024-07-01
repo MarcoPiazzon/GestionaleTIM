@@ -23,19 +23,33 @@ def home(idPort, id):
     current_user.idPort = idPort
     clienti = None
     current_cliente = None
-    trattative = None
+    trattative = None 
     t_len = 0
-    current_len = 0
     if(idPort != 0):
-        #fare la query in modo che prenda solo ragioneSociale e idCliente
-        clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == idPort)).fetchall()
+        #fare la query in modo che prenda solo ragioneSociale e idCliente (ora lo fa)
+        clienti = conn.execute(select(cliente.c.ragioneSociale, cliente.c.idCliente).where(cliente.c.idPortafoglio == idPort)).fetchall()
     if(id != 0):
         current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == id)).fetchone()
         trattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == id)).fetchall()
         print(current_cliente)
         print(trattative)
+        
+        
         if not (trattative is None):
+            #select appuntamento.titolo, trattativa.nomeOpportunita from ((appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento)
+            #join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa)
             t_len = len(trattative)
+            print(type(trattative))
+            for i in range(0, t_len):
+
+                appuntamenti = conn.execute(select(appuntamento.c.titolo).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa)))).fetchall()
+                if not (appuntamenti is None):
+                    
+                    trattative[i] = list(trattative[i])
+                    trattative[i].append(appuntamenti)
+                    
+            print(len(trattative[0]))
+            print(trattative[0][26])
     return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort)
 
 
@@ -77,6 +91,7 @@ def removeTrattativa(id):
 def addCliente():
     try:
         print("addCliente")
+        idPort = request.form['idPort']
         ragioneSociale = request.form['ragioneSociale']
         cf = request.form['cf']
         presidio = request.form['presidio']
@@ -96,7 +111,7 @@ def addCliente():
         conn.execute(
             insert(cliente).values(
                 idUtente = current_user.get_id(),
-                idPortafoglio = current_user.idPort,
+                idPortafoglio = idPort,
                 ragioneSociale = ragioneSociale,
                 cf = cf,
                 #presidio = presidio, gestire la foreign key
@@ -125,7 +140,7 @@ def addCliente():
     #res.lastrowid, deve caricare questo id
     idCliente = conn.execute(select(cliente.c.idCliente).where(cliente.c.ragioneSociale == ragioneSociale)).fetchone()[0]
     
-    return home(current_user.idPort, idCliente)
+    return home(idPort, idCliente)
 
 @portafoglio_bp.route('/modifyTrattativa/<int:id>', methods=['POST'])
 @login_required

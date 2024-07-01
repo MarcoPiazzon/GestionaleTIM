@@ -151,6 +151,10 @@ ottimizzare render template pagina calendario (fatto)
 ottimizzare render template pagina home
 
 modificare calendario con scelta orario (fatto)
+selezionare trattativa durante la creazione/modifica dello appuntamento, popolare la tabella clientiappuntamento, 
+mostrare gli appuntamenti allo interno delle trattative nella pagina portafoglio
+
+alla cancellazione di un appuntamento, cancellare anche la row dentro alla tabella clientiappuntamento
 
 
 database
@@ -158,3 +162,8 @@ controlla le foreign key cancellate durante lo sviluppo
 esporta excel(fatto)
 esportare excel con valori corretti(ovvero con scambiare foreign key con i valori associati)
 cercare di stilizzare il file excel con quello originale
+
+
+rifiniture finali
+controllare tutte i routing nella pagina portafoglio, soprattuto quando vengono invocate 
+le funzioni di inserimento/modifica/delete

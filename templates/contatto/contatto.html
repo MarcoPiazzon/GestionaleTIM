@@ -27,9 +27,6 @@
         background-color: #eee;
     }
 
-    .hiddenRow {
-        padding: 0 !important;
-    }
 </style>
 
 <div class="row">
@@ -101,7 +98,7 @@
                                         <div class="mb-3">
                                             <label class="small mb-1" for="nome">Nome contatto</label>
                                             <input class="form-control" name="nome" id="nome" type="text" placeholder=""
-                                                value="{{current_contatto.nome}}">
+                                                value="{%if current_contatto.nome%}{{current_contatto.nome}}{%endif%}">
                                         </div>
                                         <!-- Form Row-->
                                         <div class="row gx-3 mb-3">
@@ -109,13 +106,13 @@
                                             <div class="col-md-6">
                                                 <label class="small mb-1" for="secondoNome">secondoNome</label>
                                                 <input class="form-control" name="secondoNome" id="secondoNome"
-                                                    type="text" placeholder="" value="{{current_contatto.secondoNome}}">
+                                                    type="text" placeholder="" value="{%if current_contatto.secondoNome%}{{current_contatto.secondoNome}}{%endif%}">
                                             </div>
                                             <!-- Form Group (last name)-->
                                             <div class="col-md-6">
                                                 <label class="small mb-1" for="cognome">cognome</label>
                                                 <input class="form-control" name="cognome" id="cognome" type="text"
-                                                    placeholder="" value="{{current_contatto.cognome}}">
+                                                    placeholder="" value="{%if current_contatto.cognome %}{{current_contatto.cognome}} {%endif%}">
                                             </div>
                                         </div>
                                         <!-- Form Row        -->
@@ -124,25 +121,25 @@
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="viaUfficio1">viaUfficio1</label>
                                                 <input class="form-control" name="viaUfficio1" id="viaUfficio1"
-                                                    type="text" placeholder="" value="{{current_contatto.viaUfficio1}}">
+                                                    type="text" placeholder="" value="{%if current_contatto.viaUfficio1 %}{{current_contatto.viaUfficio1}}{%endif%}">
                                             </div>
                                             <!-- Form Group (location)-->
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="viaUfficio2">viaUfficio2</label>
                                                 <input class="form-control" name="viaUfficio2" id="viaUfficio2"
-                                                    type="text" placeholder="" value="{{current_contatto.viaUfficio2}}">
+                                                    type="text" placeholder="" value="{%if current_contatto.viaUfficio2 %}{{current_contatto.viaUfficio2}}{%endif%}">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="viaUfficio3">viaUfficio3</label>
                                                 <input class="form-control" name="viaUfficio3" id="viaUfficio3"
-                                                    type="text" placeholder="" value="{{current_contatto.viaUfficio3}}">
+                                                    type="text" placeholder="" value="{%if current_contatto.viaUfficio3 %}{{current_contatto.viaUfficio3}} {%endif%}">
                                             </div>
                                         </div>
                                         <!-- Form Group (email address)-->
                                         <div class="mb-3">
                                             <label class="small mb-1" for="provincia">provincia</label>
                                             <input class="form-control" name="provincia" id="provincia" type="text"
-                                                placeholder="" value="{{current_contatto.provincia}}">
+                                                placeholder="" value="{%if current_contatto.provincia %}{{current_contatto.provincia}}{%endif%}">
                                         </div>
                                         <!-- Form Row-->
                                         <div class="row gx-3 mb-3">
@@ -150,18 +147,18 @@
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="cap">cap</label>
                                                 <input class="form-control" name="cap" id="cap" type="text"
-                                                    placeholder="" value="{{current_contatto.cap}}">
+                                                    placeholder="" value="{%if current_contatto.cap %}{{current_contatto.cap}}{%endif%}">
                                             </div>
                                             <!-- Form Group (birthday)-->
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="numUfficio">numUfficio</label>
                                                 <input class="form-control" name="numUfficio" id="numUfficio"
-                                                    type="text" name="birthday" placeholder="" value="{{current_contatto.numUfficio}}">
+                                                    type="text" name="birthday" placeholder="" value="{% if current_contatto.numUfficio %}{{current_contatto.numUfficio}} {%endif%}">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="numUfficio2">numUfficio2</label>
                                                 <input class="form-control" name="numUfficio2" id="numUfficio2"
-                                                    type="text" name="birthday" placeholder="" value="{{current_contatto.numUfficio2}}">
+                                                    type="text" name="birthday" placeholder="" value="{% if current_contatto.numUfficio2 %}{{current_contatto.numUfficio2}}{%endif%}">
                                             </div>
                                         </div>
                                         <!-- Form Group (username)-->
@@ -169,7 +166,7 @@
                                             <label class="small mb-1"
                                                 for="telefonoPrincipale">telefonoPrincipale</label>
                                             <input class="form-control" name="telefonoPrincipale"
-                                                id="telefonoPrincipale" type="tel" placeholder="" value="{{current_contatto.telefonoPrincipale}}">
+                                                id="telefonoPrincipale" type="tel" placeholder="" value="{% if current_contatto.telefonoPrincipale %}{{current_contatto.telefonoPrincipale}}{%endif%}">
                                         </div>
                                         <!-- Form Row-->
                                         <div class="row gx-3 mb-3">
@@ -177,13 +174,13 @@
                                             <div class="col-md-6">
                                                 <label class="small mb-1" for="faxAbitazione">faxAbitazione</label>
                                                 <input class="form-control" name="faxAbitazione" id="faxAbitazione"
-                                                    type="text" placeholder="" value="{{current_contatto.faxAbitazione}}">
+                                                    type="text" placeholder="" value="{% if current_contatto.faxAbitazione %}{{current_contatto.faxAbitazione}}{%endif%}">
                                             </div>
                                             <!-- Form Group (last name)-->
                                             <div class="col-md-6">
                                                 <label class="small mb-1" for="abitazione">abitazione</label>
                                                 <input class="form-control" name="abitazione" id="abitazione"
-                                                    type="text" placeholder="" value="{{current_contatto.abitazione}}">
+                                                    type="text" placeholder="" value="{% if current_contatto.abitazione %}{{current_contatto.abitazione}} {%endif%}">
                                             </div>
                                         </div>
                                         <!-- Form Row        -->
@@ -192,18 +189,18 @@
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="cellulare">cellulare</label>
                                                 <input class="form-control" name="cellulare" id="cellulare" type="text"
-                                                    placeholder="" value="{{current_contatto.cellulare}}">
+                                                    placeholder="" value="{% if current_contatto.cellulare %}{{current_contatto.cellulare}}{%endif%}">
                                             </div>
                                             <!-- Form Group (location)-->
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="note">note</label>
                                                 <input class="form-control" name="note" id="note" type="text"
-                                                    placeholder="" value="{{current_contatto.note}}">
+                                                    placeholder="" value="{% if current_contatto.note %}{{current_contatto.note}}{%endif%}">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="numeroID">numeroID</label>
                                                 <input class="form-control" name="numeroID" id="numeroID" type="text"
-                                                    placeholder="" value="{{current_contatto.numeroID}}">
+                                                    placeholder="" value="{% if current_contatto.numeroID %}{{current_contatto.numeroID}} {%endif%}">
                                             </div>
                                         </div>
                                         <!-- Form Row-->
@@ -212,18 +209,18 @@
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="email1">email1</label>
                                                 <input class="form-control" name="email1" id="email1" type="email"
-                                                    placeholder="" value="{{current_contatto.email1}}">
+                                                    placeholder="" value="{% if current_contatto.email1 %}{{current_contatto.email1}}{%endif%}">
                                             </div>
                                             <!-- Form Group (birthday)-->
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="email2">email2</label>
                                                 <input class="form-control" name="email2" id="email2" type="email"
-                                                    name="birthday" placeholder="" value="{{current_contatto.email2}}">
+                                                    name="birthday" placeholder="" value="{%if current_contatto.email2 %}{{current_contatto.email2}}{%endif%}">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="small mb-1" for="paginaWeb">paginaWeb</label>
                                                 <input class="form-control" name="paginaWeb" id="paginaWeb" type="text"
-                                                    placeholder="" value="{{current_contatto.paginaWeb}}">
+                                                    placeholder="" value="{%if current_contatto.paginaWeb %}{{current_contatto.paginaWeb}}{%endif%}">
                                             </div>
                                         </div>
                                         <!-- Save changes button-->

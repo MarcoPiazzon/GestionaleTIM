@@ -233,6 +233,7 @@
       <div class="card-body">
         <form action="/portafoglio/add" method="POST">
           <input type="hidden" name="idCliente" id="idCliente" value="">
+          <input type="hidden" name="idPort" value="{{idPort}}">
           <!-- Form Group (username)-->
           <div class="mb-3">
             <label class="small mb-1" for="inputUsername">Ragione Sociale</label>
@@ -356,15 +357,15 @@
 
         {% for i in range (0, t_len) %}
         <tr data-bs-toggle="collapse" data-bs-target="#demo{{i}}" class="accordion-toggle">
-          <td>{{trattative[i].nomeOpportunita}}</td>
-          <td>{{trattative[i].fase}}</td>
-          <td>{{trattative[i].dataChiusura}}</td>
+          <td>{{trattative[i][8]}}</td>
+          <td>{{trattative[i][19]}}</td>
+          <td>{{trattative[i][18]}}</td>
         </tr>
         <tr>
           <td colspan="6" class="hiddenRow">
             <div class="accordian-body collapse" id="demo{{i}}">
               <div class="container px-4 mt-4" id="modifica">
-                <h1 class="page-header text-center">{{trattative[i].nomeOpportunita}}</h1>
+                <h1 class="page-header text-center">{{trattative[i][8]}}</h1>
                 <!-- Account details card-->
                 <div class="card mb-4">
                   <div class="card-header"></div>
@@ -375,7 +376,7 @@
                       <div class="mb-3">
                         <label class="small mb-1" for="inputUsername">codiceCtrDigitali</label>
                         <input class="form-control" name="codiceCtrDigitaliModify" id="inputUsername" type="text"
-                          placeholder="Enter your username" value="{{trattative[i].codiceCtrDigitali}}">
+                          placeholder="Enter your username" value="{{trattative[i][3]}}">
                       </div>
                       <!-- Form Row-->
                       <div class="row gx-3 mb-3">
@@ -383,13 +384,13 @@
                         <div class="col-md-6">
                           <label class="small mb-1" for="inputFirstName">codiceSalesHub</label>
                           <input class="form-control" name="codiceSalesHubModify" id="inputFirstName" type="text"
-                            placeholder="Enter your first name" value="{{trattative[i].codiceSalesHub}}">
+                            placeholder="Enter your first name" value="{{trattative[i][4]}}">
                         </div>
                         <!-- Form Group (last name)-->
                         <div class="col-md-6">
                           <label class="small mb-1" for="inputLastName">zona</label>
                           <input class="form-control" name="zonaModify" id="inputLastName" type="text"
-                            placeholder="Enter your last name" value="{{trattative[i].zona}}">
+                            placeholder="Enter your last name" value="{{trattative[i][6]}}">
                         </div>
                       </div>
                       <!-- Form Row-->
@@ -398,13 +399,13 @@
                         <div class="col-md-6">
                           <label class="small mb-1" for="inputFirstName">areaManager</label>
                           <input class="form-control" name="areaManagerModify" id="inputFirstName" type="text"
-                            placeholder="Enter your first name" value="{{trattative[i].areaManager}}">
+                            placeholder="Enter your first name" value="{{trattative[i][5]}}">
                         </div>
                         <!-- Form Group (last name)-->
                         <div class="col-md-6">
                           <label class="small mb-1" for="inputLastName">nomeOpportunita</label>
                           <input class="form-control" name="nomeOpportunitaModify" id="inputLastName" type="text"
-                            placeholder="Enter your last name" value="{{trattative[i].nomeOpportunita}}">
+                            placeholder="Enter your last name" value="{{trattative[i][8]}}">
                         </div>
                       </div>
                       <!-- Form Row        -->
@@ -413,19 +414,19 @@
                         <div class="col-md-6">
                           <label class="small mb-1" for="inputOrgName">tipo</label>
                           <input class="form-control" name="tipoModify" id="inputOrgName" type="text"
-                            placeholder="Enter your organization name" value="{{trattative[i].tipo}}">
+                            placeholder="Enter your organization name" value="{{trattative[i][7]}}">
                         </div>
                         <!-- Form Group (location)-->
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputLocation">dataCreazioneOpportunita</label>
                           <input class="form-control" name="dataCreazioneOpportunitaModify" id="inputLocation"
                             type="date" placeholder="Enter your location"
-                            value="{{trattative[i].dataCreazioneOpportunita}}">
+                            value="{{trattative[i][9]}}">
                         </div>
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputLocation">fix</label>
                           <input class="form-control" name="fixModify" id="inputLocation" type="text"
-                            placeholder="Enter your location" value="{{trattative[i].fix}}">
+                            placeholder="Enter your location" value="{{trattative[i][10]}}">
                         </div>
                       </div>
                       <!-- Form Row-->
@@ -434,19 +435,19 @@
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputPhone">mobile</label>
                           <input class="form-control" name="mobileModify" id="inputPhone" type="tel"
-                            placeholder="Enter your phone number" value="{{trattative[i].mobile}}">
+                            placeholder="Enter your phone number" value="{{trattative[i][11]}}">
                         </div>
                         <!-- Form Group (birthday)-->
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">categoriaOffertaIT</label>
                           <input class="form-control" name="categoriaOffertaITModify" id="inputBirthday" type="text"
                             name="birthday" placeholder="Enter your birthday"
-                            value="{{trattative[i].categoriaOffertaIT}}">
+                            value="{{trattative[i][12]}}">
                         </div>
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">it</label>
                           <input class="form-control" name="itModify" id="inputBirthday" type="text" name="birthday"
-                            placeholder="Enter your birthday" value="{{trattative[i].it}}">
+                            placeholder="Enter your birthday" value="{{trattative[i][13]}}">
                         </div>
 
                       </div>
@@ -456,18 +457,18 @@
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputPhone">lineeFoniaFixModify</label>
                           <input class="form-control" name="lineeFoniaFixModify" id="inputPhone" type="tel"
-                            placeholder="Enter your phone number" value="{{trattative[i].lineeFoniaFix}}">
+                            placeholder="Enter your phone number" value="{{trattative[i][14]}}">
                         </div>
                         <!-- Form Group (birthday)-->
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">aom</label>
                           <input class="form-control" name="aomModify" id="inputBirthday" type="text" name="birthday"
-                            placeholder="Enter your birthday" value="{{trattative[i].aom}}">
+                            placeholder="Enter your birthday" value="{{trattative[i][15]}}">
                         </div>
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">mnp</label>
                           <input class="form-control" name="mnpModify" id="inputBirthday" type="text" name="birthday"
-                            placeholder="Enter your birthday" value="{{trattative[i].mnp}}">
+                            placeholder="Enter your birthday" value="{{trattative[i][16]}}">
                         </div>
                       </div>
                       <div class="row gx-3 mb-3">
@@ -475,18 +476,18 @@
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputPhone">al</label>
                           <input class="form-control" name="alModify" id="inputPhone" type="tel"
-                            placeholder="Enter your phone number" value="{{trattative[i].al}}">
+                            placeholder="Enter your phone number" value="{{trattative[i][17]}}">
                         </div>
                         <!-- Form Group (birthday)-->
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">dataChiusura</label>
                           <input class="form-control" name="dataChiusuraModify" id="inputBirthday" type="date"
-                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].dataChiusura}}">
+                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i][18]}}">
                         </div>
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">noteSpecialista</label>
                           <input class="form-control" name="noteSpecialistaModify" id="inputBirthday" type="text"
-                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].noteSpecialista}}">
+                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i][20]}}">
                         </div>
                       </div>
                       <div class="row gx-3 mb-3">
@@ -494,25 +495,32 @@
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputPhone">fase</label>
                           <input class="form-control" name="faseModify" id="inputPhone" type="tel"
-                            placeholder="Enter your phone number" value="{{trattative[i].fase}}">
+                            placeholder="Enter your phone number" value="{{trattative[i][19]}}">
                         </div>
                         <!-- Form Group (birthday)-->
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputBirthday">probabilita</label>
                           <input class="form-control" name="probabilitaModify" id="inputBirthday" type="text"
-                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].probabilita}}%">
+                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i][21]}}%">
                         </div>
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputBirthday">inPaf</label>
                           <input class="form-control" name="inPafModify" id="inputBirthday" type="text" name="birthday"
-                            placeholder="Enter your birthday" value="{{trattative[i].inPaf}}">
+                            placeholder="Enter your birthday" value="{{trattative[i][22]}}">
                         </div>
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputBirthday">fornitore</label>
                           <input class="form-control" name="fornitoreModify" id="inputBirthday" type="text"
-                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i].fornitore}}">
+                            name="birthday" placeholder="Enter your birthday" value="{{trattative[i][24]}}">
                         </div>
                       </div>
+                      {%if trattative[i][26] %}
+                        <p> test out</p>
+                        {% for appuntamento in trattative[i][26] %}
+                          <p>{{appuntamento[0]}}</p>
+                          <p>test</p>
+                        {%endfor%}
+                      {%endif%}
                       <!-- Save changes button-->
                       <button class="btn btn-primary" type="submit">Salva le modifiche</button>
                       <button class="btn btn-danger" onclick="sendData({{trattative[i].idTrattativa}})" type="button"

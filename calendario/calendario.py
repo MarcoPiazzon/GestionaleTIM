@@ -12,7 +12,12 @@ def home():
     events = conn.execute(select(appuntamento)).fetchall()
     trattative = []
     try:
-        trattative = conn.execute(select(trattativa).where(trattativa.c.fase == 1)).fetchall()
+        #trattative = conn.execute(select(trattativa).where(trattativa.c.fase == 1)).fetchall()
+        #SELECT * FROM trattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6
+        #trattative = conn.execute(select(trattativa)).fetchall()
+        
+        trattative = conn.execute(select(trattativa).select_from(join(trattativa,cliente, trattativa.c.idCliente == cliente.c.idCliente)).where(cliente.c.idPortafoglio==current_user.idPort)).fetchall()
+        print(trattativa)
     except Exception as error:
         print("rip")
         print(error.__cause__)
