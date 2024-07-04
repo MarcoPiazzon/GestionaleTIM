@@ -42,7 +42,7 @@ def home(idPort, id):
             print(type(trattative))
             for i in range(0, t_len):
 
-                appuntamenti = conn.execute(select(appuntamento.c.titolo).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa)))).fetchall()
+                appuntamenti = conn.execute(select(appuntamento.c.titolo).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento))).fetchall()
                 if not (appuntamenti is None):
                     
                     trattative[i] = list(trattative[i])
@@ -369,7 +369,7 @@ def addPortafoglio():
         getCateOff = conn.execute(select(categoria)).fetchall()
         print(getFase(andtra, "IN TRATTATIVA"))
         print("dopo")
-        for col in range(1, dataframe1.max_row):
+        for col in range(1, 4):
             list = []
             checkRow = True
             for row in dataframe1.iter_cols(1, dataframe1.max_column):
@@ -414,7 +414,7 @@ def addPortafoglio():
     # Iterate the loop to read the cell values
 
     # Return HTML snippet that will render the table
-    return home(current_user.idPort, idCliente)
+    return home(current_user.get_id(), 0)
 
 @portafoglio_bp.route('/getExcel/<int:id>')
 def getExcel(id):

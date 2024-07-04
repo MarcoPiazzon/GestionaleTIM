@@ -62,6 +62,35 @@
 
 </script>
 </head>
+<style>
+  #myUL {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: scroll;
+    max-height: 200px;
+  }
+
+  #myUL li a {
+    border: 1px solid #ddd;
+    margin-top: -1px;
+    /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block
+  }
+
+  #myUL li a:hover:not(.header) {
+    background-color: #eee;
+  }
+
+  .hiddenRow {
+    padding: 0 !important;
+  }
+</style>
 
 <body>
   <div class="row">
@@ -82,6 +111,8 @@
             <div class="mb-3">
               <label class="small mb-1" for="idUtenteCreazione">Creatore</label>
               <input class="form-control" name="idUtenteCreazione" id="idUtenteCreazione" type="text" placeholder="Enter your username"
+                value="">
+                <input class="form-control" name="idTrattivaGet" id="idTrattivaGet" type="text" placeholder="Enter your username"
                 value="">
             </div>
             <!-- Form Group (username)-->
@@ -112,15 +143,14 @@
               <!-- Form Group (first name)-->
               <div class="col">
                 <label class="small mb-1" for="inputFirstName">Trattativa assocciata</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Scegli una trattativa attiva</option>
+                <ul id="myUL" class="vertical-scrollable">
                   {% if trattative%}
                   {% for t in trattative%}
-                  <option value="{{t.codiceCtrDigitali}}">{{t.nomeOpportunita}}</option>
-                  {% endfor %}
-                  {% endif %}
-
-                </select>
+                  <input type="button" class="dropdown-item" type="button" onclick="getTrattativa('{{t.idTrattativa}}',0)"
+                    value='{{t.nomeOpportunita}}' />
+                    {% endfor %}
+                    {% endif %}
+                </ul>
               </div>
             </div>
             <!-- Form Row-->
@@ -176,19 +206,18 @@
             </div>
             <!-- Form Row        -->
             <div class="row gx-3 mb-3">
-              <input type="hidden" name="idtrattativa" id="idtrattativa" value="">
+              <input type="hidden" name="idtrattativaAdd" id="idtrattativaAdd" value="">
               <!-- Form Group (first name)-->
               <div class="col">
                 <label class="small mb-1" for="inputFirstName">Trattativa assocciata</label>
-                <select class="form-select" aria-label="Default select example">
-                  <option selected>Scegli una trattativa attiva</option>
+                <ul id="myUL" class="vertical-scrollable">
                   {% if trattative%}
                   {% for t in trattative%}
-                  <option value="{{t.codiceCtrDigitali}}">{{t.nomeOpportunita}}</option>
-                  {% endfor %}
-                  {% endif %}
-
-                </select>
+                  <input type="button" class="dropdown-item" type="button" onclick="getTrattativa('{{t.idTrattativa}}',1)"
+                    value='{{t.nomeOpportunita}}' />
+                    {% endfor %}
+                    {% endif %}
+                </ul>
               </div>
             </div>
             <!-- Form Row-->
@@ -212,6 +241,22 @@
 </body>
 
 <script>
+  function getTrattativa(el, s){
+    switch(s){
+      case 0:
+        alert(el)
+        document.getElementById("idtrattativa").value = el;
+        console.log(document.getElementById("idtrattativa"));
+        break;
+      case 1:
+        alert(el)
+        document.getElementById("idtrattativaAdd").value = el;
+        console.log(document.getElementById("idtrattativaAdd"));
+        break;
+    }
+ 
+  }
+
   document.getElementById("btnCrea").addEventListener("click", function () {
     document.getElementById("modifica").style.display = "none";
     document.getElementById("crea").style.display = "block";

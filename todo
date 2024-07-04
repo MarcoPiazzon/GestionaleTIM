@@ -152,9 +152,11 @@ ottimizzare render template pagina home
 
 modificare calendario con scelta orario (fatto)
 selezionare trattativa durante la creazione/modifica dello appuntamento, popolare la tabella clientiappuntamento, 
-mostrare gli appuntamenti allo interno delle trattative nella pagina portafoglio
+mostrare gli appuntamenti allo interno delle trattative nella pagina portafoglio (da sistemare)
 
-alla cancellazione di un appuntamento, cancellare anche la row dentro alla tabella clientiappuntamento
+alla cancellazione di un appuntamento, cancellare anche la row dentro alla tabella trattativaappuntamento (fatto)
+
+visualizzare la trattativa selezionata precedentemente quando premo su un appuntamento già fissato
 
 
 database
