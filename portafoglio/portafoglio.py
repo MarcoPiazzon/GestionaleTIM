@@ -25,6 +25,8 @@ def home(idPort, id):
     current_cliente = None
     trattative = None 
     t_len = 0
+    categorie = conn.execute(select(categoria)).fetchall()
+    andamento = conn.execute(select(andamentotrattativa)).fetchall()
     if(idPort != 0):
         #fare la query in modo che prenda solo ragioneSociale e idCliente (ora lo fa)
         clienti = conn.execute(select(cliente.c.ragioneSociale, cliente.c.idCliente).where(cliente.c.idPortafoglio == idPort)).fetchall()
@@ -42,15 +44,17 @@ def home(idPort, id):
             print(type(trattative))
             for i in range(0, t_len):
 
-                appuntamenti = conn.execute(select(appuntamento.c.titolo).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento))).fetchall()
+                appuntamenti = conn.execute(select(appuntamento.c.titolo).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0])).fetchall()
+                print(appuntamenti)
+                trattative[i] = list(trattative[i])
                 if not (appuntamenti is None):
                     
-                    trattative[i] = list(trattative[i])
-                    trattative[i].append(appuntamenti)
                     
-            print(len(trattative[0]))
-            print(trattative[0][26])
-    return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort)
+                    trattative[i].append(appuntamenti)
+                    print(trattative[i][25])
+            #print(len(trattative[0]))
+            #print(trattative)
+    return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort, categorie=categorie, andamento=andamento)
 
 
 @portafoglio_bp.route('/portafoglio/<int:id>')
@@ -77,6 +81,13 @@ def removeTrattativa(id):
     try:
         print("")
         conn.execute(delete(trattativa).where(trattativa.c.idTrattativa == id))
+
+        #appuntamenti = conn.execute(select(trattativaappuntamento).where(trattativa.c.idTrattativa == id)).fetchall()
+
+        #if not (appuntamenti is None):
+         #   for a in appuntamenti:
+          #      conn.execute(delete(appuntamenti).where(appuntamenti.c.idAppuntamento == a.idAppuntamento))
+
         conn.commit()
         print("ho fatto")
     except Exception as error:
@@ -475,7 +486,75 @@ def getExcel(id):
     
     return Response(output, mimetype="application/ms-excel", headers={"Content-Disposition":"attachment;filename=report_portafoglio.xls"})
         
+@portafoglio_bp.route('/getExcelTrattative/<int:id>')
+def getExcelTrattative(id):
+    print(id)
+    res = conn.execute(select(trattativa)).fetchall()
 
+    output = io.BytesIO()
+
+    workbook = xlwt.Workbook()
+
+    sh = workbook.add_sheet('Report Portafoglio')
+    style0 = xlwt.easyxf('pattern: pattern solid, fore_colour red')
+    sh.write(0,0,'CODICE CTR DIGITALE',style0)
+    sh.write(0,1,'CODICE SALES HUB')
+    sh.write(0,2,'AREA MANAGER')
+    sh.write(0,3,'SA')
+    sh.write(0,4,'RAGIONE SOCIALE')
+    sh.write(0,5,'ZONA')
+    sh.write(0,6,'TIPO')
+    sh.write(0,7,'NOME OPPORTUNITA')
+    sh.write(0,8,'DATA CREAZIONE OPPORTUNITA')
+    sh.write(0,9,'FIX (€)')
+    sh.write(0,10,'MOBILE(€)')
+    sh.write(0,11,'CATEGORIA OFFERTA IT')
+    sh.write(0,12,'IT')
+    sh.write(0,13,'LINEE FONIA FIX')
+    sh.write(0,14,'AOM')
+    sh.write(0,15,'MNP')
+    sh.write(0,16,'AL')
+    sh.write(0,17,'DATA CHIUSURA')
+    sh.write(0,18,'FASE')
+    sh.write(0,19,'NOTE SPECIALISTA')
+    sh.write(0,20,'PROBABILITA')
+    sh.write(0,21,'IN PAF')
+    sh.write(0,22,'FORNITORE')
+
+    idx = 0
+    for row in res:
+        print(row)
+        sh.write(idx+1, 0, row['codiceCtrDigitali'])
+        sh.write(idx+1, 1, row['codiceSalesHub'])
+        sh.write(idx+1, 2, row['areaManager'])
+        sh.write(idx+1, 3, 'SALVATORE IACCARINO')
+        sh.write(idx+1, 4, 'NOME CLIENTE')
+        sh.write(idx+1, 5, row['zona'])
+        sh.write(idx+1, 6, row['tipo'])
+        sh.write(idx+1, 7, row['nomeOpportunita'])
+        sh.write(idx+1, 8, row['dataCreazioneOpportunita'])
+        sh.write(idx+1, 9, row['fix'])
+        sh.write(idx+1, 10, row['mobile'])
+        sh.write(idx+1, 11, row['categoriaOffertaIT'])
+        sh.write(idx+1, 12, row['it'])
+        sh.write(idx+1, 13, row['lineeFoniaFix'])
+        sh.write(idx+1, 14, row['aom'])
+        sh.write(idx+1, 15, row['mnp'])
+        sh.write(idx+1, 16, row['al'])
+        sh.write(idx+1, 17, row['dataChiusura'])
+        sh.write(idx+1, 18, row['fase'])
+        sh.write(idx+1, 19, row['noteSpecialista'])
+        sh.write(idx+1, 20, row['probabilita'])
+        sh.write(idx+1, 21, row['inPaf'])
+        sh.write(idx+1, 22, row['fornitore'])
+        idx += 1
+
+
+    workbook.save(output)
+    output.seek(0)
+    
+    return Response(output, mimetype="application/ms-excel", headers={"Content-Disposition":"attachment;filename=pipeline.xls"})
+   
 """"
   idUtente = current_user.get_id(),
                 idPortafoglio = lastPortafoglio,

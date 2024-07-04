@@ -89,10 +89,13 @@
                 
                 <a style="text-align: center;" href="/portafoglio/{{ p.idPortafoglio }}/0"> {{ p.dataInserimento }}
                 </a>
+                
                 <form action="/home/delete/{{p.idPortafoglio}}" method="POST">
                   <button class="btn btn-danger" id="deleteButton" type="submit" style="float: right;">Elimina</button>
                 </form>
-                  
+                <form action="" method="POST">
+                  <button class="btn btn-success" id="deleteButton" type="submit" style="float: right;">Scarica</button>
+                </form>
                
             </div>
             {% endfor %}

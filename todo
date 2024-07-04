@@ -158,6 +158,8 @@ alla cancellazione di un appuntamento, cancellare anche la row dentro alla tabel
 
 visualizzare la trattativa selezionata precedentemente quando premo su un appuntamento già fissato
 
+testare righe commentate delete trattative
+da riprodurre i file excel durante la creazione del file
 
 database
 controlla le foreign key cancellate durante lo sviluppo

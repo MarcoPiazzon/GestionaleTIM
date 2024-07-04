@@ -420,8 +420,7 @@
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputLocation">dataCreazioneOpportunita</label>
                           <input class="form-control" name="dataCreazioneOpportunitaModify" id="inputLocation"
-                            type="date" placeholder="Enter your location"
-                            value="{{trattative[i][9]}}">
+                            type="date" placeholder="Enter your location" value="{{trattative[i][9]}}">
                         </div>
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputLocation">fix</label>
@@ -440,9 +439,16 @@
                         <!-- Form Group (birthday)-->
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">categoriaOffertaIT</label>
-                          <input class="form-control" name="categoriaOffertaITModify" id="inputBirthday" type="text"
+                          <!--<input class="form-control" name="categoriaOffertaITModify" id="inputBirthday" type="text"
                             name="birthday" placeholder="Enter your birthday"
-                            value="{{trattative[i][12]}}">
+                            value="{{trattative[i][12]}}">-->
+                            <option value="{% if trattative[i][12] %} {{trattative[i][12]}} {%endif%}"selected>{% if trattative[i][12] %} {{trattative[i][12]}}{%endif%}</option>
+                            <select class="form-select" aria-label="Default select example">
+                            {% for c in categorie %}
+                            <option value="{{c.idCategoria}}">{{c.nome}}</option>
+                            {% endfor %}
+
+                          </select>
                         </div>
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">it</label>
@@ -494,8 +500,13 @@
                         <!-- Form Group (phone number)-->
                         <div class="col-md-3">
                           <label class="small mb-1" for="inputPhone">fase</label>
-                          <input class="form-control" name="faseModify" id="inputPhone" type="tel"
-                            placeholder="Enter your phone number" value="{{trattative[i][19]}}">
+                          <select class="form-select" aria-label="Default select example">
+                            <option value="{% if trattative[i][19] %} {{trattative[i][19]}} {%endif%}"selected>{% if trattative[i][19] %} {{trattative[i][19]}}{%endif%}</option>
+                            {% for a in andamento %}
+                           
+                            <option value="{{a.idAndamento}}">{{a.nome}}</option>
+                            {% endfor %}
+                          </select>
                         </div>
                         <!-- Form Group (birthday)-->
                         <div class="col-md-3">
@@ -514,12 +525,10 @@
                             name="birthday" placeholder="Enter your birthday" value="{{trattative[i][24]}}">
                         </div>
                       </div>
-                      {%if trattative[i][26] %}
-                        <p> test out</p>
-                        {% for appuntamento in trattative[i][26] %}
-                          <p>{{appuntamento[0]}}</p>
-                          <p>test</p>
-                        {%endfor%}
+                      {%if trattative[i][25] %}
+                      {% for appuntamento in trattative[i][25] %}
+                      <p>{{appuntamento[0]}}</p>
+                      {%endfor%}
                       {%endif%}
                       <!-- Save changes button-->
                       <button class="btn btn-primary" type="submit">Salva le modifiche</button>
@@ -712,6 +721,7 @@
   </div>
 </div>
 <a href="{{ url_for('.getExcel', id=idPort)}}">Scarica il file excel </a>
+<a href="{{ url_for('.getExcelTrattative', id=idPort)}}">Scarica le trattative aggiornate </a>
 {%endif%}
 <script>
   function sendData(val) {
