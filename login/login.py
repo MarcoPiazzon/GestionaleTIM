@@ -17,7 +17,7 @@ def login():
             pw = pw._asdict()
             if(bcrypt.check_password_hash(pw['psw'],pw['email']+request.form['psw'])):
                 login_user(User(pw['idUtente'],pw['email'])) # utilizzo flask_login per creare i cookies
-                return redirect(url_for('portafoglio_bp.home'))
+                return redirect(url_for('portafoglio_bp.home', idPort=current_user.idPort, id=0))
             return render_template("/login/login.html",err=2) # wrong password
         return render_template("/login/login.html",err=1) # wrong email
     else :
