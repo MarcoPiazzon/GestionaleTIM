@@ -185,7 +185,7 @@ def modifyTrattativa(id):
         
         conn.execute(
             update(trattativa).where(trattativa.c.idTrattativa==id).values(
-                idUtente = current_user.get_id(),
+                idUtente = 2,
                 idCliente = idCliente,
                 codiceCtrDigitali = codiceCtrDigitali,
                 codiceSalesHub = codiceSalesHub,
@@ -323,7 +323,7 @@ def addTrattativaForm():
         fornitore = request.form['fornitoreAdd']
         
         conn.execute(insert(trattativa).values(
-            idUtente = 2,
+            idUtente = current_user.get_id(),
             idCliente = idCliente,
             codiceCtrDigitali = codiceCtrDigitali,
             codiceSalesHub = codiceSalesHub,

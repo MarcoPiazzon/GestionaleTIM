@@ -93,9 +93,7 @@
                 <form action="/home/delete/{{p.idPortafoglio}}" method="POST">
                   <button class="btn btn-danger" id="deleteButton" type="submit" style="float: right;">Elimina</button>
                 </form>
-                <form action="" method="POST">
-                  <button class="btn btn-success" id="deleteButton" type="submit" style="float: right;">Scarica</button>
-                </form>
+                <a class="btn btn-success" href="{{ url_for('.getExcel', id=p.idPortafoglio)}}" style="float: right;">Scarica il file excel </a>
                
             </div>
             {% endfor %}

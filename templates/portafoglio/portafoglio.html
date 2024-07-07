@@ -237,7 +237,7 @@
           <!-- Form Group (username)-->
           <div class="mb-3">
             <label class="small mb-1" for="inputUsername">Ragione Sociale</label>
-            <input class="form-control" name="ragioneSociale" id="inputUsernameAdd" type="text" placeholder="" value=""
+            <input class="form-control lsc" name="ragioneSociale" id="inputUsernameAdd" type="text" placeholder="" value=""
               onkeyup="changeText(this)">
           </div>
           <!-- Form Row-->
@@ -245,12 +245,12 @@
             <!-- Form Group (first name)-->
             <div class="col-md-6">
               <label class="small mb-1" for="inputFirstName">Cf</label>
-              <input class="form-control" name="cf" id="inputFirstName" type="text" placeholder="" value="">
+              <input class="form-control lsc" name="cf" id="inputFirstName" type="text" placeholder="" value="">
             </div>
             <!-- Form Group (last name)-->
             <div class="col-md-6">
               <label class="small mb-1" for="inputLastName">Presidio</label>
-              <input class="form-control" name="presidio" id="inputLastName" type="text" placeholder="" value="">
+              <input class="form-control lsc" name="presidio" id="inputLastName" type="text" placeholder="" value="">
             </div>
           </div>
           <!-- Form Row        -->
@@ -258,16 +258,16 @@
             <!-- Form Group (organization name)-->
             <div class="col-md-6">
               <label class="small mb-1" for="inputOrgName">Indirizzo</label>
-              <input class="form-control" name="indirizzo" id="inputOrgName" type="text" placeholder="" value="">
+              <input class="form-control lsc" name="indirizzo" id="inputOrgName" type="text" placeholder="" value="">
             </div>
             <!-- Form Group (location)-->
             <div class="col-md-3">
               <label class="small mb-1" for="inputLocation">CAP</label>
-              <input class="form-control" name="capPrincipale" id="inputLocation" type="text" placeholder="" value="">
+              <input class="form-control lsc" name="capPrincipale" id="inputLocation" type="text" placeholder="" value="">
             </div>
             <div class="col-md-3">
               <label class="small mb-1" for="inputLocation">Comune</label>
-              <input class="form-control" name="comunePrincipale" id="inputLocation" type="text" placeholder=""
+              <input class="form-control lsc" name="comunePrincipale" id="inputLocation" type="text" placeholder=""
                 value="">
             </div>
           </div>
@@ -276,17 +276,17 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">Numero sedi</label>
-              <input class="form-control" name="sediTot" id="inputPhone" type="tel" placeholder="" value="">
+              <input class="form-control lsc" name="sediTot" id="inputPhone" type="tel" placeholder="" value="">
             </div>
             <!-- Form Group (birthday)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">Numero dipendenti</label>
-              <input class="form-control" name="dipendenti" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control lsc" name="dipendenti" id="inputBirthday" type="text" name="birthday"
                 placeholder="" value="">
             </div>
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">Numero linee totali</label>
-              <input class="form-control" name="nLineeTot" id="inputBirthday" type="text" name="birthday" placeholder=""
+              <input class="form-control lsc" name="nLineeTot" id="inputBirthday" type="text" name="birthday" placeholder=""
                 value="">
             </div>
 
@@ -296,17 +296,17 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">Fisso</label>
-              <input class="form-control" name="fisso" id="inputPhone" type="tel" placeholder="" value="">
+              <input class="form-control lsc" name="fisso" id="inputPhone" type="tel" placeholder="" value="">
             </div>
             <!-- Form Group (birthday)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">Mobile</label>
-              <input class="form-control" name="mobile" id="inputBirthday" type="text" name="birthday" placeholder=""
+              <input class="form-control lsc" name="mobile" id="inputBirthday" type="text" name="birthday" placeholder=""
                 value="">
             </div>
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">Totale</label>
-              <input class="form-control" name="totale" id="inputBirthday" type="text" name="birthday" placeholder=""
+              <input class="form-control lsc" name="totale" id="inputBirthday" type="text" name="birthday" placeholder=""
                 value="">
             </div>
           </div>
@@ -314,23 +314,23 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">Fatturato Cerved</label>
-              <input class="form-control" name="fatturatoCerved" id="inputPhone" type="tel" placeholder="" value="">
+              <input class="form-control lsc" name="fatturatoCerved" id="inputPhone" type="tel" placeholder="" value="">
             </div>
             <!-- Form Group (birthday)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">Fatturato TIM</label>
-              <input class="form-control" name="fatturatoTim" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control lsc" name="fatturatoTim" id="inputBirthday" type="text" name="birthday"
                 placeholder="" value="">
             </div>
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">clienteOffMobScadenza</label>
-              <input class="form-control" name="clienteOffMobScadenza" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control lsc" name="clienteOffMobScadenza" id="inputBirthday" type="text" name="birthday"
                 placeholder="" value="">
             </div>
           </div>
           <!-- Save changes button-->
           <button class="btn btn-primary" type="submit">Aggiungi cliente</button>
-
+          <button class="btn btn-primary" type="button" id="cleanFormCliente">Cancella tutto</button>
         </form>
       </div>
     </div>
@@ -370,7 +370,7 @@
                 <div class="card mb-4">
                   <div class="card-header"></div>
                   <div class="card-body">
-                    <form action="/portafoglio/modifyTrattativa/{{trattative[i].idTrattativa}}" method="POST">
+                    <form action="/portafoglio/modifyTrattativa/{{trattative[i][0]}}" method="POST">
                       <input type="hidden" name="idClienteModify" id="idCliente" value="{{current_cliente[0]}}">
                       <!-- Form Group (username)-->
                       <div class="mb-3">
@@ -439,11 +439,11 @@
                         <!-- Form Group (birthday)-->
                         <div class="col-md-4">
                           <label class="small mb-1" for="inputBirthday">categoriaOffertaIT</label>
-                          <!--<input class="form-control" name="categoriaOffertaITModify" id="inputBirthday" type="text"
+                            <input class="form-control" name="categoriaOffertaITModify" id="categoriaOffertaITModify" type="hidden"
                             name="birthday" placeholder="Enter your birthday"
-                            value="{{trattative[i][12]}}">-->
-                            <option value="{% if trattative[i][12] %} {{trattative[i][12]}} {%endif%}"selected>{% if trattative[i][12] %} {{trattative[i][12]}}{%endif%}</option>
-                            <select class="form-select" aria-label="Default select example">
+                            value="">
+                            <option value="{% if trattative[i][12] %} {{trattative[i][12]}} {%endif%}" selected>{% if trattative[i][12] %} {{trattative[i][12]}}{%endif%}</option>
+                            <select class="form-select" aria-label="Default select example" id="categoriaOptions" onchange="setCategoria()">
                             {% for c in categorie %}
                             <option value="{{c.idCategoria}}">{{c.nome}}</option>
                             {% endfor %}
@@ -499,12 +499,13 @@
                       <div class="row gx-3 mb-3">
                         <!-- Form Group (phone number)-->
                         <div class="col-md-3">
+                          <input type="hidden" name="faseModify" id="faseModify">
                           <label class="small mb-1" for="inputPhone">fase</label>
-                          <select class="form-select" aria-label="Default select example">
+                          <select class="form-select" aria-label="Default select example" id="faseOptions" onchange="setFase()"> 
                             <option value="{% if trattative[i][19] %} {{trattative[i][19]}} {%endif%}"selected>{% if trattative[i][19] %} {{trattative[i][19]}}{%endif%}</option>
                             {% for a in andamento %}
                            
-                            <option value="{{a.idAndamento}}">{{a.nome}}</option>
+                            <option value="{{a.idAndamento}}" >{{a.nome}}</option>
                             {% endfor %}
                           </select>
                         </div>
@@ -547,14 +548,14 @@
     <button class="btn btn-primary" type="button" id="btnTrattativa" onclick="showTrattativa(this)">Aggiungi
       trattativa</button>
     <div class="card mb-4" id="formTrattativa" style="display: none;">
-      <div class="card-header"></div>
+      <div class="card-header">Nuova trattativa</div>
       <div class="card-body">
         <form action="/portafoglio/addTrattativaForm" method="POST">
           <input type="hidden" name="idClienteAdd" id="idCliente" value="{{current_cliente[0]}}">
           <!-- Form Group (username)-->
           <div class="mb-3">
             <label class="small mb-1" for="inputUsername">codiceCtrDigitali</label>
-            <input class="form-control" name="codiceCtrDigitaliAdd" id="inputUsername" type="text"
+            <input class="form-control ls" name="codiceCtrDigitaliAdd" id="inputUsername" type="text"
               placeholder="Enter your username" value="">
           </div>
           <!-- Form Row-->
@@ -562,13 +563,13 @@
             <!-- Form Group (first name)-->
             <div class="col-md-6">
               <label class="small mb-1" for="inputFirstName">codiceSalesHub</label>
-              <input class="form-control" name="codiceSalesHubAdd" id="inputFirstName" type="text"
+              <input class="form-control ls" name="codiceSalesHubAdd" id="inputFirstName" type="text"
                 placeholder="Enter your first name" value="">
             </div>
             <!-- Form Group (last name)-->
             <div class="col-md-6">
               <label class="small mb-1" for="inputLastName">areaManager</label>
-              <input class="form-control" name="areaManagerAdd" id="inputLastName" type="text"
+              <input class="form-control ls" name="areaManagerAdd" id="inputLastName" type="text"
                 placeholder="Enter your last name" value="">
             </div>
           </div>
@@ -577,18 +578,18 @@
             <!-- Form Group (organization name)-->
             <div class="col-md-6">
               <label class="small mb-1" for="inputOrgName">zona</label>
-              <input class="form-control" name="zonaAdd" id="inputOrgName" type="text"
+              <input class="form-control ls" name="zonaAdd" id="inputOrgName" type="text"
                 placeholder="Enter your organization name" value="">
             </div>
             <!-- Form Group (location)-->
             <div class="col-md-3">
               <label class="small mb-1" for="inputLocation">tipo</label>
-              <input class="form-control" name="tipoAdd" id="inputLocation" type="text"
+              <input class="form-control ls" name="tipoAdd" id="inputLocation" type="text"
                 placeholder="Enter your location" value="">
             </div>
             <div class="col-md-3">
               <label class="small mb-1" for="inputLocation">nomeOpportunita</label>
-              <input class="form-control" name="nomeOpportunitaAdd" id="inputLocation" type="text"
+              <input class="form-control ls" name="nomeOpportunitaAdd" id="inputLocation" type="text"
                 placeholder="Enter your location" value="">
             </div>
           </div>
@@ -597,18 +598,18 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">dataCreazioneOpportunita</label>
-              <input class="form-control" name="dataCreazioneOpportunitaAdd" id="inputPhone" type="date"
+              <input class="form-control ls" name="dataCreazioneOpportunitaAdd" id="inputPhone" type="date"
                 placeholder="Enter your phone number" value="">
             </div>
             <!-- Form Group (birthday)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">fix</label>
-              <input class="form-control" name="fixAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="fixAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">mobile</label>
-              <input class="form-control" name="mobileAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="mobileAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
 
@@ -618,18 +619,18 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">categoriaOffertaIT</label>
-              <input class="form-control" name="categoriaOffertaITAdd" id="inputPhone" type="tel"
+              <input class="form-control ls" name="categoriaOffertaITAdd" id="inputPhone" type="tel"
                 placeholder="Enter your phone number" value="">
             </div>
             <!-- Form Group (birthday)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">it</label>
-              <input class="form-control" name="itAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="itAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">lineeFoniaFix</label>
-              <input class="form-control" name="lineeFoniaFixAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="lineeFoniaFixAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
           </div>
@@ -637,18 +638,18 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">aom</label>
-              <input class="form-control" name="aomAdd" id="inputPhone" type="tel" placeholder="Enter your phone number"
+              <input class="form-control ls" name="aomAdd" id="inputPhone" type="tel" placeholder="Enter your phone number"
                 value="">
             </div>
             <!-- Form Group (birthday)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">mnp</label>
-              <input class="form-control" name="mnpAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="mnpAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">al</label>
-              <input class="form-control" name="alAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="alAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
           </div>
@@ -656,18 +657,18 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">dataChiusura</label>
-              <input class="form-control" name="dataChiusuraAdd" id="inputPhone" type="date"
+              <input class="form-control ls" name="dataChiusuraAdd" id="inputPhone" type="date"
                 placeholder="Enter your phone number" value="">
             </div>
             <!-- Form Group (birthday)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">fase</label>
-              <input class="form-control" name="faseAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="faseAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">noteSpecialista</label>
-              <input class="form-control" name="noteSpecialistaAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="noteSpecialistaAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
           </div>
@@ -675,24 +676,25 @@
             <!-- Form Group (phone number)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputPhone">probabilita</label>
-              <input class="form-control" name="probabilitaAdd" id="inputPhone" type="tel"
+              <input class="form-control ls" name="probabilitaAdd" id="inputPhone" type="tel"
                 placeholder="Enter your phone number" value="">
             </div>
             <!-- Form Group (birthday)-->
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">inPaf</label>
-              <input class="form-control" name="inPafAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="inPafAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
             <div class="col-md-4">
               <label class="small mb-1" for="inputBirthday">fornitore</label>
-              <input class="form-control" name="fornitoreAdd" id="inputBirthday" type="text" name="birthday"
+              <input class="form-control ls" name="fornitoreAdd" id="inputBirthday" type="text" name="birthday"
                 placeholder="Enter your birthday" value="">
             </div>
           </div>
           <!-- Save changes button-->
           <button class="btn btn-primary" type="submit" style="float: left;" id="btnCreaTrattativa">Aggiungi
             trattativa</button>
+            <button class="btn btn-primary" type="button" style="float: right;" id="cleanFormTrattativa">Pulisci tutto</button>
           <button class="btn btn-primary" type="button" style="float: right;" id="btnAnnullaTrattativa"
             onclick="hideTrattativa()">Annulla</button>
 
@@ -724,6 +726,56 @@
 <a href="{{ url_for('.getExcelTrattative', id=idPort)}}">Scarica le trattative aggiornate </a>
 {%endif%}
 <script>
+  function setFase(el){
+    let s = document.getElementById("faseOptions");
+    let selected = s.options[s.selectedIndex].value;
+    alert(selected);
+    document.getElementById("faseModify").value = selected;
+  }
+
+  function setCategoria(el){
+    let s = document.getElementById("categoriaOptions");
+    let selected = s.options[s.selectedIndex].value;
+    document.getElementById("categoriaOffertaITModify").value = selected;
+    alert(selected);
+  }
+
+  obj = document.getElementsByClassName("lsc")
+  for (let item of obj){
+  
+    item.addEventListener("change",function(){
+      localStorage.setItem("add"+item.name, item.value);    
+    })
+  }
+
+  for(let item of obj){
+    item.value = localStorage.getItem("add"+item.name);
+  }
+
+  document.getElementById("cleanFormCliente").addEventListener("click", function(){
+    for (let item of obj){
+      item.value = "";
+    }
+  })
+
+  obj = document.getElementsByClassName("ls")
+  for (let item of obj){
+  
+    item.addEventListener("change",function(){
+      localStorage.setItem("add"+item.name, item.value);    
+    })
+  }
+
+  for(let item of obj){
+    item.value = localStorage.getItem("add"+item.name);
+  }
+
+  document.getElementById("cleanFormTrattativa").addEventListener("click", function(){
+    for (let item of obj){
+      item.value = "";
+    }
+  })
+
   function sendData(val) {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", '/portafoglio/remove/' + val, true);

@@ -1,10 +1,14 @@
-from flask import Blueprint,render_template, url_for, redirect, request
+from flask import Blueprint,render_template, url_for, redirect, request, Response
 from home import *
 from flask_login import *
 from model import *
 from login.login import bcrypt
 import openpyxl
 from datetime import date
+import io
+import xlwt
+import psycopg2
+import psycopg2.extras
 
 @home_bp.route('/', methods=['GET', 'POST'])
 def home():
@@ -175,6 +179,66 @@ def addPortafoglio():
     
     return redirect(url_for('portafoglio_bp.home'))
 
+
+@home_bp.route('/getExcel/<int:id>')
+def getExcel(id):
+    print("sto creando il file")
+    print(id)
+    res = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
+
+    output = io.BytesIO()
+
+    workbook = xlwt.Workbook()
+
+    sh = workbook.add_sheet('Report Portafoglio')
+
+    sh.write(0,0,'TIPO CLIENTE')
+    sh.write(0,1,'CF')
+    sh.write(0,2,'RAG_SOC_CLI')
+    sh.write(0,3,'PRESIDIO')
+    sh.write(0,4,'INDIRIZZO PRINCIPALE')
+    sh.write(0,5,'COMUNE_PRINCIPALE')
+    sh.write(0,6,'CAP_PRINCIPALE')
+    sh.write(0,7,'PROVINCIA_DESCR_PRINCIPALE')
+    sh.write(0,8,'PROVINCIA_SIGLA_PRINCIPALE')
+    sh.write(0,9,'SEDI_TOT')
+    sh.write(0,10,'N_LINEE_TOT')
+    sh.write(0,11,'_FISSO')
+    sh.write(0,12,'_MOBILE')
+    sh.write(0,13,'_TOTALE')
+    sh.write(0,14,'FATTURATO_CERVED')
+    sh.write(0,15,'CLIENTE_OFF_MOB_SCADENZA')
+    sh.write(0,16,'FATTURATO_IT_TIM')
+    sh.write(0,17,'DIPENDENTI')
+
+    idx = 0
+    for row in res:
+        print(row)
+        sh.write(idx+1, 0, row['tipoCliente'])
+        sh.write(idx+1, 1, row['cf'])
+        sh.write(idx+1, 2, row['ragioneSociale'])
+        sh.write(idx+1, 3, row['presidio'])
+        sh.write(idx+1, 4, row['indirizzoPrincipale'])
+        sh.write(idx+1, 5, row['comunePrincipale'])
+        sh.write(idx+1, 6, row['capPrincipale'])
+        sh.write(idx+1, 7, row['provinciaDescPrincipale'])
+        sh.write(idx+1, 8, row['provinciaSiglaPrincipale'])
+        sh.write(idx+1, 9, row['sediTot'])
+        sh.write(idx+1, 10, row['nLineeTot'])
+        sh.write(idx+1, 11, row['fisso'])
+        sh.write(idx+1, 12, row['mobile'])
+        sh.write(idx+1, 13, row['totale'])
+        sh.write(idx+1, 14, row['fatturatoCerved'])
+        sh.write(idx+1, 15, row['clienteOffMobScadenza'])
+        sh.write(idx+1, 16, row['fatturatoTim'])
+        sh.write(idx+1, 17, row['dipendenti'])
+        idx += 1
+    
+    workbook.save(output)
+    output.seek(0)
+    
+    return Response(output, mimetype="application/ms-excel", headers={"Content-Disposition":"attachment;filename=report_portafoglio.xls"})
+        
 """"
   idUtente = current_user.get_id(),
                 idPortafoglio = lastPortafoglio,

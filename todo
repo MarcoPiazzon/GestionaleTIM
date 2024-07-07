@@ -160,6 +160,7 @@ visualizzare la trattativa selezionata precedentemente quando premo su un appunt
 
 testare righe commentate delete trattative
 da riprodurre i file excel durante la creazione del file
+da controllare idUtente addTrattativaForm
 
 database
 controlla le foreign key cancellate durante lo sviluppo
@@ -171,3 +172,4 @@ cercare di stilizzare il file excel con quello originale
 rifiniture finali
 controllare tutte i routing nella pagina portafoglio, soprattuto quando vengono invocate 
 le funzioni di inserimento/modifica/delete
+convertire la list in portafoglio come in corsidoc.py

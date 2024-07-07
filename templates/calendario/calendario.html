@@ -185,7 +185,7 @@
             <!-- Form Group (username)-->
             <div class="mb-3">
               <label class="small mb-1" for="inputUsername">Titolo</label>
-              <input class="form-control" name="titolo" id="title" type="text" placeholder="Enter your username"
+              <input class="form-control ls" name="titolo" id="title" type="text" placeholder="Enter your username"
                 value="" required>
             </div>
             <!-- Form Row-->
@@ -193,7 +193,7 @@
               <!-- Form Group (first name)-->
               <div class="col">
                 <label class="small mb-1" for="inputFirstName">Varie discussioni</label>
-                <textarea class="form-control" name="varieDiscussioni" id="description" rows="3"></textarea>
+                <textarea class="form-control ls" name="varieDiscussioni" id="description" rows="3"></textarea>
               </div>
             </div>
             <!-- Form Row        -->
@@ -201,12 +201,12 @@
               <!-- Form Group (first name)-->
               <div class="col">
                 <label class="small mb-1" for="inputFirstName">Preventivo da fare</label>
-                <textarea class="form-control" name="preventivoDaFare" id="preventivoDaFare" rows="3"></textarea>
+                <textarea class="form-control ls" name="preventivoDaFare" id="preventivoDaFare" rows="3"></textarea>
               </div>
             </div>
             <!-- Form Row        -->
             <div class="row gx-3 mb-3">
-              <input type="hidden" name="idtrattativaAdd" id="idtrattativaAdd" value="">
+              <input class="ls" type="hidden" name="idtrattativaAdd" id="idtrattativaAdd" value="">
               <!-- Form Group (first name)-->
               <div class="col">
                 <label class="small mb-1" for="inputFirstName">Trattativa assocciata</label>
@@ -224,12 +224,13 @@
             <div class="row gx-3 mb-3">
               <div class="col-md-4">
                 <label class="small mb-1" for="inputBirthday">Date</label>
-                <input class="form-control" name="dataApp" id="dataAppAdd" type="datetime-local" name="birthday"
+                <input class="form-control ls" name="dataApp" id="dataAppAdd" type="datetime-local" name="birthday"
                   placeholder="Enter your birthday" value="" required>
               </div>
             </div>
             <!-- Save changes button-->
             <button class="btn btn-primary" type="submit" id="submitAppuntamento">Crea appuntamento</button>
+            <button class="btn btn-primary" type="button" id="cleanForm">Cancella tutto</button>
           </form>
         </div>
       </div>
@@ -241,6 +242,27 @@
 </body>
 
 <script>
+
+  obj = document.getElementsByClassName("ls")
+  for (let item of obj){
+  
+    item.addEventListener("change",function(){
+      localStorage.setItem("add"+item.id, item.value);    
+    })
+  }
+
+  for(let item of obj){
+    item.value = localStorage.getItem("add"+item.id);
+  }
+
+  document.getElementById("cleanForm").addEventListener("click", function(){
+    for (let item of obj){
+      item.value = "";
+    }
+  })
+
+  
+
   function getTrattativa(el, s){
     switch(s){
       case 0:
