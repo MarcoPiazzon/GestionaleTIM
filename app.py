@@ -12,6 +12,7 @@ from corsidoc.corsidoc import corsidoc_bp
 from portafoglio.portafoglio import portafoglio_bp 
 from calendario.calendario import calendario_bp
 from contatto.contatto import contatto_bp
+from trattativa.trattativa import trattativa_bp
 from model import *
 import datetime
 import pandas
@@ -42,6 +43,7 @@ app.register_blueprint(corsidoc_bp,url_prefix='/corsidoc')
 app.register_blueprint(portafoglio_bp, url_prefix='/portafoglio')
 app.register_blueprint(calendario_bp, url_prefix='/calendario')
 app.register_blueprint(contatto_bp, url_prefix='/contatto')
+app.register_blueprint(trattativa_bp, url_prefix='/trattativa')
 
 @app.route('/')
 def main():
