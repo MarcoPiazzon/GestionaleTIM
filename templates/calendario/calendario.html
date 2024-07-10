@@ -6,7 +6,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.14/index.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<style>
+  .event {
+      //shared event css
+  }
+  
+  .greenEvent {
+      background-color:#00FF00;
+  }
+  
+  .redEvent {
+      background-color:#FF0000;
+  }
+  </style>
 <script>
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -24,41 +36,51 @@
       height: 600,
       events: [
         {% for event in events %}
-                {
-        title: '{{event.titolo}}',
-        start: '{{event.dataApp}}',
-        end: '{{event.dataApp}}',
-        extendedProps: {
-          description: '{{event.varieDiscussioni}}',
-          preventivoDaFare: '{{event.preventivoDaFare}}',
-          dataApp: '{{event.dataApp}}',
-          idAppuntamento: '{{event.idAppuntamento}}',
-          idUtenteCreazione: '{{event.idUtenteCreazione}}'
-        },
-
-      },
-      {% endfor %}
-            ],
-
-    eventClick: function (info) {
-      info.jsEvent.preventDefault(); // don't let the browser navigate
-      console.log(info.event.extendedProps);
-      document.getElementById("modifica").style.display = "block";
-      document.getElementById("crea").style.display = "none";
-      document.getElementById("title").value = info.event.title;
-      if (info.event.extendedProps) {
-        document.getElementById("idapp").value = info.event.extendedProps.idAppuntamento;
-        document.getElementById("description").value = info.event.extendedProps.description;
-        document.getElementById("preventivoDaFare").value = info.event.extendedProps.preventivoDaFare;
-        document.getElementById("dataApp").value = info.event.extendedProps.dataApp;
-        document.getElementById("idUtenteCreazione").value = info.event.extendedProps.idUtenteCreazione;
-      } else {
-        alert("non esiste");
+          {
+            title: '{{event.titolo}}',
+            start: '{{event.dataApp}}',
+            end: '{{event.dataApp}}',
+            extendedProps: {
+              description: '{{event.varieDiscussioni}}',
+              preventivoDaFare: '{{event.preventivoDaFare}}',
+              dataApp: '{{event.dataApp}}',
+              idAppuntamento: '{{event.idAppuntamento}}',
+              idUtenteCreazione: '{{event.idUtenteCreazione}}',
+              nome: '{{event.nome}}',
+              cognome: '{{event.cognome}}'
+            },
+            rendering: 'background'
+          },
+        
+        {% endfor %}
+      ],
+      eventClick: function (info) {
+        info.jsEvent.preventDefault(); // don't let the browser navigate
+        console.log(info.event.extendedProps);
+        document.getElementById("modifica").style.display = "block";
+        document.getElementById("crea").style.display = "none";
+        document.getElementById("title").value = info.event.title;
+        if (info.event.extendedProps) {
+          document.getElementById("userCreator").innerHTML = "Evento creato da " + info.event.extendedProps.nome + " " + info.event.extendedProps.cognome;
+          document.getElementById("idapp").value = info.event.extendedProps.idAppuntamento;
+          document.getElementById("description").value = info.event.extendedProps.description;
+          document.getElementById("preventivoDaFare").value = info.event.extendedProps.preventivoDaFare;
+          document.getElementById("dataApp").value = info.event.extendedProps.dataApp;
+          document.getElementById("idUtenteCreazione").value = info.event.extendedProps.idUtenteCreazione;
+        } else {
+          alert("non esiste");
+        }
       }
-    }
         });
   calendar.render();
-    });
+  /*console.log(document.getElementsByClassName("fc-toolbar-chunk"));
+        getButtons = document.getElementsByClassName("fc-toolbar-chunk");
+        console.log(getButtons[0].children[0].children[1].innerHTML = "Oggi")
+        getButtons[2].children[0].children[0].innerHTML = "Anno"
+        getButtons[2].children[0].children[1].innerHTML = "Mese"
+        getButtons[2].children[0].children[2].innerHTML = "Settimana"
+        getButtons[2].children[0].children[3].innerHTML = "Giorno"*/
+});
 
 
 
@@ -112,7 +134,7 @@
 
           <!-- Account details card-->
           <div class="card mb-4">
-            <div class="card-header">Evento creato da Salvatore Iaccarino</div>
+            <div class="card-header" id="userCreator"></div>
             <div class="card-body">
               <form action="/calendario/modify" method="POST">
 

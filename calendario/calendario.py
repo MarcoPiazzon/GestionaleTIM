@@ -9,7 +9,7 @@ from datetime import date
 
 @calendario_bp.route('/')
 def home():
-    events = conn.execute(select(appuntamento)).fetchall()
+    events = conn.execute(select(appuntamento, utente.c.nome, utente.c.cognome).select_from(join(appuntamento, utente, appuntamento.c.idUtenteCreazione == utente.c.idUtente))).fetchall()
     trattative = []
     try:
         #trattative = conn.execute(select(trattativa).where(trattativa.c.fase == 1)).fetchall()
@@ -44,7 +44,7 @@ def addAppuntamento():
     try:
         print(current_user.get_id())
         print(request.form)
-        idUtenteCreazione = 2 #di default, da aggiornare con l'utente corrente
+        idUtenteCreazione = current_user.get_id() #di default, da aggiornare con l'utente corrente
         titolo = request.form['titolo']
         varieDiscussioni = request.form['varieDiscussioni']
         preventivoDaFare = request.form['preventivoDaFare']

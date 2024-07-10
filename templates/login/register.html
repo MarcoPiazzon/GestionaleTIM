@@ -1,0 +1,75 @@
+{% extends "headerlogin.html"%}
+{% block title %} Register {% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/login.css') }}">
+<style>
+  .form-control {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-radius: 0px;
+  }
+</style>
+
+<div class="cont">
+
+  <div class="container ">
+    <!--<div class="row-md-6 mb-4">
+                <input type="email"  class="form-control" name="email" id="email" placeholder="Email">
+            </div>
+            <div class="row-md-6 ">
+                <input type="password"  class="form-control" name="psw" id="password" placeholder="Password" >
+            </div>
+            <div class="row-md-6 m-2 text-danger">
+                {% if err==1 %}
+                    Errore Login
+                {% endif %}
+                {% if err==2 %}
+                    wrong password
+                {% endif %}
+            </div>
+            <div class="row-12 ">
+                <input type="submit" class="btn btn-primary " value="Login">
+            </div>-->
+    <div class="card">
+      <div class="card-header px-lg-5">
+        <div class="card-heading">Registrati</div>
+      </div>
+      <div class="card-body p-lg-5">
+
+        <form action="/register/insertuser" method="post">
+          <div class="form-floating mb-3">
+            <input class="form-control" id="username" type="text" name="nome" placeholder="" required>
+            <label for="username">Nome</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input class="form-control" id="cognome" type="text" name="cognome" placeholder="" required>
+            <label for="username">Cognome</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input class="form-control" id="floatingInput" type="email" name="email" placeholder="" required>
+            <label for="floatingInput">Email address</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input class="form-control" id="floatingPassword" type="password" name="password" placeholder="" required>
+            <label for="floatingPassword">Password</label>
+          </div>
+          <button class="btn btn-primary" type="submit">Registrati</button>
+
+        </form>
+      </div>
+      <div class="card-footer px-lg-5 py-lg-4">
+        <div class="text-sm text-muted">Hai già un account? <a href="{{ url_for('login_bpp.logoutuser') }}">Accedi</a>.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+{% endblock %}

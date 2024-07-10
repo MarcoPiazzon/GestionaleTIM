@@ -13,6 +13,7 @@ from portafoglio.portafoglio import portafoglio_bp
 from calendario.calendario import calendario_bp
 from contatto.contatto import contatto_bp
 from trattativa.trattativa import trattativa_bp
+from register.register import register_bp
 from model import *
 import datetime
 import pandas
@@ -25,6 +26,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
+    print("sono dentro a load user")
     user = conn.execute(select(utente).where(utente.c.idUtente==user_id)).fetchone()._asdict()
     return User(user_id,user['email'])
 
@@ -44,6 +46,8 @@ app.register_blueprint(portafoglio_bp, url_prefix='/portafoglio')
 app.register_blueprint(calendario_bp, url_prefix='/calendario')
 app.register_blueprint(contatto_bp, url_prefix='/contatto')
 app.register_blueprint(trattativa_bp, url_prefix='/trattativa')
+app.register_blueprint(register_bp, url_prefix='/register')
+
 
 @app.route('/')
 def main():

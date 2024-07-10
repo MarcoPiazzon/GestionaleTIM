@@ -31,9 +31,14 @@ class User(UserMixin):
     def __init__(self,id,email) -> None:
         self.id=id
         self.email=email
-        res =conn.execute(select(utente).where(utente.c.email==email)).fetchone()._asdict()
-        res2 = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == id).order_by(portafoglio.c.dataInserimento.desc())).fetchone()._asdict()
-        self.idPort = res2['idPortafoglio']
+        res =conn.execute(select(utente).where(utente.c.email==email)).fetchone()
+        
+        res2 = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == id).order_by(portafoglio.c.dataInserimento.desc())).fetchone()
+        if not (res2 is None):
+            res2 = res2._asdict()
+            self.idPort = res2['idPortafoglio']
+        else:
+            self.idPort = 0
         self.nome = res['nome']
         self.cognome = res['cognome']
     @property
