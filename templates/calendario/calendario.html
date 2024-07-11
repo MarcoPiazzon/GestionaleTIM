@@ -88,28 +88,12 @@
 
 <style>
   #myUL {
-    list-style-type: none;
     padding: 0;
     margin: 0;
     overflow-y: scroll;
     max-height: 200px;
   }
 
-  #myUL li a {
-    border: 1px solid #ddd;
-    margin-top: -1px;
-    /* Prevent double borders */
-    background-color: #f6f6f6;
-    padding: 12px;
-    text-decoration: none;
-    font-size: 18px;
-    color: black;
-    display: block
-  }
-
-  #myUL li a:hover:not(.header) {
-    background-color: #eee;
-  }
 
   .hiddenRow {
     padding: 0 !important;
@@ -171,13 +155,20 @@
                 <div class="row gx-3 mb-3">
                   <input type="hidden" name="idtrattativa" id="idtrattativa" value="">
                   <!-- Form Group (first name)-->
+                  <label class="small mb-1" for="inputFirstName">Trattativa assocciata</label>
                   <div class="col">
-                    <label class="small mb-1" for="inputFirstName">Trattativa assocciata</label>
-                    <ul id="myUL" class="vertical-scrollable">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <input class="form-control" type="text" id="myInputModify" onkeyup="myFunction(this,0)"
+                              onclick="showUp(this,0)" placeholder="Search for names.." title="Type in a name">
+                      </div>
+                  </div>
+                    
+                    <ul id="myULModify" class="vertical-scrollable list-group">
                       {% if trattative%}
                       {% for t in trattative%}
-                      <input type="button" class="dropdown-item" type="button"
-                        onclick="getTrattativa('{{t.idTrattativa}}',0)" value='{{t.nomeOpportunita}}' />
+                      <li class="list-group-item"
+                        onclick="getTrattativa(this,'{{t.idTrattativa}}',0)">{{t.nomeOpportunita}}</li>
                       {% endfor %}
                       {% endif %}
                     </ul>
@@ -237,15 +228,22 @@
                 </div>
                 <!-- Form Row        -->
                 <div class="row gx-3 mb-3">
-                  <input class="ls" type="hidden" name="idtrattativaAdd" id="idtrattativaAdd" value="">
+                  <input type="hidden" name="idtrattativaAdd" id="idtrattativaAdd" value="">
                   <!-- Form Group (first name)-->
+                  <label class="small mb-1" for="inputFirstName">Trattativa assocciata</label>
                   <div class="col">
-                    <label class="small mb-1" for="inputFirstName">Trattativa assocciata</label>
-                    <ul id="myUL" class="vertical-scrollable">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <input class="form-control" type="text" id="myInputAdd" onkeyup="myFunction(this,1)"
+                              onclick="showUp(this,1)" placeholder="Search for names.." title="Type in a name">
+                      </div>
+                  </div>
+                    
+                    <ul id="myULAdd" class="vertical-scrollable list-group">
                       {% if trattative%}
                       {% for t in trattative%}
-                      <input type="button" class="dropdown-item" type="button"
-                        onclick="getTrattativa('{{t.idTrattativa}}',1)" value='{{t.nomeOpportunita}}' />
+                      <li class="list-group-item"
+                        onclick="getTrattativa(this,'{{t.idTrattativa}}',1)">{{t.nomeOpportunita}}</li>
                       {% endfor %}
                       {% endif %}
                     </ul>
@@ -314,16 +312,23 @@
 
 
 
-  function getTrattativa(el, s) {
+  function getTrattativa(el, id, s) {
+    
+    console.log(el);
+
     switch (s) {
       case 0:
-        alert(el)
-        document.getElementById("idtrattativa").value = el;
+        alert(id)
+        document.getElementById("idtrattativa").innerHTML = id;
         console.log(document.getElementById("idtrattativa"));
+        document.getElementById("myInputModify").value = el.innerHTML;
+        document.getElementById("myULModify").style.display = "none";
         break;
       case 1:
-        alert(el)
-        document.getElementById("idtrattativaAdd").value = el;
+        alert(id)
+        document.getElementById("myInputAdd").value = el.innerHTML;
+        document.getElementById("myULAdd").style.display = "none";
+        document.getElementById("idtrattativaAdd").innerHTML = id;
         console.log(document.getElementById("idtrattativaAdd"));
         break;
     }
@@ -354,6 +359,39 @@
       }
     });
   });
+</script>
+
+<script>
+      function showUp(el,s) {
+        el.value = "";
+        name = "myUL"
+        if(s === 0) name += "Modify"; else name += "Add"
+        document.getElementById(name).style.display = "block";
+    }
+
+    function myFunction(el, s) {
+      name = "myUL"
+      if(s === 0)
+        name += "Modify"
+      else 
+        name += "Add" 
+      var input, filter, ul, li, i, txtValue;
+        filter = el.value.toUpperCase();
+        console.log(name)
+        ul = document.getElementById(name);
+
+        input = ul.getElementsByTagName("li");
+        for (i = 0; i < input.length; i++) {
+
+            txtValue = input[i].innerHTML;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                input[i].style.display = "";
+            } else {
+                input[i].style.display = "none";
+            }
+        }
+    }
+
 </script>
 
 {%endblock%}

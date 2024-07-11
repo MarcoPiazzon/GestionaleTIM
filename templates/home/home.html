@@ -1,35 +1,316 @@
 {% extends "header.html"%}
 {% block title %}Home{% endblock %}
 {% block content %}
-  <div class="page-holder bg-gray-100">
-      <div class="container-fluid px-lg-4 px-xl-5">
+
+<link href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1581152092/smartwizard/smart_wizard.min.css"
+  rel="stylesheet" type="text/css" />
+<link href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1581152092/smartwizard/smart_wizard_theme_dots.min.css"
+  rel="stylesheet" type="text/css" />
+<script type="text/javascript"
+  src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1581152197/smartwizard/jquery.smartWizard.min.js"></script>
+
+<style>
+  body {
+    font-family: 'Open Sans', sans-serif;
+  }
+
+  #signUpForm {
+    max-width: 500px;
+    background-color: #ffffff;
+    margin: 40px auto;
+    padding: 40px;
+    box-shadow: 0px 6px 18px rgb(0 0 0 / 9%);
+    border-radius: 12px;
+  }
+
+  #signUpForm .form-header {
+    gap: 5px;
+    text-align: center;
+    font-size: .9em;
+  }
+
+  #signUpForm .form-header .stepIndicator {
+    position: relative;
+    flex: 1;
+    padding-bottom: 30px;
+  }
+
+  #signUpForm .form-header .stepIndicator.active {
+    font-weight: 600;
+  }
+
+  #signUpForm .form-header .stepIndicator.finish {
+    font-weight: 600;
+    color: #009688;
+  }
+
+  #signUpForm .form-header .stepIndicator::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    z-index: 9;
+    width: 20px;
+    height: 20px;
+    background-color: #d5efed;
+    border-radius: 50%;
+    border: 3px solid #ecf5f4;
+  }
+
+  #signUpForm .form-header .stepIndicator.active::before {
+    background-color: #a7ede8;
+    border: 3px solid #d5f9f6;
+  }
+
+  #signUpForm .form-header .stepIndicator.finish::before {
+    background-color: #009688;
+    border: 3px solid #b7e1dd;
+  }
+
+  #signUpForm .form-header .stepIndicator::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    width: 100%;
+    height: 3px;
+    background-color: #f3f3f3;
+  }
+
+  #signUpForm .form-header .stepIndicator.active::after {
+    background-color: #a7ede8;
+  }
+
+  #signUpForm .form-header .stepIndicator.finish::after {
+    background-color: #009688;
+  }
+
+  #signUpForm .form-header .stepIndicator:last-child:after {
+    display: none;
+  }
+
+  #signUpForm input {
+    padding: 15px 20px;
+    width: 100%;
+    font-size: 1em;
+    border: 1px solid #e3e3e3;
+    border-radius: 5px;
+  }
+
+  #signUpForm input:focus {
+    border: 1px solid #009688;
+    outline: 0;
+  }
+
+  #signUpForm input.invalid {
+    border: 1px solid #ffaba5;
+  }
+
+  #signUpForm .step {
+    display: none;
+  }
+
+  #signUpForm .form-footer {
+    overflow: auto;
+    gap: 20px;
+  }
+
+  #signUpForm .form-footer button {
+    background-color: #009688;
+    border: 1px solid #009688 !important;
+    color: #ffffff;
+    border: none;
+    padding: 13px 30px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    flex: 1;
+    margin-top: 5px;
+  }
+
+  #signUpForm .form-footer button:hover {
+    opacity: 0.8;
+  }
+
+  #signUpForm .form-footer #prevBtn {
+    background-color: #fff;
+    color: #009688;
+  }
+</style>
+
+<div class="page-holder bg-gray-100">
+  <div class="container-fluid px-lg-4 px-xl-5">
 
 
-        <!-- Page Header-->
-        <div class="page-header">
-          <h1 class="page-heading">Archivi portafogli</h1>
-        </div>
-        <section class="mb-3 mb-lg-5">
-          <div class="row">
-            {% for p in getP %}
-            <div class="col-sm-6 mb-4">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">{{ p.dataInserimento }}</h5>
-                  <a href="/portafoglio/{{ p.idPortafoglio }}/0" class="btn btn-primary" style="float: left;">Apri</a>
-                  <form action="/home/delete/{{p.idPortafoglio}}" method="POST">
-                    <a class="btn btn-danger" id="deleteButton" type="submit"
-                      style="float: right; margin-left: 10px;">Elimina</a>
-                  </form>
-                  <a class="btn btn-success" href="{{ url_for('.getExcel', id=p.idPortafoglio)}}"
-                  style="float: right;">Scarica il
-                    file excel </a>
-                </div>
-              </div>
+    <!-- Page Header-->
+    <div class="page-header">
+      <h1 class="page-heading">Archivi portafogli</h1>
+    </div>
+    <section class="mb-3 mb-lg-5">
+      <div class="row">
+        {% for p in getP %}
+        <div class="col-sm-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ p.dataInserimento }}</h5>
+              <a href="/portafoglio/{{ p.idPortafoglio }}/0" class="btn btn-primary" style="float: left;">Apri</a>
+              <form action="/home/delete/{{p.idPortafoglio}}" method="POST">
+                <a class="btn btn-danger" id="deleteButton" type="submit" style="float: right; margin-left: 10px;"><i
+                    class="fa fa-trash"></i></a>
+              </form>
+              <a class="btn btn-success" href="{{ url_for('.getExcel', id=p.idPortafoglio)}}" style="float: right;"><i
+                  class="fa fa-download"></i></a>
             </div>
-            {% endfor %}
           </div>
-         <!-- <div class="row mb-3">
+        </div>
+        {% endfor %}
+      </div>
+      <div class="row mt-4 py-2">
+        <h5 class="page-heading">Aggiungi un nuovo portafoglio</h5>
+        <form id="signUpForm" action="/home/addPortafoglio" method="post" enctype="multipart/form-data">
+          <!-- start step indicators -->
+          <div class="form-header d-flex mb-4">
+            <span class="stepIndicator">Controllo righe 1</span>
+            <span class="stepIndicator">Posizione righe 1</span>
+            <span class="stepIndicator">Carica primo file</span>
+            <span class="stepIndicator">Controllo righe 2</span>
+            <span class="stepIndicator">Posizione righe 2</span>
+            <span class="stepIndicator">Carica secondo file</span>
+          </div>
+          <!-- end step indicators -->
+
+          <!-- step one -->
+          <div class="step">
+            <p class="mb-4">In questa prima parte andremo ad importare il <b> portafoglio</b></p>
+            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere sicuro, le colonne
+            <strong>devono</strong> andare dalla lettera 'A' alla lettera 'R'.</p>
+            <p class="mb-4"> Se le righe non combaciano i problemi sono due</p>
+            <ol>
+              <li>Non hai trovato possibili righe nascoste</li>
+              <li>Sono presenti più righe del necessario.</li>
+            </ol>
+            <p class="mb-4"> Se ricadi nel caso due, puoi proseguire</p>
+
+          </div>
+
+          <!-- step two -->
+          <div class="step">
+
+            <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del portafoglio.</p>
+            <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere presenti <strong>TUTTE</strong> e
+              nel seguente <strong>ordine</strong>:</p>
+            <ol>
+              <li>TIPO_CLIENTE</li>
+              <li>CF</li>
+              <li>RAG_SOC_CLI</li>
+              <li>PRESIDIO</li>
+              <li>INDIRIZZO PRINCIPALE</li>
+              <li>COMUNE</li>
+              <li>CAP_PRINCIPALE</li>
+              <li>PROVINCIA_DESCR_PRINCIPALE</li>
+              <li>PROVINCIA_SIGLA_PRINCIPALE</li>
+              <li>SEDI_TOT</li>
+              <li>N_LINEE_TOT</li>
+              <li>_FISSO</li>
+              <li>_MOBILE</li>
+              <li>_TOTALE</li>
+              <li>FATTURATO_CERVED</li>
+              <li>CLIENTE_OFF_MOB_SCADENZA</li>
+              <li>FATTURATO_IT_TIM</li>
+              <li>DIPENDENTI</li>
+
+            </ol>
+
+           <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank" href="https://docs.google.com/spreadsheets/d/1BAIRFhBxXiRG9Azd3VZL__g0gsJgWfcr/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a> per un file di esempio</p>
+          </div>
+
+          <!-- step three -->
+          <div class="step">
+            <p class="mb-4">Carica il file qua sotto.</p>
+            <div class="input-group mb-4">
+              <label class="small mb-1" for="fileDoc">Portafoglio</label>
+              <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+                placeholder="Inserisci il file" aria-label="Upload" name="fileDoc"
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+
+            </div>
+            <p class="mb-4">Se non inserire le <strong>trattative</strong> puoi andare direttamente alla fine</p>
+          </div>
+
+          <!-- step four -->
+          <div class="step">
+            <p class="mb-4">In questa parte andremo ad importare le <strong>trattative</strong> in riferimento al <strong>portafoglio</strong></p>
+            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere sicuro, le colonne
+              devono andare dalla lettera 'A' alla lettera 'X'.</p>
+            <p class="mb-4"> Se le righe non combaciano i problemi sono due</p>
+            <ol>
+              <li>Non hai trovato possibili righe nascoste</li>
+              <li>Sono presenti più righe del necessario.</li>
+            </ol>
+            <p class="mb-4"> Se ricadi nel caso due, puoi proseguire</p>
+
+          </div>
+
+          <!-- step five -->
+          <div class="step">
+            <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del portafoglio.</p>
+            <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere presenti <strong>TUTTE</strong> e
+              nel seguente <strong>ordine</strong>:</p>
+            <ol>
+              <li>CODICE CTR DIGITALE</li>
+              <li>CODICE SALES HUB</li>
+              <li>AREA MANAGER</li>
+              <li>SA</li>
+              <li>RAGIONE SOCIALE</li>
+              <li>VENETO</li>
+              <li>TIPO</li>
+              <li>NOME OPPORTUNITA'</li>
+              <li>DATA CREAZIONE OPPORTUNITA'</li>
+              <li>FIX</li>
+              <li>MOBILE</li>
+              <li>CATEGORIA OFFERTA IT</li>
+              <li>IT</li>
+              <li>LINEE FONIA FIX</li>
+              <li>AOM</li>
+              <li>MNP</li>
+              <li>AL</li>
+              <li>DATA CHIUSURA</li>
+              <li>FASE</li>
+              <li>NOTE SPECIALISTA</li>
+              <li>PROBABILITA'</li>
+              <li>IN PAF</li>
+              <li>FORNITORE</li>
+            </ol>
+
+            <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank" href="https://docs.google.com/spreadsheets/d/1KUg_MrHQoR0TzMWjXX9ZkFHMBTS6M9NX/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a> per un file di esempio</p>
+          </div>
+
+          <!-- step six -->
+          <div class="step">
+            <p class="mb-4">Carica il file qua sotto. Poi premi il bottone 'CREA'</p>
+
+            <div class="input-group mt-2 mb-4">
+              <label class="small mb-1" for="filePipeline">Pipeline</label>
+              <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+                placeholder="Inserisci il file" aria-label="Upload" name="filePipeline"
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            </div>
+          </div>
+
+
+          <!-- start previous / next buttons -->
+          <div class="form-footer d-flex">
+            <button type="button" id="prevBtn" onclick="nextPrev(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+            <button type="button" id="nextBtn" onclick="nextPrev(1)"><i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+          <!-- end previous / next buttons -->
+        </form>
+
+        
+      </div>
+
+      <!-- <div class="row mb-3">
             
             <div class="col-sm-6 col-lg-3 mb-4">
               <div class="card h-100">
@@ -124,28 +405,84 @@
               </div>
             </div>
           </div>-->
-        </section>
-      </div>
-      <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-6 text-center text-md-start fw-bold">
-              <p class="mb-2 mb-md-0 fw-bold">Your company © 2023</p>
-            </div>
-            <div class="col-md-6 text-center text-md-end text-gray-400">
-              <p class="mb-0">Version 1.3.2</p>
-            </div>
-          </div>
+    </section>
+  </div>
+  <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6 text-center text-md-start fw-bold">
+          <p class="mb-2 mb-md-0 fw-bold">Your company © 2023</p>
         </div>
-      </footer>
+        <div class="col-md-6 text-center text-md-end text-gray-400">
+          <p class="mb-0">Version 1.3.2</p>
+        </div>
+      </div>
     </div>
-  
+  </footer>
+</div>
 
-  <script>
-    new DataTable('#datatable1');
-  </script>
 
-  <!--{% if getP %}
+<script>
+  new DataTable('#datatable1');
+</script>
+<script>var currentTab = 0; // Current tab is set to be the first tab (0)
+  showTab(currentTab); // Display the current tab
+
+  function showTab(n) {
+    // This function will display the specified tab of the form...
+    var x = document.getElementsByClassName("step");
+    x[n].style.display = "block";
+    //... and fix the Previous/Next buttons:
+    if (n == 0) {
+      document.getElementById("prevBtn").style.display = "none";
+    } else {
+      document.getElementById("prevBtn").style.display = "inline";
+    }
+    console.log(n);
+    if (n == (x.length - 1)) {
+      document.getElementById("nextBtn").innerHTML = "CREA";
+    } else {
+      console.log("cambio avanti")
+      a = document.createElement("i")
+      a.classList.add("fa-solid")
+      a.classList.add("fa-arrow-right")
+      console.log(document.getElementById("nextBtn").childNodes[0])
+      console.log(a)
+      document.getElementById("nextBtn").childNodes[0] = a;
+    }
+    //... and run a function that will display the correct step indicator:
+    fixStepIndicator(n)
+  }
+
+  function nextPrev(n) {
+    // This function will figure out which tab to display
+    var x = document.getElementsByClassName("step");
+    // Exit the function if any field in the current tab is invalid:
+    // Hide the current tab:
+    x[currentTab].style.display = "none";
+    // Increase or decrease the current tab by 1:
+    currentTab = currentTab + n;
+    // if you have reached the end of the form...
+    if (currentTab >= x.length) {
+      // ... the form gets submitted:
+      document.getElementById("signUpForm").submit();
+      return false;
+    }
+    // Otherwise, display the correct tab:
+    showTab(currentTab);
+  }
+
+
+  function fixStepIndicator(n) {
+    // This function removes the "active" class of all steps...
+    var i, x = document.getElementsByClassName("stepIndicator");
+    for (i = 0; i < x.length; i++) {
+      x[i].className = x[i].className.replace(" active", "");
+    }
+    //... and adds the "active" class on the current step:
+    x[n].className += " active";
+  }</script>
+<!--{% if getP %}
   <div class="container px-4 mt-4">
     <h1 class="page-header text-center"> Scegli un tuo portafoglio</h1>
 
@@ -181,8 +518,8 @@
     <form action="/home/addContatti" method="post" enctype="multipart/form-data">
       <input type="file" name="file"
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-      <input type="submit" value="Upload">
+      
     </form>
 
   </div>-->
-  {% endblock %}
+{% endblock %}

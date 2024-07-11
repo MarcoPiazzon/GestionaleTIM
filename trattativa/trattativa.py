@@ -8,7 +8,16 @@ from datetime import date
 
 @trattativa_bp.route('/<int:id>', methods=['GET', 'POST'])
 def home(id):
-    trattative = conn.execute(select(trattativa, andamentotrattativa.c.nome).select_from(join(cliente, join(trattativa, andamentotrattativa, trattativa.c.fase == andamentotrattativa.c.idAndamento), cliente.c.idCliente == trattativa.c.idCliente)).where(cliente.c.idUtente == current_user.get_id() and cliente.c.idPortafoglio == id)).fetchall()
+    trattative = conn.execute(
+        select(trattativa, andamentotrattativa.c.nome, categoria.c.nome).
+            select_from(
+                join(categoria ,
+                    join(cliente, 
+                        join(trattativa, andamentotrattativa, trattativa.c.fase == andamentotrattativa.c.idAndamento),
+                    cliente.c.idCliente == trattativa.c.idCliente), 
+                categoria.c.idCategoria == trattativa.c.categoriaOffertaIT)
+            ).where(cliente.c.idUtente == current_user.get_id() and cliente.c.idPortafoglio == id)
+    ).fetchall()
     t_len = 0
     if not (trattative is None):
         #select appuntamento.titolo, trattativa.nomeOpportunita from ((appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento)
