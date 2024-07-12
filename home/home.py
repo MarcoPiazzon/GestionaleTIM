@@ -24,7 +24,9 @@ def home():
         ))
     conn.commit()"""
     getPortafogliUtente = conn.execute(select(portafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchall()
+    getPortafogliUtente = list(getPortafogliUtente)
     print(getPortafogliUtente)
+    print(type(getPortafogliUtente))
     print("ho fatto questo")
     return render_template ("/home/home.html",contattiUtente=contattiUtente, getP=getPortafogliUtente, len=len(getPortafogliUtente), contatti=contatti)
 

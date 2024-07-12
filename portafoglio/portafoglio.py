@@ -25,6 +25,7 @@ def home(idPort, id):
     current_cliente = None
     trattative = None 
     t_len = 0
+    contatti = conn.execute(select(contatto).order_by(contatto.c.nome)).fetchall()
     categorie = conn.execute(select(categoria)).fetchall()
     andamento = conn.execute(select(andamentotrattativa)).fetchall()
     if(idPort != 0):
@@ -32,7 +33,13 @@ def home(idPort, id):
         clienti = conn.execute(select(cliente.c.ragioneSociale, cliente.c.idCliente).where(cliente.c.idPortafoglio == idPort)).fetchall()
     if(id != 0):
         current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == id)).fetchone()
-        trattative = conn.execute(select(trattativa).where(trattativa.c.idCliente == id)).fetchall()
+        trattative = conn.execute(
+            select(trattativa, andamentotrattativa.c.nome, categoria.c.nome).select_from(
+                join(andamentotrattativa,
+                    join(trattativa, categoria, trattativa.c.categoriaOffertaIT == categoria.c.idCategoria), 
+                trattativa.c.fase == andamentotrattativa.c.idAndamento)
+            ).where(trattativa.c.idCliente == id)
+        ).fetchall()
         print(current_cliente)
         print(trattative)
         
@@ -54,7 +61,7 @@ def home(idPort, id):
                     print(trattative[i][25])
             #print(len(trattative[0]))
             #print(trattative)
-    return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort, categorie=categorie, andamento=andamento)
+    return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort, categorie=categorie, andamento=andamento, contatti=contatti)
 
 
 @portafoglio_bp.route('/portafoglio/<int:id>')

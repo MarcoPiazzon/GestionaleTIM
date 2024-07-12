@@ -159,6 +159,13 @@
     background-color: #fff;
     color: #009688;
   }
+
+  #fixedbutton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+  }
 </style>
 <div class="page-holder bg-gray-100">
   <div class="container-fluid px-lg-4 px-xl-5">
@@ -169,10 +176,10 @@
     <section class="mb-3 mb-lg-5">
       <div class="row">
         <div class="container px-4 mt-4">
-          <div class="row">
-            <div class="input-group">
+          <div class="row mb-2">
+            <div class="input-group ">
               <div class="col-11">
-                <input class="form-control" type="text" id="myInput" onkeyup="myFunction()" onclick="showUp(this)"
+                <input class="form-control" type="text" id="myInput" onkeyup="myFunction(0)" onclick="showUp(this,0)"
                   placeholder="Cerca un cliente" title="Type in a name" value="{{current_cliente[5]}}">
               </div>
               <div class="col-1">
@@ -190,7 +197,7 @@
             {% if clienti %}
             {% for cliente in clienti%}
             <input type="hidden" value="{{cliente.idCliente}}">
-            <li class="list-group-item" onclick="getName(this)">{{cliente.ragioneSociale}}</li>
+            <li class="list-group-item" onclick="getName(this,0,0)">{{cliente.ragioneSociale}}</li>
             {% endfor %}
             {%endif%}
           </ul>
@@ -209,14 +216,14 @@
               <form action="/portafoglio/modifyCliente" method="POST">
                 <input type="hidden" name="idCliente" id="idCliente" value="{{current_cliente[0]}}">
                 <!-- Form Group (username)-->
-                
+
                 <!-- Form Row-->
                 <div class="row gx-3 mb-3">
                   <!-- Form Group (first name)-->
                   <div class="col-md-4">
                     <label class="small mb-1" for="inputUsername">Ragione Sociale</label>
-                  <input class="form-control" name="ragioneSociale" id="inputUsername" type="text"
-                    placeholder="Enter your username" value="{{current_cliente[5]}}">
+                    <input class="form-control" name="ragioneSociale" id="inputUsername" type="text"
+                      placeholder="Enter your username" value="{{current_cliente[5]}}">
                   </div>
                   <div class="col-md-2">
                     <label class="small mb-1" for="inputFirstName">Cf</label>
@@ -225,9 +232,9 @@
                   </div>
                   <!-- Form Group (last name)-->
                   <div class="col-md-2">
-                      <label class="small mb-1" for="inputPhone">Numero sedi</label>
-                      <input class="form-control" name="sediTot" id="inputPhone" type="tel"
-                        placeholder="Enter your phone number" value="{{current_cliente[12]}}">
+                    <label class="small mb-1" for="inputPhone">Numero sedi</label>
+                    <input class="form-control" name="sediTot" id="inputPhone" type="tel"
+                      placeholder="Enter your phone number" value="{{current_cliente[12]}}">
                   </div>
                   <div class="col-md-2">
                     <label class="small mb-1" for="inputBirthday">Numero dipendenti</label>
@@ -332,8 +339,8 @@
                   <!-- Form Group (first name)-->
                   <div class="col-md-4">
                     <label class="small mb-1" for="inputUsername">Ragione Sociale</label>
-                  <input class="form-control lsc" name="ragioneSociale" id="inputUsernameAdd" type="text" placeholder=""
-                  value="" onkeyup="changeText(this)">
+                    <input class="form-control lsc" name="ragioneSociale" id="inputUsernameAdd" type="text"
+                      placeholder="" value="" onkeyup="changeText(this)">
                   </div>
                   <div class="col-md-2">
                     <label class="small mb-1" for="inputFirstName">Cf</label>
@@ -342,9 +349,9 @@
                   </div>
                   <!-- Form Group (last name)-->
                   <div class="col-md-2">
-                      <label class="small mb-1" for="inputPhone">Numero sedi</label>
-                      <input class="form-control" name="sediTot" id="inputPhone" type="tel"
-                        placeholder="Enter your phone number" value="">
+                    <label class="small mb-1" for="inputPhone">Numero sedi</label>
+                    <input class="form-control" name="sediTot" id="inputPhone" type="tel"
+                      placeholder="Enter your phone number" value="">
                   </div>
                   <div class="col-md-2">
                     <label class="small mb-1" for="inputBirthday">Numero dipendenti</label>
@@ -380,8 +387,7 @@
                   <div class="col-lg-3">
                     <label class="small mb-1" for="inputLastName">Presidio</label>
                     <input class="form-control" name="presidio" id="inputLastName" type="text"
-                      placeholder="Enter your last name"
-                      value="">
+                      placeholder="Enter your last name" value="">
                   </div>
                 </div>
                 <!-- Form Row-->
@@ -409,21 +415,18 @@
                   <div class="col-md-4">
                     <label class="small mb-1" for="inputPhone">Fatturato Cerved</label>
                     <input class="form-control" name="fatturatoCerved" id="inputPhone" type="tel"
-                      placeholder="Enter your phone number"
-                      value="">
+                      placeholder="Enter your phone number" value="">
                   </div>
                   <!-- Form Group (birthday)-->
                   <div class="col-md-4">
                     <label class="small mb-1" for="inputBirthday">Fatturato TIM</label>
                     <input class="form-control" name="fatturatoTim" id="inputBirthday" type="text" name="birthday"
-                      placeholder="Enter your birthday"
-                      value="">
+                      placeholder="Enter your birthday" value="">
                   </div>
                   <div class="col-md-4">
                     <label class="small mb-1" for="inputBirthday">clienteOffMobScadenza</label>
                     <input class="form-control" name="clienteOffMobScadenza" id="inputBirthday" type="text"
-                      name="birthday" placeholder="Enter your birthday"
-                      value="">
+                      name="birthday" placeholder="Enter your birthday" value="">
                   </div>
                 </div>
                 <!-- Save changes button-->
@@ -455,7 +458,7 @@
               {% for i in range (0, t_len) %}
               <tr data-bs-toggle="modal" data-bs-target="#staticBackdrop{{i}}">
                 <td>{{trattative[i][8]}}</td>
-                <td>{{trattative[i][19]}}</td>
+                <td>{{trattative[i][25]}}</td>
                 <td>{{trattative[i][18]}}</td>
               </tr>
               <div class="modal fade" id="staticBackdrop{{i}}" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -474,8 +477,7 @@
                             <!--<div class="card-header">Modifica</div>-->
                             <div class="card-body">
 
-                              <input type="hidden" name="idClienteModify" id="idCliente"
-                                value="{{trattative[i][2]}}">
+                              <input type="hidden" name="idClienteModify" id="idCliente" value="{{trattative[i][2]}}">
                               <!-- Form Group (username)-->
                               <div class="row gx-3 mb-3">
                                 <div class="col-md-4">
@@ -503,7 +505,7 @@
                                   <label class="small mb-1" for="inputLastName">nomeOpportunita</label>
                                   <input class="form-control" name="nomeOpportunitaModify" id="inputLastName"
                                     type="text" placeholder="Enter your last name" value="{{trattative[i][8]}}">
-  
+
                                 </div>
                                 <!-- Form Group (last name)-->
                                 <div class="col-md-6">
@@ -517,23 +519,21 @@
                               <div class="row gx-3 mb-3">
                                 <!-- Form Group (organization name)-->
                                 <div class="col-md-6">
-  
-                                    <label class="small mb-1" for="inputFirstName">areaManager</label>
-                                    <input class="form-control" name="areaManagerModify" id="inputFirstName"
-                                      type="text" placeholder="Enter your first name" value="{{trattative[i][5]}}">
+
+                                  <label class="small mb-1" for="inputFirstName">areaManager</label>
+                                  <input class="form-control" name="areaManagerModify" id="inputFirstName" type="text"
+                                    placeholder="Enter your first name" value="{{trattative[i][5]}}">
                                 </div>
                                 <!-- Form Group (location)-->
                                 <div class="col-md-3">
                                   <label class="small mb-1" for="inputLocation">dataCreazioneOpportunita</label>
-                                  <input class="form-control" name="dataCreazioneOpportunitaModify"
-                                    id="inputLocation" type="date" placeholder="Enter your location"
-                                    value="{{trattative[i][9]}}">
+                                  <input class="form-control" name="dataCreazioneOpportunitaModify" id="inputLocation"
+                                    type="date" placeholder="Enter your location" value="{{trattative[i][9]}}">
                                 </div>
                                 <div class="col-md-3">
                                   <label class="small mb-1" for="inputBirthday">dataChiusura</label>
-                                  <input class="form-control" name="dataChiusuraModify" id="inputBirthday"
-                                    type="date" name="birthday" placeholder="Enter your birthday"
-                                    value="{{trattative[i][18]}}">
+                                  <input class="form-control" name="dataChiusuraModify" id="inputBirthday" type="date"
+                                    name="birthday" placeholder="Enter your birthday" value="{{trattative[i][18]}}">
                                 </div>
                               </div>
                               <!-- Form Row-->
@@ -544,8 +544,7 @@
                                   <label class="small mb-1" for="inputPhone">fase</label>
                                   <select class="form-select" name="faseModify" aria-label="Default select example"
                                     id="faseOptions">
-                                    <option value="{% if trattative[i][19] %}{{trattative[i][19]}}{%endif%}"
-                                      selected>
+                                    <option value="{% if trattative[i][19] %}{{trattative[i][19]}}{%endif%}" selected>
                                       {% if trattative[i][25] %} {{trattative[i][25]}}{%endif%}</option>
                                     {% for a in andamento %}
 
@@ -557,10 +556,9 @@
                                 <!-- Form Group (birthday)-->
                                 <div class="col-md-3">
                                   <label class="small mb-1" for="inputBirthday">categoriaOffertaIT</label>
-                                  <select class="form-select" aria-label="Default select example"
-                                    id="categoriaOptions" name="categoriaOffertaITModify">
-                                    <option value="{% if trattative[i][12] %}{{trattative[i][12]}}{%endif%}"
-                                      selected>
+                                  <select class="form-select" aria-label="Default select example" id="categoriaOptions"
+                                    name="categoriaOffertaITModify">
+                                    <option value="{% if trattative[i][12] %}{{trattative[i][12]}}{%endif%}" selected>
                                       {% if trattative[i][12] %}{{trattative[i][26]}}{%endif%}</option>
                                     {% for c in categorie %}
                                     <option value="{{c.idCategoria}}">{{c.nome}}</option>
@@ -570,9 +568,8 @@
                                 </div>
                                 <div class="col-md-3">
                                   <label class="small mb-1" for="inputBirthday">probabilita</label>
-                                  <input class="form-control" name="probabilitaModify" id="inputBirthday"
-                                    type="text" name="birthday" placeholder="Enter your birthday"
-                                    value="{{trattative[i][21]}}%">
+                                  <input class="form-control" name="probabilitaModify" id="inputBirthday" type="text"
+                                    name="birthday" placeholder="Enter your birthday" value="{{trattative[i][21]}}%">
                                 </div>
                                 <div class="col-md-3">
                                   <label class="small mb-1" for="inputBirthday">inPaf</label>
@@ -582,7 +579,7 @@
 
                               </div>
 
-                              
+
                               <!-- Form Row-->
                               <div class="row gx-3 mb-3">
                                 <!-- Form Group (phone number)-->
@@ -597,7 +594,7 @@
                                   <label class="small mb-1" for="inputPhone">mobile</label>
                                   <input class="form-control" name="mobileModify" id="inputPhone" type="number"
                                     placeholder="Enter your phone number" value="{{trattative[i][11]}}">
-                                  
+
                                 </div>
                                 <div class="col-md-4">
                                   <label class="small mb-1" for="inputBirthday">it</label>
@@ -616,10 +613,10 @@
                                 <!-- Form Group (birthday)-->
                                 <div class="col-md-3">
 
-                                    <label class="small mb-1" for="inputBirthday">aom</label>
-                                    <input class="form-control" name="aomModify" id="inputBirthday" type="text"
-                                      name="birthday" placeholder="Enter your birthday" value="{{trattative[i][15]}}">
-                                  
+                                  <label class="small mb-1" for="inputBirthday">aom</label>
+                                  <input class="form-control" name="aomModify" id="inputBirthday" type="text"
+                                    name="birthday" placeholder="Enter your birthday" value="{{trattative[i][15]}}">
+
                                 </div>
                                 <div class="col-md-3">
                                   <label class="small mb-1" for="inputBirthday">mnp</label>
@@ -642,15 +639,15 @@
                                 </div>
                                 <!-- Form Group (birthday)-->
                                 <div class="col-md-6">
-                                                         
+
                                   <label class="small mb-1" for="inputBirthday">noteSpecialista</label>
                                   <input class="form-control" name="noteSpecialistaModify" id="inputBirthday"
                                     type="text" name="birthday" placeholder="Enter your birthday"
-                                    value="{{trattative[i][20]}}">             
+                                    value="{{trattative[i][20]}}">
 
                                 </div>
 
-                               
+
                               </div>
 
                               <!-- Save changes button-->
@@ -688,11 +685,9 @@
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="modal-footer">
                         <button class="btn btn-primary" type="submit">Salva le modifiche</button>
                         <button class="btn btn-danger" onclick="sendData({{trattative[i].idTrattativa}})" type="button"
-                          style="float: right;">CIao</button>
+                          style="float: right;">Elimina</button>
                       </div>
                     </form>
                   </div>
@@ -702,161 +697,6 @@
             </tbody>
           </table>
 
-          <div class="card mb-4" id="formTrattativa" style="display: none;">
-            <div class="card-header">Nuova trattativa</div>
-            <div class="card-body">
-              <form action="/portafoglio/addTrattativaForm" method="POST">
-                <input type="hidden" name="idClienteAdd" id="idCliente" value="{{current_cliente[0]}}">
-                <!-- Form Group (username)-->
-                <div class="mb-3">
-                  <label class="small mb-1" for="inputUsername">codiceCtrDigitali</label>
-                  <input class="form-control ls" name="codiceCtrDigitaliAdd" id="inputUsername" type="text"
-                    placeholder="Enter your username" value="">
-                </div>
-                <!-- Form Row-->
-                <div class="row gx-3 mb-3">
-                  <!-- Form Group (first name)-->
-                  <div class="col-md-6">
-                    <label class="small mb-1" for="inputFirstName">codiceSalesHub</label>
-                    <input class="form-control ls" name="codiceSalesHubAdd" id="inputFirstName" type="text"
-                      placeholder="Enter your first name" value="">
-                  </div>
-                  <!-- Form Group (last name)-->
-                  <div class="col-md-6">
-                    <label class="small mb-1" for="inputLastName">areaManager</label>
-                    <input class="form-control ls" name="areaManagerAdd" id="inputLastName" type="text"
-                      placeholder="Enter your last name" value="">
-                  </div>
-                </div>
-                <!-- Form Row        -->
-                <div class="row gx-3 mb-3">
-                  <!-- Form Group (organization name)-->
-                  <div class="col-md-6">
-                    <label class="small mb-1" for="inputOrgName">zona</label>
-                    <input class="form-control ls" name="zonaAdd" id="inputOrgName" type="text"
-                      placeholder="Enter your organization name" value="">
-                  </div>
-                  <!-- Form Group (location)-->
-                  <div class="col-md-3">
-                    <label class="small mb-1" for="inputLocation">tipo</label>
-                    <input class="form-control ls" name="tipoAdd" id="inputLocation" type="text"
-                      placeholder="Enter your location" value="">
-                  </div>
-                  <div class="col-md-3">
-                    <label class="small mb-1" for="inputLocation">nomeOpportunita</label>
-                    <input class="form-control ls" name="nomeOpportunitaAdd" id="inputLocation" type="text"
-                      placeholder="Enter your location" value="">
-                  </div>
-                </div>
-                <!-- Form Row-->
-                <div class="row gx-3 mb-3">
-                  <!-- Form Group (phone number)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputPhone">dataCreazioneOpportunita</label>
-                    <input class="form-control ls" name="dataCreazioneOpportunitaAdd" id="inputPhone" type="date"
-                      placeholder="Enter your phone number" value="">
-                  </div>
-                  <!-- Form Group (birthday)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">fix</label>
-                    <input class="form-control ls" name="fixAdd" id="inputBirthday" type="text" name="birthday"
-                      placeholder="Enter your birthday" value="">
-                  </div>
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">mobile</label>
-                    <input class="form-control ls" name="mobileAdd" id="inputBirthday" type="text" name="birthday"
-                      placeholder="Enter your birthday" value="">
-                  </div>
-
-                </div>
-                <!-- Form Row-->
-                <div class="row gx-3 mb-3">
-                  <!-- Form Group (phone number)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputPhone">categoriaOffertaIT</label>
-                    <input class="form-control ls" name="categoriaOffertaITAdd" id="inputPhone" type="tel"
-                      placeholder="Enter your phone number" value="">
-                  </div>
-                  <!-- Form Group (birthday)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">it</label>
-                    <input class="form-control ls" name="itAdd" id="inputBirthday" type="text" name="birthday"
-                      placeholder="Enter your birthday" value="">
-                  </div>
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">lineeFoniaFix</label>
-                    <input class="form-control ls" name="lineeFoniaFixAdd" id="inputBirthday" type="text"
-                      name="birthday" placeholder="Enter your birthday" value="">
-                  </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                  <!-- Form Group (phone number)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputPhone">aom</label>
-                    <input class="form-control ls" name="aomAdd" id="inputPhone" type="tel"
-                      placeholder="Enter your phone number" value="">
-                  </div>
-                  <!-- Form Group (birthday)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">mnp</label>
-                    <input class="form-control ls" name="mnpAdd" id="inputBirthday" type="text" name="birthday"
-                      placeholder="Enter your birthday" value="">
-                  </div>
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">al</label>
-                    <input class="form-control ls" name="alAdd" id="inputBirthday" type="text" name="birthday"
-                      placeholder="Enter your birthday" value="">
-                  </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                  <!-- Form Group (phone number)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputPhone">dataChiusura</label>
-                    <input class="form-control ls" name="dataChiusuraAdd" id="inputPhone" type="date"
-                      placeholder="Enter your phone number" value="">
-                  </div>
-                  <!-- Form Group (birthday)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">fase</label>
-                    <input class="form-control ls" name="faseAdd" id="inputBirthday" type="text" name="birthday"
-                      placeholder="Enter your birthday" value="">
-                  </div>
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">noteSpecialista</label>
-                    <input class="form-control ls" name="noteSpecialistaAdd" id="inputBirthday" type="text"
-                      name="birthday" placeholder="Enter your birthday" value="">
-                  </div>
-                </div>
-                <div class="row gx-3 mb-3">
-                  <!-- Form Group (phone number)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputPhone">probabilita</label>
-                    <input class="form-control ls" name="probabilitaAdd" id="inputPhone" type="tel"
-                      placeholder="Enter your phone number" value="">
-                  </div>
-                  <!-- Form Group (birthday)-->
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">inPaf</label>
-                    <input class="form-control ls" name="inPafAdd" id="inputBirthday" type="text" name="birthday"
-                      placeholder="Enter your birthday" value="">
-                  </div>
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">fornitore</label>
-                    <input class="form-control ls" name="fornitoreAdd" id="inputBirthday" type="text" name="birthday"
-                      placeholder="Enter your birthday" value="">
-                  </div>
-                </div>
-                <!-- Save changes button-->
-                <button class="btn btn-primary" type="submit" style="float: left;" id="btnCreaTrattativa">Aggiungi
-                  trattativa</button>
-                <button class="btn btn-primary" type="button" style="float: right;" id="cleanFormTrattativa">Pulisci
-                  tutto</button>
-                <button class="btn btn-primary" type="button" style="float: right;" id="btnAnnullaTrattativa"
-                  onclick="hideTrattativa()">Annulla</button>
-
-              </form>
-            </div>
-          </div>
         </div>
       </div>
       {%else%}
@@ -887,9 +727,11 @@
       </div>
       {%endif%}
       <div class="col mb-4">
-        <button class="btn btn-primary" type="button" id="btnTrattativa" onclick="showTrattativa(this)">Aggiungi
+        <h1 class="page-heading my-5">Aggiungi nuove trattative</h1>
+        <button class="btn btn-primary mb-2" type="button" id="btnTrattativa" onclick="showTrattativa(this)">Aggiungi
           trattativa manualmente</button>
-        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Aggiungi
+        <button class="btn btn-primary mb-2" type="button" id="btnTrattativaFile"
+          onclick="showTrattativaFile(this)">Aggiungi
           trattativa da un file esterno</button>
         <!--<div class="row" id="showTrattativaFile" style="display: none;">
           <form action="/home/addPortafoglio" method="post" enctype="multipart/form-data">
@@ -901,8 +743,8 @@
             <button class="btn btn-outline-secondary mt-2" type="submit" id="inputGroupFileAddon04">Inserisci</button>
           </form>
         </div>-->
-        <div class="row mt-4 py-2">
-          <h5 class="page-heading">Aggiungi nuove trattative</h5>
+        <div class="row mt-4 py-2" style="display: none;" id="trattativaFile">
+
           <form id="signUpForm" action="/home/addPortafoglio" method="post" enctype="multipart/form-data">
             <!-- start step indicators -->
             <div class="form-header d-flex mb-4">
@@ -911,10 +753,11 @@
               <span class="stepIndicator">Carica il file</span>
             </div>
             <!-- end step indicators -->
-  
+
             <!-- step one -->
             <div class="step">
-              <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere sicuro, le colonne
+              <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere
+                sicuro, le colonne
                 devono andare dalla lettera 'A' alla lettera 'X'.</p>
               <p class="mb-4"> Se le righe non combaciano i problemi sono due</p>
               <ol>
@@ -922,13 +765,15 @@
                 <li>Sono presenti più righe del necessario.</li>
               </ol>
               <p class="mb-4"> Se ricadi nel caso due, puoi proseguire</p>
-  
+
             </div>
-  
+
             <!-- step two -->
             <div class="step">
-              <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del portafoglio.</p>
-              <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere presenti <strong>TUTTE</strong> e
+              <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del
+                portafoglio.</p>
+              <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere
+                presenti <strong>TUTTE</strong> e
                 nel seguente <strong>ordine</strong></p>
               <ol>
                 <li>CODICE CTR DIGITALE</li>
@@ -955,10 +800,12 @@
                 <li>IN PAF</li>
                 <li>FORNITORE</li>
               </ol>
-  
-              <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank" href="https://docs.google.com/spreadsheets/d/1KUg_MrHQoR0TzMWjXX9ZkFHMBTS6M9NX/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a> per un file di esempio</p>
+
+              <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank"
+                  href="https://docs.google.com/spreadsheets/d/1KUg_MrHQoR0TzMWjXX9ZkFHMBTS6M9NX/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a>
+                per un file di esempio</p>
             </div>
-  
+
             <!-- step three -->
             <div class="step">
               <p class="mb-4">Carica il/i file qua sotto. Poi premi il bottone 'CREA'</p>
@@ -967,11 +814,11 @@
                 <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
                   placeholder="Inserisci il file" aria-label="Upload" name="fileDoc"
                   accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-  
+
               </div>
             </div>
-  
-  
+
+
             <!-- start previous / next buttons -->
             <div class="form-footer d-flex">
               <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
@@ -979,8 +826,191 @@
             </div>
             <!-- end previous / next buttons -->
           </form>
-  
-          
+
+
+        </div>
+
+        <div class="card mb-4" id="formTrattativa" style="display: none;">
+          <div class="card-header">Nuova trattativa</div>
+          <div class="card-body">
+            <form action="/portafoglio/addTrattativaForm" method="POST">
+
+              <input type="hidden" name="idClienteAdd" id="idCliente" value="">
+              <!-- Form Group (username)-->
+              <div class="row gx-3 mb-3">
+                <div class="col-md-4">
+                  <label class="small mb-1" for="inputUsername">codiceCtrDigitali</label>
+                  <input class="form-control" name="codiceCtrDigitaliAdd" id="inputUsername" type="text"
+                    placeholder="Enter your username" value="">
+                </div>
+                <div class="col-md-4">
+                  <label class="small mb-1" for="inputFirstName">codiceSalesHub</label>
+                  <input class="form-control" name="codiceSalesHubAdd" id="inputFirstName" type="text"
+                    placeholder="Enter your first name" value="">
+                </div>
+                <div class="col-md-4">
+                  <label class="small mb-1" for="inputLastName">zona</label>
+                  <input class="form-control" name="zonaAdd" id="inputLastName" type="text"
+                    placeholder="Enter your last name" value="">
+                </div>
+
+
+              </div>
+              <!-- Form Row-->
+              <div class="row gx-3 mb-3">
+                <!-- Form Group (first name)-->
+                <div class="col-md-6">
+                  <label class="small mb-1" for="inputLastName">nomeOpportunita</label>
+                  <input class="form-control" name="nomeOpportunitaAdd" id="inputLastName" type="text"
+                    placeholder="Enter your last name" value="">
+
+                </div>
+                <!-- Form Group (last name)-->
+                <div class="col-md-6">
+                  <label class="small mb-1" for="inputOrgName">tipo</label>
+                  <input class="form-control" name="tipoAdd" id="inputOrgName" type="text"
+                    placeholder="Enter your organization name" value="">
+
+                </div>
+              </div>
+              <!-- Form Row        -->
+              <div class="row gx-3 mb-3">
+                <!-- Form Group (organization name)-->
+                <div class="col-md-6">
+
+                  <label class="small mb-1" for="inputFirstName">areaManager</label>
+                  <input class="form-control" name="areaManagerAdd" id="inputFirstName" type="text"
+                    placeholder="Enter your first name" value="">
+                </div>
+                <!-- Form Group (location)-->
+                <div class="col-md-3">
+                  <label class="small mb-1" for="inputLocation">dataCreazioneOpportunita</label>
+                  <input class="form-control" name="dataCreazioneOpportunitaAdd" id="inputLocation" type="date"
+                    placeholder="Enter your location" value="">
+                </div>
+                <div class="col-md-3">
+                  <label class="small mb-1" for="inputBirthday">dataChiusura</label>
+                  <input class="form-control" name="dataChiusuraAdd" id="inputBirthday" type="date" name="birthday"
+                    placeholder="Enter your birthday" value="">
+                </div>
+              </div>
+              <!-- Form Row-->
+              <div class="row gx-3 mb-3">
+                <!-- Form Group (phone number)-->
+                <div class="col-md-3">
+
+                  <label class="small mb-1" for="inputPhone">fase</label>
+                  <select class="form-select" name="faseAdd" aria-label="Default select example" id="faseOptions">
+
+                    {% for a in andamento %}
+
+                    <option value="{{a.idAndamento}}">{{a.nome}}</option>
+                    {% endfor %}
+                  </select>
+
+                </div>
+                <!-- Form Group (birthday)-->
+                <div class="col-md-3">
+                  <label class="small mb-1" for="inputBirthday">categoriaOffertaIT</label>
+                  <select class="form-select" aria-label="Default select example" id="categoriaOptions"
+                    name="categoriaOffertaITAdd">
+                    {% for c in categorie %}
+                    <option value="{{c.idCategoria}}">{{c.nome}}</option>
+                    {% endfor %}
+
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="small mb-1" for="inputBirthday">probabilita</label>
+                  <input class="form-control" name="probabilitaAdd" id="inputBirthday" type="text" name="birthday"
+                    placeholder="Enter your birthday" value="">
+                </div>
+                <div class="col-md-3">
+                  <label class="small mb-1" for="inputBirthday">inPaf</label>
+                  <input class="form-control" name="inPafAdd" id="inputBirthday" type="text" name="birthday"
+                    placeholder="Enter your birthday" value="">
+                </div>
+
+              </div>
+
+
+              <!-- Form Row-->
+              <div class="row gx-3 mb-3">
+                <!-- Form Group (phone number)-->
+                <div class="col-md-4">
+                  <label class="small mb-1" for="inputLocation">fix</label>
+                  <input class="form-control" name="fixAdd" id="inputLocation" type="number"
+                    placeholder="Enter your location" value="">
+
+                </div>
+                <!-- Form Group (birthday)-->
+                <div class="col-md-4">
+                  <label class="small mb-1" for="inputPhone">mobile</label>
+                  <input class="form-control" name="mobileAdd" id="inputPhone" type="number"
+                    placeholder="Enter your phone number" value="">
+
+                </div>
+                <div class="col-md-4">
+                  <label class="small mb-1" for="inputBirthday">it</label>
+                  <input class="form-control" name="itAdd" id="inputBirthday" type="text" name="birthday"
+                    placeholder="Enter your birthday" value="">
+
+                </div>
+              </div>
+              <div class="row gx-3 mb-3">
+                <!-- Form Group (phone number)-->
+                <div class="col-md-3">
+                  <label class="small mb-1" for="inputPhone">al</label>
+                  <input class="form-control" name="alAdd" id="inputPhone" type="tel"
+                    placeholder="Enter your phone number" value="">
+                </div>
+                <!-- Form Group (birthday)-->
+                <div class="col-md-3">
+
+                  <label class="small mb-1" for="inputBirthday">aom</label>
+                  <input class="form-control" name="aomAdd" id="inputBirthday" type="text" name="birthday"
+                    placeholder="Enter your birthday" value="">
+
+                </div>
+                <div class="col-md-3">
+                  <label class="small mb-1" for="inputBirthday">mnp</label>
+                  <input class="form-control" name="mnpAdd" id="inputBirthday" type="text" name="birthday"
+                    placeholder="Enter your birthday" value="">
+                </div>
+                <div class="col-md-3">
+                  <label class="small mb-1" for="inputPhone">lineeFoniaFixAdd</label>
+                  <input class="form-control" name="lineeFoniaFixAdd" id="inputPhone" type="tel"
+                    placeholder="Enter your phone number" value="">
+                </div>
+              </div>
+              <div class="row gx-3 mb-3">
+                <!-- Form Group (phone number)-->
+
+                <div class="col-md-6">
+                  <label class="small mb-1" for="inputBirthday">fornitore</label>
+                  <input class="form-control" name="fornitoreAdd" id="inputBirthday" type="text" name="birthday"
+                    placeholder="Enter your birthday" value="">
+                </div>
+                <!-- Form Group (birthday)-->
+                <div class="col-md-6">
+
+                  <label class="small mb-1" for="inputBirthday">noteSpecialista</label>
+                  <input class="form-control" name="noteSpecialistaAdd" id="inputBirthday" type="text" name="birthday"
+                    placeholder="Enter your birthday" value="">
+
+                </div>
+
+              </div>
+
+              <!-- Save changes button-->
+              <button class="btn btn-primary" type="submit" style="float: left;" id="btnCreaTrattativa">Aggiungi
+                trattativa</button>
+              <button class="btn btn-primary" type="button" style="float: right;" id="cleanFormTrattativa">Pulisci
+                tutto</button>
+              
+
+            </form>
+          </div>
         </div>
       </div>
 
@@ -988,6 +1018,35 @@
 
 
     </section>
+    <div class="panel-group" id="fixedbutton">
+      <p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+
+          <input class="form-control mb-2" type="text" id="myInput2" onkeyup="myFunction(2)" onclick="showUp(this,2)"
+            placeholder="Search for names.." title="Type in a name">
+          <ul id="myUL2" class="vertical-scrollable list-group">
+            {% if contatti %}
+            {% for contatto in contatti%}
+            <input type="hidden" value="{{contatto.idContatto}}">
+            <li class="list-group-item" onclick="getName(this,2, '{{contatto.nome}}')">{{contatto.nome}} {%if contatto.secondoNome
+              %}{{contatto.secondoNome}} {%endif%} {{contatto.cognome}}</li>
+            {% endfor %}
+            {%endif%}
+          </ul>
+
+        </div>
+      </div>
+      <button class="btn btn-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+        aria-expanded="false" aria-controls="collapseExample">
+        <i class="fa-solid fa-address-book"></i>
+      </button>
+      </p>
+
+    </div>
+  </div>
+  <div>
+
   </div>
   <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
     <div class="container-fluid">
@@ -1008,38 +1067,64 @@
 
 
 <script>
-/*
-  const dropzone = new Dropzone("#demo-upload", {
-    parallelUploads: 2,
-    thumbnailHeight: 120,
-    thumbnailWidth: 120,
-    maxFilesize: 3,
-    filesizeBase: 1000,
-    thumbnail: function (file, dataUrl) {
-      if (file.previewElement) {
-        file.previewElement.classList.remove("dz-file-preview");
-        var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
-        for (var i = 0; i < images.length; i++) {
-          var thumbnailElement = images[i];
-          thumbnailElement.alt = file.name;
-          thumbnailElement.src = dataUrl;
+  /*
+    const dropzone = new Dropzone("#demo-upload", {
+      parallelUploads: 2,
+      thumbnailHeight: 120,
+      thumbnailWidth: 120,
+      maxFilesize: 3,
+      filesizeBase: 1000,
+      thumbnail: function (file, dataUrl) {
+        if (file.previewElement) {
+          file.previewElement.classList.remove("dz-file-preview");
+          var images = file.previewElement.querySelectorAll("[data-dz-thumbnail]");
+          for (var i = 0; i < images.length; i++) {
+            var thumbnailElement = images[i];
+            thumbnailElement.alt = file.name;
+            thumbnailElement.src = dataUrl;
+          }
+          setTimeout(function () {
+            file.previewElement.classList.add("dz-image-preview");
+          }, 1);
         }
-        setTimeout(function () {
-          file.previewElement.classList.add("dz-image-preview");
-        }, 1);
-      }
-    },
-  });*/
-  function showUp(el) {
-    el.value = "";
-    document.getElementById("myUL").style.display = "block";
+      },
+    });*/
+  function showTrattativaFile(el) {
+    el.style.display = "none";
+    document.getElementById("formTrattativa").style.display = "none";
+    document.getElementById("btnTrattativa").style.display = "block";
+    document.getElementById("trattativaFile").style.display = "block";
+    document.getElementById("formTrattativa").style.display = "none";
   }
 
-  function myFunction() {
+  function showTrattativa(el) {
+    el.style.display = "none";
+
+    document.getElementById("trattativaFile").style.display = "none";
+    document.getElementById("btnTrattativaFile").style.display = "block";
+    document.getElementById("formTrattativa").style.display = "block";
+  }
+
+
+  function showUp(el,val) {
+    el.value = "";
+    namemyUL = "myUL"
+    if(val == 2)
+      namemyUL += "2"
+    document.getElementById(namemyUL).style.display = "block";
+  }
+
+  function myFunction(val) {
     var input, filter, ul, li, i, txtValue;
-    input = document.getElementById("myInput");
+    nameInput = "myInput";
+    namemyUL = "myUL"
+    if(val == 2){
+      nameInput += "2"
+      namemyUL += "2"
+    }
+    input = document.getElementById(nameInput);
     filter = input.value.toUpperCase();
-    ul = document.getElementById("myUL");
+    ul = document.getElementById(namemyUL);
     input = ul.getElementsByTagName("li");
     for (i = 0; i < input.length; i++) {
 
@@ -1052,12 +1137,20 @@
     }
   }
 
-  function getName(el) {
+  function getName(el, val, contatto) {
+    alert(contatto);
     console.log(el);
     console.log(el.previousElementSibling);
+    nameInput = "myInput";
+    namemyUL = "myUL";
+    if(val == 2){
+      nameInput += "2";
+      namemyUL += "2";
+    }
+
     document.getElementById("idSearch").value = el.previousElementSibling.value;
-    document.getElementById("myInput").value = el.innerHTML;
-    document.getElementById("myUL").style.display = "none";
+    document.getElementById(nameInput).value = el.innerHTML;
+    document.getElementById(namemyUL).style.display = "none";
   }
 
   console.log(document.getElementById("myInput").value);
@@ -1127,18 +1220,6 @@
     xhr.send();
     location.reload();
   }
-
-  function hideTrattativa() {
-    document.getElementById("formTrattativa").style.display = "none";
-    document.getElementById("btnTrattativa").style.display = "block";
-  }
-
-  function showTrattativa(el) {
-    el.style.display = "none";
-    document.getElementById("formTrattativa").style.display = "block";
-  }
-
-
 
   function changeText(el) {
     document.getElementById("h1RagioneSociale").innerText = el.value;
@@ -1221,30 +1302,7 @@
     }
     //... and adds the "active" class on the current step:
     x[n].className += " active";
-  }</script>
+  }
+  </script>
 
-
-
-
-
-
-
-<!--<script>
-    dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
-  evt.preventDefault();
-};
-
-dropContainer.ondrop = function(evt) {
-  // pretty simple -- but not for IE :(
-  fileInput.files = evt.dataTransfer.files;
-
-  // If you want to use some of the dropped files
-  const dT = new DataTransfer();
-  dT.items.add(evt.dataTransfer.files[0]);
-  dT.items.add(evt.dataTransfer.files[3]);
-  fileInput.files = dT.files;
-
-  evt.preventDefault();
-};
-   </script>-->
 {% endblock %}

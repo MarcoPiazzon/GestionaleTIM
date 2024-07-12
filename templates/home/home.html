@@ -138,6 +138,13 @@
     color: #009688;
   }
 </style>
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+    let test= {{ getP}};
+    alert(test[0]);
+   })
+
+</script>
 
 <div class="page-holder bg-gray-100">
   <div class="container-fluid px-lg-4 px-xl-5">
@@ -146,6 +153,32 @@
     <!-- Page Header-->
     <div class="page-header">
       <h1 class="page-heading">Archivi portafogli</h1>
+    </div>
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="false">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1">1</button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2">2</button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3">3</button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <p>ciao</p>
+        </div>
+        <div class="carousel-item">
+          <p>ciao</p>
+        </div>
+        <div class="carousel-item">
+          <p>ciao</p>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
     <section class="mb-3 mb-lg-5">
       <div class="row">
