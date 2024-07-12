@@ -13,6 +13,7 @@ def login():
     
     if request.method=='POST':
         pw=conn.execute(select(utente).where(utente.c.email==request.form['email'])).fetchone()
+        print(pw)
         if(pw is not None): # ha trovato un match sul db -> utente da autenticare
             pw = pw._asdict()
             if(bcrypt.check_password_hash(pw['psw'],pw['email']+request.form['psw'])):

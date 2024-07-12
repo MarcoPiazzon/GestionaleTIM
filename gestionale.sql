@@ -7,36 +7,31 @@
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gestionale`
+-- Database: gestionale
 --
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `andamentotrattativa`
+-- Struttura della tabella andamentotrattativa
 --
 
-CREATE TABLE `andamentotrattativa` (
-  `idAndamento` int(11) NOT NULL,
-  `nome` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE andamentotrattativa (
+  idAndamento serial NOT NULL,
+  nome text DEFAULT NULL
+);
 
 --
--- Dump dei dati per la tabella `andamentotrattativa`
+-- Dump dei dati per la tabella andamentotrattativa
 --
 
-INSERT INTO `andamentotrattativa` (`idAndamento`, `nome`) VALUES
+INSERT INTO andamentotrattativa (idAndamento, nome) VALUES
 (1, 'IN TRATTATIVA'),
 (2, 'VINTA'),
 (3, 'PERSA');
@@ -44,23 +39,23 @@ INSERT INTO `andamentotrattativa` (`idAndamento`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `appuntamento`
+-- Struttura della tabella appuntamento
 --
 
-CREATE TABLE `appuntamento` (
-  `idAppuntamento` int(11) NOT NULL,
-  `idUtenteCreazione` int(11) NOT NULL,
-  `titolo` varchar(255) DEFAULT NULL,
-  `varieDiscussioni` varchar(255) DEFAULT NULL,
-  `preventivoDaFare` varchar(255) DEFAULT NULL,
-  `dataApp` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE appuntamento (
+  idAppuntamento serial NOT NULL,
+  idUtenteCreazione int NOT NULL,
+  titolo text DEFAULT NULL,
+  varieDiscussioni text DEFAULT NULL,
+  preventivoDaFare text DEFAULT NULL,
+  dataApp timestamp DEFAULT NULL
+);
 
 --
--- Dump dei dati per la tabella `appuntamento`
+-- Dump dei dati per la tabella appuntamento
 --
 
-INSERT INTO `appuntamento` (`idAppuntamento`, `idUtenteCreazione`, `titolo`, `varieDiscussioni`, `preventivoDaFare`, `dataApp`) VALUES
+INSERT INTO appuntamento (idAppuntamento, idUtenteCreazione, titolo, varieDiscussioni, preventivoDaFare, dataApp) VALUES
 (37, 2, 'asd', '', '', '2024-07-16 15:48:00'),
 (41, 2, 'Appuntamento diverso', 'dsfd', 'asd', '2024-07-21 19:33:00'),
 (42, 2, 'Primo appuntamento', 'discussioni', 'Da far quesot', '2024-07-14 22:38:00'),
@@ -71,20 +66,20 @@ INSERT INTO `appuntamento` (`idAppuntamento`, `idUtenteCreazione`, `titolo`, `va
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `categoria`
+-- Struttura della tabella categoria
 --
 
-CREATE TABLE `categoria` (
-  `idCategoria` int(11) NOT NULL,
-  `nome` varchar(255) DEFAULT NULL,
-  `descrizione` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE categoria (
+  idCategoria serial NOT NULL,
+  nome text DEFAULT NULL,
+  descrizione text DEFAULT NULL
+);
 
 --
--- Dump dei dati per la tabella `categoria`
+-- Dump dei dati per la tabella categoria
 --
 
-INSERT INTO `categoria` (`idCategoria`, `nome`, `descrizione`) VALUES
+INSERT INTO categoria (idCategoria, nome, descrizione) VALUES
 (1, 'Licenze Google', 'Offerta Google WorkSpace (sia catena CRM/PRM sia TDS)'),
 (2, 'Licenze Microsoft', 'Offerta Microsoft 365 (PRM/CRM e TDS) e altre licenze Microsoft (Sql Server, Dynamics 365, etc.) - specificare il tipo di licenze (365, Sql, etc.) nel campo \"Nome Opportunità\"'),
 (3, 'Licenze - altro', 'Licenze sw di altri Vendor (non Google e non Microsoft): Veeam, etc. etc. - specificare il tipo di licenze (Veeam, etc.) nel campo \"Nome Opportunità\"'),
@@ -102,38 +97,38 @@ INSERT INTO `categoria` (`idCategoria`, `nome`, `descrizione`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `cliente`
+-- Struttura della tabella cliente
 --
 
-CREATE TABLE `cliente` (
-  `idCliente` int(11) NOT NULL,
-  `idUtente` int(11) NOT NULL,
-  `idPortafoglio` int(11) NOT NULL,
-  `tipoCliente` int(11) DEFAULT NULL,
-  `cf` varchar(255) DEFAULT NULL,
-  `ragioneSociale` varchar(255) DEFAULT NULL,
-  `presidio` int(11) DEFAULT NULL,
-  `indirizzoPrincipale` varchar(255) DEFAULT NULL,
-  `comunePrincipale` int(11) DEFAULT NULL,
-  `capPrincipale` varchar(255) DEFAULT NULL,
-  `provinciaDescPrincipale` varchar(255) DEFAULT NULL,
-  `provinciaSiglaPrincipale` varchar(255) DEFAULT NULL,
-  `sediTot` int(11) DEFAULT NULL,
-  `nLineeTot` int(11) DEFAULT NULL,
-  `fisso` float DEFAULT NULL,
-  `mobile` float DEFAULT NULL,
-  `totale` float DEFAULT NULL,
-  `fatturatoCerved` varchar(255) DEFAULT NULL,
-  `clienteOffMobScadenza` varchar(255) DEFAULT NULL,
-  `fatturatoTim` float DEFAULT NULL,
-  `dipendenti` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE cliente (
+  idCliente serial NOT NULL,
+  idUtente int NOT NULL,
+  idPortafoglio int NOT NULL,
+  tipoCliente int DEFAULT NULL,
+  cf text DEFAULT NULL,
+  ragioneSociale text DEFAULT NULL,
+  presidio int DEFAULT NULL,
+  indirizzoPrincipale text DEFAULT NULL,
+  comunePrincipale int DEFAULT NULL,
+  capPrincipale text DEFAULT NULL,
+  provinciaDescPrincipale text DEFAULT NULL,
+  provinciaSiglaPrincipale text DEFAULT NULL,
+  sediTot int DEFAULT NULL,
+  nLineeTot int DEFAULT NULL,
+  fisso float DEFAULT NULL,
+  mobile float DEFAULT NULL,
+  totale float DEFAULT NULL,
+  fatturatoCerved text DEFAULT NULL,
+  clienteOffMobScadenza text DEFAULT NULL,
+  fatturatoTim float DEFAULT NULL,
+  dipendenti int DEFAULT NULL
+);
 
 --
--- Dump dei dati per la tabella `cliente`
+-- Dump dei dati per la tabella cliente
 --
 
-INSERT INTO `cliente` (`idCliente`, `idUtente`, `idPortafoglio`, `tipoCliente`, `cf`, `ragioneSociale`, `presidio`, `indirizzoPrincipale`, `comunePrincipale`, `capPrincipale`, `provinciaDescPrincipale`, `provinciaSiglaPrincipale`, `sediTot`, `nLineeTot`, `fisso`, `mobile`, `totale`, `fatturatoCerved`, `clienteOffMobScadenza`, `fatturatoTim`, `dipendenti`) VALUES
+INSERT INTO cliente (idCliente, idUtente, idPortafoglio, tipoCliente, cf, ragioneSociale, presidio, indirizzoPrincipale, comunePrincipale, capPrincipale, provinciaDescPrincipale, provinciaSiglaPrincipale, sediTot, nLineeTot, fisso, mobile, totale, fatturatoCerved, clienteOffMobScadenza, fatturatoTim, dipendenti) VALUES
 (665, 2, 6, 1, '4679020232', 'ACCUDIRE SRL', 1, NULL, NULL, '37135', 'VERONA', 'VR', NULL, NULL, 0, 947.02, 947.02, '0', '0', NULL, NULL),
 (666, 2, 6, 2, '4527300265', 'AGRIFUNG S.R.L. - SOCIETA  AGRICOLA', 2, 'None', NULL, 'None', NULL, NULL, 0, 0, 0, 0, 0, '500', '0.0', 0, 0),
 (667, 2, 6, 3, '4734690284', 'ALBERTO DEL BIONDI S.P.A.', 1, 'VL. DELLA NAVIGAZIONE INTERNA 93', NULL, '35027', 'PADOVA', 'PD', 5, 43, 37403.2, 3862.06, 41265.3, '5466000', NULL, 8342, 47),
@@ -145,12 +140,12 @@ INSERT INTO `cliente` (`idCliente`, `idUtente`, `idPortafoglio`, `tipoCliente`, 
 (673, 2, 6, 4, '3292680273', 'APV INVESTIMENTI S.P.A.', 1, 'V. DELL IDROGENO - MARGHERA 9', NULL, '30175', 'VENEZIA', 'VE', 2, 2, 4061.14, 0, 4061.14, '3279000', NULL, 140, 15),
 (674, 2, 6, 2, '1944730264', 'AR.RE.FIN. S.R.L.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (675, 2, 6, 3, '94002080276', 'ARTEVEN - ASSOCIAZIONE REGIONALE PER LA PROMOZIONE E LA DIFFUSIONE DEL TEATRO E DELLA CULTURA NELLE', 1, 'V. GIOVANNI QUERINI - MESTRE 10', NULL, '30172', 'VENEZIA', 'VE', 2, 47, 0, 10397.9, 10397.9, '0', NULL, NULL, 15),
-(676, 2, 6, 4, '1409020359', 'ARTI GRAFICHE REGGIANE & LAI S.P.A.', 1, 'V. DELL\'INDUSTRIA 19', NULL, '42025', 'REGGIO EMILIA', 'RE', 2, 4, 0, 0, 0, '217752000', NULL, NULL, 209),
+(676, 2, 6, 4, '1409020359', 'ARTI GRAFICHE REGGIANE & LAI S.P.A.', 1, 'V. DELL INDUSTRIA 19', NULL, '42025', 'REGGIO EMILIA', 'RE', 2, 4, 0, 0, 0, '217752000', NULL, NULL, 209),
 (677, 2, 6, 1, '1703690303', 'ASSILAB GROUP SRL', 1, NULL, NULL, '33033', 'UDINE', 'UD', NULL, NULL, 253.14, 1783.74, 2036.88, '0', '0', NULL, NULL),
 (678, 2, 6, 4, '80009140270', 'ASSOCIAZIONE VENEZIANA ALBERGATORI', 1, 'SESTIERE CANNAREGIO 3829', NULL, '30131', 'VENEZIA', 'VE', 8, 16, 5919.94, 0, 5919.94, '0', NULL, 0, NULL),
 (679, 2, 6, 4, '1633400930', 'ATEX INDUSTRIES S.R.L.', 1, 'V. DELLE INDUSTRIE 2', NULL, '35010', 'PADOVA', 'PD', 2, 3, 2668.57, 3.93, 2672.5, '13903000', NULL, 0, 51),
 (680, 2, 6, 2, '4126390279', 'ATHENA S.R.L.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(681, 2, 6, 3, '2206860278', 'BERENGO S.P.A.', 1, 'V. DELL\'ELETTRICITA\' - MESTRE 2', NULL, '30175', 'VENEZIA', 'VE', 7, 30, 25444.6, 2222.42, 27667, '39552000', NULL, 6086, 113),
+(681, 2, 6, 3, '2206860278', 'BERENGO S.P.A.', 1, 'V. DELL ELETTRICITA - MESTRE 2', NULL, '30175', 'VENEZIA', 'VE', 7, 30, 25444.6, 2222.42, 27667, '39552000', NULL, 6086, 113),
 (682, 2, 6, 2, '4068540261', 'BIO-HOUSE SRL', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (683, 2, 6, 3, '2037210271', 'CA  DA MOSTO S.P.A.', 1, 'V. VENEZIA 146', NULL, '30037', 'VENEZIA', 'VE', 7, 19, 39943.7, 1067.38, 41011.1, '27507000', NULL, 167, 91),
 (684, 2, 6, 2, '3987541202', 'CARDUCCI STORE SRL', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -192,7 +187,7 @@ INSERT INTO `cliente` (`idCliente`, `idUtente`, `idPortafoglio`, `tipoCliente`, 
 (720, 2, 6, 1, '1216930261', 'G.D. DORIGO - S.P.A.', 1, NULL, NULL, '31053', 'TREVISO', 'TV', NULL, NULL, 19.35, 1512.39, 1531.74, '0', '0', NULL, NULL),
 (721, 2, 6, 2, '6097140963', 'G.D.L. SERVICE SOC. COOP.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (722, 2, 6, 3, '3306860283', 'GAS.NET GROUP S.R.L.', 1, 'V. ROMA 1', NULL, '35020', 'PADOVA', 'PD', 4, 13, 56868.3, 2633.85, 59502.2, '1589000', NULL, 56204, 12),
-(723, 2, 6, 4, '3511000279', 'GIACOMINI WINES SRL', 1, 'C. MARTIRI DELLA LIBERTA\' 113', NULL, '30026', 'VENEZIA', 'VE', 1, 1, 635.12, 2108.4, 2743.52, '3245000', NULL, 0, 5),
+(723, 2, 6, 4, '3511000279', 'GIACOMINI WINES SRL', 1, 'C. MARTIRI DELLA LIBERTA 113', NULL, '30026', 'VENEZIA', 'VE', 1, 1, 635.12, 2108.4, 2743.52, '3245000', NULL, 0, 5),
 (724, 2, 6, 3, '1520440098', 'GIGLIO SOCIETA  A RESPONSABILITA  LIMITATA', 1, 'V. TRIESTINA 4', NULL, '30020', 'VENEZIA', 'VE', 4, 47, 1456.55, 28130.8, 29587.3, '15345000', NULL, 0, 52),
 (725, 2, 6, 2, '3169800277', 'GRILLO PARLANTE SOCIETA  COOPERATIVA SOCIALE', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (726, 2, 6, 3, '902950278', 'GUARDIE AI FUOCHI DEL PORTO DI VENEZIA - SOCIETA  COOPERATIVA PER AZIONI  IN SIGLA  GUARDIE AI FUOCH', 1, 'V. FRATELLI BANDIERA - MESTRE 55', NULL, '30175', 'VENEZIA', 'VE', 4, 40, 24684.9, 6408.91, 31093.8, '5317000', NULL, 0, 62),
@@ -204,7 +199,7 @@ INSERT INTO `cliente` (`idCliente`, `idUtente`, `idPortafoglio`, `tipoCliente`, 
 (732, 2, 6, 2, '4260590270', 'I.D. MARINE SRL', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (733, 2, 6, 2, '2383570278', 'IBIF S.R.L.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (734, 2, 6, 2, '2420040277', 'IDEAL LUX S.R.L.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(735, 2, 6, 3, '221480288', 'INARCA S.P.A.', 1, 'V. CA\' ZUSTO 35', NULL, '35010', 'PADOVA', 'PD', 2, 32, 24047.5, 4288.79, 28336.3, '36687000', NULL, 0, 121),
+(735, 2, 6, 3, '221480288', 'INARCA S.P.A.', 1, 'V. C ZUSTO 35', NULL, '35010', 'PADOVA', 'PD', 2, 32, 24047.5, 4288.79, 28336.3, '36687000', NULL, 0, 121),
 (736, 2, 6, 3, '202750287', 'INE SPA', 1, 'V. FACCA 10', NULL, '35013', 'PADOVA', 'PD', 4, 73, 46879.8, 15267.4, 62147.2, '43521000', NULL, 1048, 142),
 (737, 2, 6, 4, '4660080286', 'INTELLIGENT SERVICE SRL', 1, 'V. PONTINA KM.29,100', NULL, '40', 'ROMA', 'RM', 1, 1, 491.95, 0, 491.95, '987000', NULL, 0, 3),
 (738, 2, 6, 3, '1830880280', 'INTERPOLIMERI S.P.A.', 1, 'V. CASTELLAZZO 40', NULL, '20010', 'MILANO', 'MI', 3, 109, 1463.76, 43903.9, 45367.7, '425400000', NULL, 1417, 68),
@@ -228,7 +223,7 @@ INSERT INTO `cliente` (`idCliente`, `idUtente`, `idPortafoglio`, `tipoCliente`, 
 (756, 2, 6, 4, '2403160266', 'MORATTO S.R.L.', 1, 'V. ALESSANDRO VOLTA 2', NULL, '31030', 'TREVISO', 'TV', 1, 1, 1280.84, 14.16, 1295, '17597000', NULL, 0, 60),
 (757, 2, 6, 2, '1981270273', 'MULTI SERVICE S.R.L.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (758, 2, 6, 2, '4300140276', 'NOAH S.R.L.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(759, 2, 6, 3, '4152330264', 'O.M.I. TRE S.R.L.', 1, 'VL. DELL\'INDUSTRIA 14', NULL, '31055', 'TREVISO', 'TV', 1, 17, 8774.59, 785.52, 9560.11, '2916000', NULL, 3870, 4),
+(759, 2, 6, 3, '4152330264', 'O.M.I. TRE S.R.L.', 1, 'VL. DELL\INDUSTRIA 14', NULL, '31055', 'TREVISO', 'TV', 1, 17, 8774.59, 785.52, 9560.11, '2916000', NULL, 3870, 4),
 (760, 2, 6, 2, '5282830289', 'OMA NORD ENGINEERING & CONSTRUCTION SRL', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (761, 2, 6, 3, '2540210271', 'ONDULATI NORDEST S.P.A.', 1, 'V. DELLE INDUSTRIE 18', NULL, '30020', 'VENEZIA', 'VE', 1, 15, 735.8, 6644.33, 7380.13, '144680000', NULL, 0, 87),
 (762, 2, 6, 3, '3942770276', 'OPEN SERVICE S.R.L.', 1, 'V. SEBASTIANO VENIER 5', NULL, '30020', 'VENEZIA', 'VE', 3, 109, 15792.2, 16898, 32690.2, '16674000', NULL, 9843, 785),
@@ -247,7 +242,7 @@ INSERT INTO `cliente` (`idCliente`, `idUtente`, `idPortafoglio`, `tipoCliente`, 
 (775, 2, 6, 4, '375680279', 'S.M.C. - SANTI MARINE CONSULTING S.R.L.', 1, 'V. TORINO - MESTRE 151/A', NULL, '30172', 'VENEZIA', 'VE', 1, 3, 0, 0, 0, '687000', NULL, NULL, 8),
 (776, 2, 6, 2, '3561471206', 'SALCOM TECH S.R.L.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (777, 2, 6, 3, '2335540288', 'SALGAIM ECOLOGIC S.P.A.', 1, 'V. CRISTOFORO COLOMBO 1', NULL, '30010', 'VENEZIA', 'VE', 6, 36, 12965.9, 13774.2, 26740.1, '72988000', NULL, 234, 69),
-(778, 2, 6, 2, '3366270266', 'SAN GREGORIO SOCIETA\' COOPERATIVA SOCIALE.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(778, 2, 6, 2, '3366270266', 'SAN GREGORIO SOCIETA\ COOPERATIVA SOCIALE.', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (779, 2, 6, 3, '16531491005', 'SCENARI IMMOBILIARI - ISTITUTO INDIPENDENTE DI STUDI RICERCHE, VALUTAZIONI E SISTEMI INFORMATIVI - S', 1, 'V. LOVANIO 4', NULL, '20121', 'MILANO', 'MI', 1, 29, 478.98, 16217.6, 16696.6, '2844000', NULL, 0, 11),
 (780, 2, 6, 3, '1278710932', 'SEEK & PARTNERS S.P.A.', 1, 'V. JACOPO LINUSSIO 1', NULL, '33170', 'PORDENONE', 'PN', 1, 7, 2640.05, 39.45, 2679.5, '16594000', NULL, 0, 51),
 (781, 2, 6, 2, '757650270', 'SILVA - SOCIETA  A RESPONSABILITA  LIMITATA', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -275,63 +270,68 @@ INSERT INTO `cliente` (`idCliente`, `idUtente`, `idPortafoglio`, `tipoCliente`, 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `clienteappuntamento`
+-- Struttura della tabella clienteappuntamento
 --
 
-CREATE TABLE `clienteappuntamento` (
-  `idCliente` int(11) NOT NULL,
-  `idAppuntamento` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE clienteappuntamento (
+  idCliente int NOT NULL,
+  idAppuntamento int NOT NULL
+);
+
+CREATE TABLE Regione(
+    idRegione int NOT NULL,
+    nome text
+);
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `comune`
+-- Struttura della tabella comune
 --
 
-CREATE TABLE `comune` (
-  `idComune` int(11) NOT NULL,
-  `nome` varchar(255) DEFAULT NULL,
-  `sigla` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE comune (
+  idComune serial NOT NULL,
+  nome text DEFAULT NULL,
+  sigla text DEFAULT NULL
+);
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `contatto`
+-- Struttura della tabella contatto
 --
 
-CREATE TABLE `contatto` (
-  `idContatto` int(11) NOT NULL,
-  `idUtente` int(11) NOT NULL,
-  `nome` varchar(255) DEFAULT NULL,
-  `secondoNome` varchar(255) DEFAULT NULL,
-  `cognome` varchar(255) DEFAULT NULL,
-  `viaUfficio1` varchar(255) DEFAULT NULL,
-  `viaUfficio2` varchar(255) DEFAULT NULL,
-  `viaUfficio3` varchar(255) DEFAULT NULL,
-  `citta` varchar(255) DEFAULT NULL,
-  `provincia` varchar(255) DEFAULT NULL,
-  `cap` varchar(255) DEFAULT NULL,
-  `numUfficio` varchar(255) DEFAULT NULL,
-  `numUfficio2` varchar(255) DEFAULT NULL,
-  `telefonoPrincipale` varchar(255) DEFAULT NULL,
-  `faxAbitazione` varchar(255) DEFAULT NULL,
-  `abitazione` varchar(255) DEFAULT NULL,
-  `abitazione2` varchar(255) DEFAULT NULL,
-  `cellulare` varchar(255) DEFAULT NULL,
-  `note` varchar(255) DEFAULT NULL,
-  `numeroID` varchar(255) DEFAULT NULL,
-  `paginaWeb` varchar(255) DEFAULT NULL,
-  `email1` varchar(255) DEFAULT NULL,
-  `email2` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE contatto (
+  idContatto serial NOT NULL,
+  idUtente int NOT NULL,
+  nome text DEFAULT NULL,
+  secondoNome text DEFAULT NULL,
+  cognome text DEFAULT NULL,
+  viaUfficio1 text DEFAULT NULL,
+  viaUfficio2 text DEFAULT NULL,
+  viaUfficio3 text DEFAULT NULL,
+  citta text DEFAULT NULL,
+  provincia text DEFAULT NULL,
+  cap text DEFAULT NULL,
+  numUfficio text DEFAULT NULL,
+  numUfficio2 text DEFAULT NULL,
+  telefonoPrincipale text DEFAULT NULL,
+  faxAbitazione text DEFAULT NULL,
+  abitazione text DEFAULT NULL,
+  abitazione2 text DEFAULT NULL,
+  cellulare text DEFAULT NULL,
+  note text DEFAULT NULL,
+  numeroID text DEFAULT NULL,
+  paginaWeb text DEFAULT NULL,
+  email1 text DEFAULT NULL,
+  email2 text DEFAULT NULL
+);
 
 --
--- Dump dei dati per la tabella `contatto`
+-- Dump dei dati per la tabella contatto
 --
 
-INSERT INTO `contatto` (`idContatto`, `idUtente`, `nome`, `secondoNome`, `cognome`, `viaUfficio1`, `viaUfficio2`, `viaUfficio3`, `citta`, `provincia`, `cap`, `numUfficio`, `numUfficio2`, `telefonoPrincipale`, `faxAbitazione`, `abitazione`, `abitazione2`, `cellulare`, `note`, `numeroID`, `paginaWeb`, `email1`, `email2`) VALUES
+INSERT INTO contatto (idContatto, idUtente, nome, secondoNome, cognome, viaUfficio1, viaUfficio2, viaUfficio3, citta, provincia, cap, numUfficio, numUfficio2, telefonoPrincipale, faxAbitazione, abitazione, abitazione2, cellulare, note, numeroID, paginaWeb, email1, email2) VALUES
 (1, 2, 'Assistenza', '', 'Ariston ', '', '', '', NULL, '', '', '', '', '', '', '3466875043 ', NULL, '041 987554', '', '', '', 'dasd@gmail.com', ''),
 (2, 2, 'Paolo', '', 'Mugnaini ', '', '', '', NULL, '', '', '', '', '', '', '', NULL, '392 365 9397', '', '', '', '', ''),
 (3, 2, 'Pompeo', 'Avv', 'Pierovalentina', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '+393755418470', NULL, NULL, NULL, 'riccardo.pompeo@pierodellavalentina.com', NULL),
@@ -340,68 +340,68 @@ INSERT INTO `contatto` (`idContatto`, `idUtente`, `nome`, `secondoNome`, `cognom
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `partecipanti`
+-- Struttura della tabella partecipanti
 --
 
-CREATE TABLE `partecipanti` (
-  `idAppuntamento` int(11) NOT NULL,
-  `idUtente` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE partecipanti (
+  idAppuntamento int NOT NULL,
+  idUtente int NOT NULL
+);
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `portafoglio`
+-- Struttura della tabella portafoglio
 --
 
-CREATE TABLE `portafoglio` (
-  `idPortafoglio` int(11) NOT NULL,
-  `idUtente` int(11) NOT NULL,
-  `dataInserimento` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE portafoglio (
+  idPortafoglio serial NOT NULL,
+  idUtente int NOT NULL,
+  dataInserimento date NOT NULL
+);
 
 --
--- Dump dei dati per la tabella `portafoglio`
+-- Dump dei dati per la tabella portafoglio
 --
 
-INSERT INTO `portafoglio` (`idPortafoglio`, `idUtente`, `dataInserimento`) VALUES
+INSERT INTO portafoglio (idPortafoglio, idUtente, dataInserimento) VALUES
 (6, 2, '2024-06-29');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `presidio`
+-- Struttura della tabella presidio
 --
 
-CREATE TABLE `presidio` (
-  `idPresidio` int(11) NOT NULL,
-  `nome` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE presidio (
+  idPresidio serial NOT NULL,
+  nome text DEFAULT NULL
+);
 
 --
--- Dump dei dati per la tabella `presidio`
+-- Dump dei dati per la tabella presidio
 --
 
-INSERT INTO `presidio` (`idPresidio`, `nome`) VALUES
+INSERT INTO presidio (idPresidio, nome) VALUES
 (1, 'PRESIDIO CB'),
 (2, 'PROSPECT');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tipocliente`
+-- Struttura della tabella tipocliente
 --
 
-CREATE TABLE `tipocliente` (
-  `idTipoCliente` int(11) NOT NULL,
-  `nome` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE tipocliente (
+  idTipoCliente serial NOT NULL,
+  nome text DEFAULT NULL
+);
 
 --
--- Dump dei dati per la tabella `tipocliente`
+-- Dump dei dati per la tabella tipocliente
 --
 
-INSERT INTO `tipocliente` (`idTipoCliente`, `nome`) VALUES
+INSERT INTO tipocliente (idTipoCliente, nome) VALUES
 (1, 'MOBILE'),
 (2, 'NO_CONS'),
 (3, 'COMUNE'),
@@ -410,78 +410,67 @@ INSERT INTO `tipocliente` (`idTipoCliente`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `trattativa`
+-- Struttura della tabella trattativa
 --
 
-CREATE TABLE `trattativa` (
-  `idTrattativa` int(11) NOT NULL,
-  `idUtente` int(11) DEFAULT NULL,
-  `idCliente` int(11) DEFAULT NULL,
-  `codiceCtrDigitali` varchar(255) DEFAULT NULL,
-  `codiceSalesHub` varchar(255) DEFAULT NULL,
-  `areaManager` varchar(255) DEFAULT NULL,
-  `zona` varchar(255) DEFAULT NULL,
-  `tipo` varchar(255) DEFAULT NULL,
-  `nomeOpportunita` varchar(255) DEFAULT NULL,
-  `dataCreazioneOpportunita` date DEFAULT current_timestamp(),
-  `fix` float DEFAULT NULL,
-  `mobile` double DEFAULT NULL,
-  `categoriaOffertaIT` int(11) DEFAULT NULL,
-  `it` float DEFAULT NULL,
-  `lineeFoniaFix` float DEFAULT NULL,
-  `aom` float DEFAULT NULL,
-  `mnp` float DEFAULT NULL,
-  `al` float DEFAULT NULL,
-  `dataChiusura` date DEFAULT NULL,
-  `fase` int(11) DEFAULT NULL,
-  `noteSpecialista` varchar(255) DEFAULT NULL,
-  `probabilita` int(11) DEFAULT NULL,
-  `inPaf` tinyint(1) DEFAULT NULL,
-  `record` int(11) DEFAULT NULL,
-  `fornitore` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE trattativa (
+  idTrattativa serial NOT NULL,
+  idUtente int DEFAULT NULL,
+  idCliente int DEFAULT NULL,
+  codiceCtrDigitali text DEFAULT NULL,
+  codiceSalesHub text DEFAULT NULL,
+  areaManager text DEFAULT NULL,
+  zona text DEFAULT NULL,
+  tipo text DEFAULT NULL,
+  nomeOpportunita text DEFAULT NULL,
+  dataCreazioneOpportunita date DEFAULT current_timestamp,
+  fix float DEFAULT NULL,
+  mobile float DEFAULT NULL,
+  categoriaOffertaIT int DEFAULT NULL,
+  it float DEFAULT NULL,
+  lineeFoniaFix float DEFAULT NULL,
+  aom float DEFAULT NULL,
+  mnp float DEFAULT NULL,
+  al float DEFAULT NULL,
+  dataChiusura date DEFAULT NULL,
+  fase int DEFAULT NULL,
+  noteSpecialista text DEFAULT NULL,
+  probabilita int DEFAULT NULL,
+  inPaf int DEFAULT NULL,
+  record int DEFAULT NULL,
+  fornitore text DEFAULT NULL
+);
 
 --
--- Dump dei dati per la tabella `trattativa`
+-- Dump dei dati per la tabella trattativa
 --
 
-INSERT INTO `trattativa` (`idTrattativa`, `idUtente`, `idCliente`, `codiceCtrDigitali`, `codiceSalesHub`, `areaManager`, `zona`, `tipo`, `nomeOpportunita`, `dataCreazioneOpportunita`, `fix`, `mobile`, `categoriaOffertaIT`, `it`, `lineeFoniaFix`, `aom`, `mnp`, `al`, `dataChiusura`, `fase`, `noteSpecialista`, `probabilita`, `inPaf`, `record`, `fornitore`) VALUES
+INSERT INTO trattativa (idTrattativa, idUtente, idCliente, codiceCtrDigitali, codiceSalesHub, areaManager, zona, tipo, nomeOpportunita, dataCreazioneOpportunita, fix, mobile, categoriaOffertaIT, it, lineeFoniaFix, aom, mnp, al, dataChiusura, fase, noteSpecialista, probabilita, inPaf, record, fornitore) VALUES
 (102, 2, 670, 'None', 'None', 'DEL DEGAN', 'VENETO', 'PRESIDIO CB', 'nici top 2 sedi altro olo 123', '2023-01-23', 15000, 25, 3, 0, 0, 0, 0, 0, '2024-05-09', 2, 'in corso', 65, 0, 1, 'None'),
 (127, 2, 670, 'None', 'None', 'DEL DEGAN', 'VENETO', 'PRESIDIO CB', 'nici top 2 sedi rientro altro olo', '2023-01-23', 15000, 0, 14, 0, 0, 0, 0, 0, '2024-05-01', 1, 'in corso', 90, 0, 1, 'None'),
-(128, 2, 667, '3928792', 'ex 3087933 3928792', 'DEL DEGAN', 'VENETO', 'PRESIDIO CB', 'ftto + vdsl bu', '0000-00-00', 9819, 0, 7, NULL, NULL, NULL, 45, NULL, '2024-02-29', 2, NULL, 100, NULL, 2, NULL),
+(128, 2, 667, '3928792', 'ex 3087933 3928792', 'DEL DEGAN', 'VENETO', 'PRESIDIO CB', 'ftto + vdsl bu', null, 9819, 0, 7, NULL, NULL, NULL, 45, NULL, '2024-02-29', 2, NULL, 100, NULL, 2, NULL),
 (129, 2, 681, 'None', 'None', 'DEL DEGAN', 'VENETO', 'PRESIDIO CB', '3 sim e trunk', '2023-01-23', 5000, 0, 1, 0, 0, 0, 0, 0, '2024-07-25', 2, 'None', 30, 0, 3, 'None');
 
 --
--- Trigger `trattativa`
+-- Trigger trattativa
 --
-DELIMITER $$
-CREATE TRIGGER `after_trattativa_insert` AFTER INSERT ON `trattativa` FOR EACH ROW BEGIN
-    IF (NEW.codiceCtrDigitali IS NULL AND NEW.codiceSalesHub is null and NEW.areaManager is null and new.zona is null and new.tipo is null 
-        and new.nomeOpportunita is null and new.dataCreazioneOpportunita is null and new.fix is null and new.mobile is null and new.categoriaOffertaIT is null 
-        and new.it is null and new.lineeFoniaFix is null and new.aom is null and new.mnp is null and new.al is null and new.dataChiusura is null 
-        and new.fase is null and new.noteSpecialista is null and new.probabilita is null and new.inPaf is null and new.record is null and new.fornitore is null) THEN
-    	SIGNAL sqlstate '45001' set message_text = "No way ! You cannot do this !";
-    END IF;
-END
-$$
-DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `trattativaappuntamento`
+-- Struttura della tabella trattativaappuntamento
 --
 
-CREATE TABLE `trattativaappuntamento` (
-  `idTrattativa` int(11) NOT NULL,
-  `idAppuntamento` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE trattativaappuntamento (
+  idTrattativa int NOT NULL,
+  idAppuntamento int NOT NULL
+);
 
 --
--- Dump dei dati per la tabella `trattativaappuntamento`
+-- Dump dei dati per la tabella trattativaappuntamento
 --
 
-INSERT INTO `trattativaappuntamento` (`idTrattativa`, `idAppuntamento`) VALUES
+INSERT INTO trattativaappuntamento (idTrattativa, idAppuntamento) VALUES
 (128, 37),
 (127, 41),
 (0, 42),
@@ -492,264 +481,178 @@ INSERT INTO `trattativaappuntamento` (`idTrattativa`, `idAppuntamento`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `utente`
+-- Struttura della tabella utente
 --
 
-CREATE TABLE `utente` (
-  `idUtente` int(11) NOT NULL,
-  `nome` varchar(255) NOT NULL,
-  `cognome` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `psw` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE utente (
+  idUtente serial NOT NULL,
+  nome text NOT NULL,
+  cognome text NOT NULL,
+  email text NOT NULL,
+  psw text NOT NULL
+);
 
 --
--- Dump dei dati per la tabella `utente`
+-- Dump dei dati per la tabella utente
 --
 
-INSERT INTO `utente` (`idUtente`, `nome`, `cognome`, `email`, `psw`) VALUES
+INSERT INTO utente (idUtente, nome, cognome, email, psw) VALUES
 (2, 'Marco', 'Piazzon', 'mp@gmail.com', '$2b$12$sNEprcMjxKXYpqF6Fmbol.8hBP2KeWNM9WWjPb.ozsgsw4PQJXPHC'),
 (15, 'Filippo', 'Iaccarino', 'filippo@gmail.com', '$2b$12$WvdLXC8usoo67U2LE/QIM.BAY0RfGRoAQ7dkg6Va.J8nIw/XY7aL.');
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `utentehacontatto`
+-- Struttura della tabella utentehacontatto
 --
 
-CREATE TABLE `utentehacontatto` (
-  `idUtente` int(11) NOT NULL,
-  `idContatto` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE utentehacontatto (
+  idUtente int NOT NULL,
+  idContatto int NOT NULL
+);
 
 --
 -- Indici per le tabelle scaricate
 --
 
 --
--- Indici per le tabelle `andamentotrattativa`
+-- Indici per le tabelle andamentotrattativa
 --
-ALTER TABLE `andamentotrattativa`
-  ADD PRIMARY KEY (`idAndamento`);
+ALTER TABLE andamentotrattativa
+  ADD PRIMARY KEY (idAndamento);
 
 --
--- Indici per le tabelle `appuntamento`
+-- Indici per le tabelle appuntamento
 --
-ALTER TABLE `appuntamento`
-  ADD PRIMARY KEY (`idAppuntamento`),
-  ADD KEY `idUtenteCreazione` (`idUtenteCreazione`);
+ALTER TABLE appuntamento
+  ADD PRIMARY KEY (idAppuntamento);
 
 --
--- Indici per le tabelle `categoria`
+-- Indici per le tabelle categoria
 --
-ALTER TABLE `categoria`
-  ADD PRIMARY KEY (`idCategoria`);
+ALTER TABLE categoria
+  ADD PRIMARY KEY (idCategoria);
 
 --
--- Indici per le tabelle `cliente`
+-- Indici per le tabelle cliente
 --
-ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`idCliente`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idPortafoglio` (`idPortafoglio`),
-  ADD KEY `tipoCliente` (`tipoCliente`),
-  ADD KEY `presidio` (`presidio`),
-  ADD KEY `comunePrincipale` (`comunePrincipale`);
+ALTER TABLE cliente
+  ADD PRIMARY KEY (idCliente);
+
+ALTER TABLE regione
+  ADD PRIMARY KEY (idRegione);
+--
+-- Indici per le tabelle clienteappuntamento
+--
 
 --
--- Indici per le tabelle `clienteappuntamento`
+-- Indici per le tabelle comune
 --
-ALTER TABLE `clienteappuntamento`
-  ADD KEY `idCliente` (`idCliente`),
-  ADD KEY `idAppuntamento` (`idAppuntamento`);
+ALTER TABLE comune
+  ADD PRIMARY KEY (idComune);
 
 --
--- Indici per le tabelle `comune`
+-- Indici per le tabelle contatto
 --
-ALTER TABLE `comune`
-  ADD PRIMARY KEY (`idComune`);
+ALTER TABLE contatto
+  ADD PRIMARY KEY (idContatto);
 
 --
--- Indici per le tabelle `contatto`
+-- Indici per le tabelle partecipanti
 --
-ALTER TABLE `contatto`
-  ADD PRIMARY KEY (`idContatto`);
 
 --
--- Indici per le tabelle `partecipanti`
+-- Indici per le tabelle portafoglio
 --
-ALTER TABLE `partecipanti`
-  ADD KEY `idAppuntamento` (`idAppuntamento`),
-  ADD KEY `idUtente` (`idUtente`);
+ALTER TABLE portafoglio
+  ADD PRIMARY KEY (idPortafoglio);
 
 --
--- Indici per le tabelle `portafoglio`
+-- Indici per le tabelle presidio
 --
-ALTER TABLE `portafoglio`
-  ADD PRIMARY KEY (`idPortafoglio`),
-  ADD KEY `FK_Utente` (`idUtente`);
+ALTER TABLE presidio
+  ADD PRIMARY KEY (idPresidio);
 
 --
--- Indici per le tabelle `presidio`
+-- Indici per le tabelle tipocliente
 --
-ALTER TABLE `presidio`
-  ADD PRIMARY KEY (`idPresidio`);
+ALTER TABLE tipocliente
+  ADD PRIMARY KEY (idTipoCliente);
 
 --
--- Indici per le tabelle `tipocliente`
+-- Indici per le tabelle trattativa
 --
-ALTER TABLE `tipocliente`
-  ADD PRIMARY KEY (`idTipoCliente`);
+ALTER TABLE trattativa
+  ADD PRIMARY KEY (idTrattativa);
 
 --
--- Indici per le tabelle `trattativa`
+-- Indici per le tabelle trattativaappuntamento
 --
-ALTER TABLE `trattativa`
-  ADD PRIMARY KEY (`idTrattativa`),
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idCliente` (`idCliente`),
-  ADD KEY `zona` (`zona`),
-  ADD KEY `categoriaOffertaIT` (`categoriaOffertaIT`),
-  ADD KEY `fase` (`fase`);
 
 --
--- Indici per le tabelle `trattativaappuntamento`
+-- Indici per le tabelle utente
 --
-ALTER TABLE `trattativaappuntamento`
-  ADD KEY `trattativaappuntamento_ibfk_1` (`idTrattativa`),
-  ADD KEY `trattativaappuntamento_ibfk_2` (`idAppuntamento`);
+ALTER TABLE utente
+  ADD PRIMARY KEY (idUtente);
 
 --
--- Indici per le tabelle `utente`
+-- Indici per le tabelle utentehacontatto
 --
-ALTER TABLE `utente`
-  ADD PRIMARY KEY (`idUtente`);
-
---
--- Indici per le tabelle `utentehacontatto`
---
-ALTER TABLE `utentehacontatto`
-  ADD KEY `idUtente` (`idUtente`),
-  ADD KEY `idContatto` (`idContatto`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
 --
 
 --
--- AUTO_INCREMENT per la tabella `andamentotrattativa`
+-- AUTO_INCREMENT per la tabella andamentotrattativa
 --
-ALTER TABLE `andamentotrattativa`
-  MODIFY `idAndamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT per la tabella appuntamento
+--
 
 --
--- AUTO_INCREMENT per la tabella `appuntamento`
+-- AUTO_INCREMENT per la tabella categoria
 --
-ALTER TABLE `appuntamento`
-  MODIFY `idAppuntamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
--- AUTO_INCREMENT per la tabella `categoria`
+-- AUTO_INCREMENT per la tabella cliente
 --
-ALTER TABLE `categoria`
-  MODIFY `idCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT per la tabella `cliente`
+-- AUTO_INCREMENT per la tabella comune
 --
-ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=802;
 
 --
--- AUTO_INCREMENT per la tabella `comune`
+-- AUTO_INCREMENT per la tabella contatto
 --
-ALTER TABLE `comune`
-  MODIFY `idComune` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT per la tabella `contatto`
+-- AUTO_INCREMENT per la tabella portafoglio
 --
-ALTER TABLE `contatto`
-  MODIFY `idContatto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT per la tabella `portafoglio`
+-- AUTO_INCREMENT per la tabella presidio
 --
-ALTER TABLE `portafoglio`
-  MODIFY `idPortafoglio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT per la tabella `presidio`
+-- AUTO_INCREMENT per la tabella tipocliente
 --
-ALTER TABLE `presidio`
-  MODIFY `idPresidio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT per la tabella `tipocliente`
+-- AUTO_INCREMENT per la tabella trattativa
 --
-ALTER TABLE `tipocliente`
-  MODIFY `idTipoCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT per la tabella `trattativa`
+-- AUTO_INCREMENT per la tabella utente
 --
-ALTER TABLE `trattativa`
-  MODIFY `idTrattativa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=131;
-
---
--- AUTO_INCREMENT per la tabella `utente`
---
-ALTER TABLE `utente`
-  MODIFY `idUtente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Limiti per le tabelle scaricate
 --
 
 --
--- Limiti per la tabella `appuntamento`
+-- Limiti per la tabella appuntamento
 --
-ALTER TABLE `appuntamento`
-  ADD CONSTRAINT `appuntamento_ibfk_2` FOREIGN KEY (`idUtenteCreazione`) REFERENCES `utente` (`idUtente`);
-
---
--- Limiti per la tabella `cliente`
---
-ALTER TABLE `cliente`
-  ADD CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`idUtente`) REFERENCES `utente` (`idUtente`),
-  ADD CONSTRAINT `cliente_ibfk_3` FOREIGN KEY (`tipoCliente`) REFERENCES `tipocliente` (`idTipoCliente`),
-  ADD CONSTRAINT `cliente_ibfk_4` FOREIGN KEY (`presidio`) REFERENCES `presidio` (`idPresidio`),
-  ADD CONSTRAINT `cliente_ibfk_5` FOREIGN KEY (`comunePrincipale`) REFERENCES `comune` (`idComune`);
-
---
--- Limiti per la tabella `clienteappuntamento`
---
-ALTER TABLE `clienteappuntamento`
-  ADD CONSTRAINT `clienteappuntamento_ibfk_1` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`),
-  ADD CONSTRAINT `clienteappuntamento_ibfk_2` FOREIGN KEY (`idAppuntamento`) REFERENCES `appuntamento` (`idAppuntamento`);
-
---
--- Limiti per la tabella `partecipanti`
---
-ALTER TABLE `partecipanti`
-  ADD CONSTRAINT `partecipanti_ibfk_1` FOREIGN KEY (`idAppuntamento`) REFERENCES `appuntamento` (`idAppuntamento`),
-  ADD CONSTRAINT `partecipanti_ibfk_2` FOREIGN KEY (`idUtente`) REFERENCES `utente` (`idUtente`);
-
---
--- Limiti per la tabella `trattativa`
---
-ALTER TABLE `trattativa`
-  ADD CONSTRAINT `trattativa_ibfk_1` FOREIGN KEY (`idUtente`) REFERENCES `utente` (`idUtente`),
-  ADD CONSTRAINT `trattativa_ibfk_2` FOREIGN KEY (`idCliente`) REFERENCES `cliente` (`idCliente`),
-  ADD CONSTRAINT `trattativa_ibfk_4` FOREIGN KEY (`categoriaOffertaIT`) REFERENCES `categoria` (`idCategoria`),
-  ADD CONSTRAINT `trattativa_ibfk_5` FOREIGN KEY (`fase`) REFERENCES `andamentotrattativa` (`idAndamento`);
-
---
--- Limiti per la tabella `utentehacontatto`
---
-ALTER TABLE `utentehacontatto`
-  ADD CONSTRAINT `utentehacontatto_ibfk_1` FOREIGN KEY (`idUtente`) REFERENCES `utente` (`idUtente`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
