@@ -8,7 +8,13 @@
         padding: 0;
         margin: 0;
         overflow-y: scroll;
-        max-height: 200px;
+        max-height: 650px;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    #myUL::-webkit-scrollbar{
+        display: none;
     }
 </style>
 <style>
@@ -150,14 +156,14 @@
             <div class="row">
                 <div class="col-xl-4">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-11">
                             <input class="form-control" type="text" id="myInput" onkeyup="myFunction()"
                                 onclick="showUp(this)" placeholder="Search for names.." title="Type in a name">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-1">
                             <form action="/contatto/getContatto" method="POST">
                                 <input type="hidden" name="idSearch" id="idSearch">
-                                <button class="btn btn-danger" type="submit">Cerca</button>
+                                <button class="btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </form>
                         </div>
                     </div>

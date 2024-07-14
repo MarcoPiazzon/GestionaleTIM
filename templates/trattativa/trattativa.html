@@ -6,6 +6,16 @@
   .hiddenRow {
     padding: 0 !important;
   }
+
+
+  #tab {
+    max-height: 400px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding: 0;
+    margin: 0;
+  }
 </style>
 
 <div class="page-holder bg-gray-100">
@@ -20,468 +30,231 @@
           <h5 class="card-heading">Trattative</h5>
         </div>
         <div class="card-body text-muted">
-          <!--<table class="table table-striped text-sm text-gray-700 mb-0" id="ordersDatatable">
-                        <thead>
-                            <tr>
-                                <th style="width: 40.9338%;">Ragione Sociale</th>
-                                <th style="width: 14.7666%;">codiceCtrDigitali</th>
-                                <th style="width: 12.1607%;">Fase</th>
-                                <th style="width: 16.3952%;">Probabilità</th>
-                                <th style="width: 15.7438%;">dataChiusura</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for i in range (0, t_len) %}
-                            <tr class="align-middle" data-bs-toggle="collapse" data-bs-target="#demo{{i}}" class="accordion-toggle">
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <div class="pt-1"><strong>{{trattative[i][0]}}</strong>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td> <strong>{{trattative[i][0]}}</strong></td>
-                                <td><span class="badge badge-success-light"> <span
-                                            class="indicator"></span>{{trattative[i][0]}}</span></td>
-                                <td style="min-width: 125px;">
-                                    <div class="d-flex align-items-center"><span class="me-2">{{trattative[i][0]}}%</span>
-                                        <div class="progress progress-table">
-                                            <div class="progress-bar bg-undefined" role="progressbar"
-                                                aria-valuenow="{{trattative[i][0]}}" aria-valuemin="0" aria-valuemax="100"
-                                                style="width:{{trattative[i][0]}}%"> </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td style="max-width: 120px">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <span class="me-3">{{trattative[i][0]}}</span>
-                                        <div>
-                                            <button class="btn-header-more" type="button" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false"><i
-                                                    class="fas fa-ellipsis-v"></i></button>
-                                            <div class="dropdown-menu dropdown-menu-end text-sm">
-                                                <a class="dropdown-item" href="#!"><i
-                                                        class="fas fa-expand-arrows-alt opacity-5 me-2"></i>Expand</a><a
-                                                    class="dropdown-item" href="#!"><i
-                                                        class="far fa-edit opacity-5 me-2"></i>Edit</a><a
-                                                    class="dropdown-item" href="#!"><i
-                                                        class="far fa-trash-alt opacity-5 me-2"></i>
-                                                    Remove </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td colspan="6" class="hiddenRow">
-                                  <div class="accordian-body collapse" id="demo{{i}}">
-                                    <div class="px-4 mt-4" id="modifica">
-                                
-                                      <div class="card mb-4">
-                                        <div class="card-body">
-                                          <form action="/portafoglio/modifyTrattativa/{{trattative[i][0]}}" method="POST">
-                                            <input type="hidden" name="idClienteModify" id="idCliente" value="">
-                                         
-                                            <div class="mb-3">
-                                              <label class="small mb-1" for="inputUsername">codiceCtrDigitali</label>
-                                              <input class="form-control" name="codiceCtrDigitaliModify" id="inputUsername" type="text"
-                                                placeholder="Enter your username" value="{{trattative[i][3]}}">
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                              <div class="col-md-6">
-                                                <label class="small mb-1" for="inputFirstName">codiceSalesHub</label>
-                                                <input class="form-control" name="codiceSalesHubModify" id="inputFirstName" type="text"
-                                                  placeholder="Enter your first name" value="{{trattative[i][4]}}">
-                                              </div>
-                                              <div class="col-md-6">
-                                                <label class="small mb-1" for="inputLastName">zona</label>
-                                                <input class="form-control" name="zonaModify" id="inputLastName" type="text"
-                                                  placeholder="Enter your last name" value="{{trattative[i][6]}}">
-                                              </div>
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                              <div class="col-md-6">
-                                                <label class="small mb-1" for="inputFirstName">areaManager</label>
-                                                <input class="form-control" name="areaManagerModify" id="inputFirstName" type="text"
-                                                  placeholder="Enter your first name" value="{{trattative[i][5]}}">
-                                              </div>
-                                              <div class="col-md-6">
-                                                <label class="small mb-1" for="inputLastName">nomeOpportunita</label>
-                                                <input class="form-control" name="nomeOpportunitaModify" id="inputLastName" type="text"
-                                                  placeholder="Enter your last name" value="{{trattative[i][8]}}">
-                                              </div>
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                              <div class="col-md-6">
-                                                <label class="small mb-1" for="inputOrgName">tipo</label>
-                                                <input class="form-control" name="tipoModify" id="inputOrgName" type="text"
-                                                  placeholder="Enter your organization name" value="{{trattative[i][7]}}">
-                                              </div>
-                                              <div class="col-md-3">
-                                                <label class="small mb-1" for="inputLocation">dataCreazioneOpportunita</label>
-                                                <input class="form-control" name="dataCreazioneOpportunitaModify" id="inputLocation"
-                                                  type="date" placeholder="Enter your location" value="{{trattative[i][9]}}">
-                                              </div>
-                                              <div class="col-md-3">
-                                                <label class="small mb-1" for="inputLocation">fix</label>
-                                                <input class="form-control" name="fixModify" id="inputLocation" type="text"
-                                                  placeholder="Enter your location" value="{{trattative[i][10]}}">
-                                              </div>
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                              <div class="col-md-4">
-                                                <label class="small mb-1" for="inputPhone">mobile</label>
-                                                <input class="form-control" name="mobileModify" id="inputPhone" type="tel"
-                                                  placeholder="Enter your phone number" value="{{trattative[i][11]}}">
-                                              </div>
-                                              <div class="col-md-4">
-                                                <label class="small mb-1" for="inputBirthday">categoriaOffertaIT</label>
-                                                <input class="form-control" name="categoriaOffertaITModify"
-                                                  id="categoriaOffertaITModify" type="hidden" name="birthday"
-                                                  placeholder="Enter your birthday" value="">
-                
-                                                <select class="form-select" aria-label="Default select example" id="categoriaOptions"
-                                                  onchange="setCategoria()">
-                                                  <option value="{% if trattative[i][12] %} {{trattative[i][12]}} {%endif%}" selected>
-                                                    {% if trattative[i][12] %} {{trattative[i][12]}}{%endif%}</option>
-                                                  {% for c in categorie %}
-                                                  <option value="{{c.idCategoria}}">{{c.nome}}</option>
-                                                  {% endfor %}
-                
-                                                </select>
-                                              </div>
-                                              <div class="col-md-4">
-                                                <label class="small mb-1" for="inputBirthday">it</label>
-                                                <input class="form-control" name="itModify" id="inputBirthday" type="text"
-                                                  name="birthday" placeholder="Enter your birthday" value="{{trattative[i][13]}}">
-                                              </div>
-                
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                              <div class="col-md-4">
-                                                <label class="small mb-1" for="inputPhone">lineeFoniaFixModify</label>
-                                                <input class="form-control" name="lineeFoniaFixModify" id="inputPhone" type="tel"
-                                                  placeholder="Enter your phone number" value="{{trattative[i][14]}}">
-                                              </div>
-                                              <div class="col-md-4">
-                                                <label class="small mb-1" for="inputBirthday">aom</label>
-                                                <input class="form-control" name="aomModify" id="inputBirthday" type="text"
-                                                  name="birthday" placeholder="Enter your birthday" value="{{trattative[i][15]}}">
-                                              </div>
-                                              <div class="col-md-4">
-                                                <label class="small mb-1" for="inputBirthday">mnp</label>
-                                                <input class="form-control" name="mnpModify" id="inputBirthday" type="text"
-                                                  name="birthday" placeholder="Enter your birthday" value="{{trattative[i][16]}}">
-                                              </div>
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                              <div class="col-md-4">
-                                                <label class="small mb-1" for="inputPhone">al</label>
-                                                <input class="form-control" name="alModify" id="inputPhone" type="tel"
-                                                  placeholder="Enter your phone number" value="{{trattative[i][17]}}">
-                                              </div>
-                                              <div class="col-md-4">
-                                                <label class="small mb-1" for="inputBirthday">dataChiusura</label>
-                                                <input class="form-control" name="dataChiusuraModify" id="inputBirthday" type="date"
-                                                  name="birthday" placeholder="Enter your birthday" value="{{trattative[i][18]}}">
-                                              </div>
-                                              <div class="col-md-4">
-                                                <label class="small mb-1" for="inputBirthday">noteSpecialista</label>
-                                                <input class="form-control" name="noteSpecialistaModify" id="inputBirthday" type="text"
-                                                  name="birthday" placeholder="Enter your birthday" value="{{trattative[i][20]}}">
-                                              </div>
-                                            </div>
-                                            <div class="row gx-3 mb-3">
-                                              <div class="col-md-3">
-                                                <input type="hidden" name="faseModify" id="faseModify">
-                                                <label class="small mb-1" for="inputPhone">fase</label>
-                                                <select class="form-select" aria-label="Default select example" id="faseOptions"
-                                                  onchange="setFase()">
-                                                  <option value="{% if trattative[i][19] %} {{trattative[i][19]}} {%endif%}" selected>
-                                                    {% if trattative[i][19] %} {{trattative[i][19]}}{%endif%}</option>
-                                                  {% for a in andamento %}
-                
-                                                  <option value="{{a.idAndamento}}">{{a.nome}}</option>
-                                                  {% endfor %}
-                                                </select>
-                                              </div>
-                                              <div class="col-md-3">
-                                                <label class="small mb-1" for="inputBirthday">probabilita</label>
-                                                <input class="form-control" name="probabilitaModify" id="inputBirthday" type="text"
-                                                  name="birthday" placeholder="Enter your birthday" value="{{trattative[i][21]}}%">
-                                              </div>
-                                              <div class="col-md-3">
-                                                <label class="small mb-1" for="inputBirthday">inPaf</label>
-                                                <input class="form-control" name="inPafModify" id="inputBirthday" type="text"
-                                                  name="birthday" placeholder="Enter your birthday" value="{{trattative[i][22]}}">
-                                              </div>
-                                              <div class="col-md-3">
-                                                <label class="small mb-1" for="inputBirthday">fornitore</label>
-                                                <input class="form-control" name="fornitoreModify" id="inputBirthday" type="text"
-                                                  name="birthday" placeholder="Enter your birthday" value="{{trattative[i][24]}}">
-                                              </div>
-                                            </div>
-                
-                                            <button class="btn btn-primary" type="submit">Salva le modifiche</button>
-                                            <button class="btn btn-danger" onclick="sendData({{trattative[i].idTrattativa}})"
-                                              type="button" style="float: right;">CIao</button>
-                                          </form>
-                                          {%if trattative[i][25] %}
-                                          <h5 class="page-heading">Appuntamenti assocciati</h5>
-                                          <div class="card-body text-muted">
-                                            <table class="table table-striped text-sm text-gray-700 mb-0" id="ordersDatatable">
-                                              <thead>
-                                                <tr>
-                                                  <th data-sortable="" style="width: 60%;"><a href="#"
-                                                      class="dataTable-sorter">Titolo</a></th>
-                                                  <th data-sortable="" style="width: 40%;"><a href="#" class="dataTable-sorter">Data</a>
-                                                  </th>
-                                                </tr>
-                                              </thead>
-                                              <tbody>
-                                                {% for appuntamento in trattative[i][25] %}
-                                                <tr class="align-middle">
-                                                  <td>
-                                                    <div class="d-flex align-items-center">
-                                                      <div class="pt-1"><strong>{{appuntamento.titolo}}</strong>
-                                                      </div>
-                                                    </div>
-                                                  </td>
-                                                  <td> <strong>{{appuntamento.dataApp}}</strong></td>
-                                                </tr>
-                                                {%endfor%}
-                                              </tbody>
-                                            </table>
-                                          </div>
-                                          {%endif%}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-
-                            {%endfor%}
-                        </tbody>
-                    </table>-->
           <div class="row">
 
             <div class="container px-4 mt-4">
-              <table class="table table-condensed" style="border-collapse:collapse;">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Andamento</th>
-                    <th>Data</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <input class="form-control mb-4" type="text" id="myInput" onkeyup="myFunction(0)" onclick="showUp(this)"
+                placeholder="Cerca una trattativa" title="Type in a name" value="">
+              <div id="tab">
+                <table class="table table-condensed" style="border-collapse:collapse;">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Andamento</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody id="myUL">
 
-                  {% for i in range (0, t_len) %}
-                  <tr data-bs-toggle="modal" data-bs-target="#staticBackdrop{{i}}">
-                    <td>{{trattative[i][8]}}</td>
-                    <td>{{trattative[i][25]}}</td>
-                    <td>{{trattative[i][18]}}</td>
-                  </tr>
-                  <div class="modal fade" id="staticBackdrop{{i}}" data-bs-backdrop="static" data-bs-keyboard="false"
-                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl modal-dialog-centered">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="staticBackdropLabel">{{trattative[i][8]}}</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action="/portafoglio/modifyTrattativa/{{trattative[i][0]}}" method="POST">
-                          <div class="modal-body">
-                            <div id="modifica">
-                              <!-- Account details card-->
-                              <div class="row mb-4">
-                                <!--<div class="card-header">Modifica</div>-->
-                                <div class="card-body">
+                    {% for i in range (0, t_len) %}
+                    <tr data-bs-toggle="modal" data-bs-target="#staticBackdrop{{i}}">
+                      <td>{{trattative[i][8]}}</td>
+                      <td>{{trattative[i][25]}}</td>
+                      <td>{{trattative[i][18]}}</td>
+                    </tr>
+                    <div class="modal fade" id="staticBackdrop{{i}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                      tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-xl modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">{{trattative[i][8]}}</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <form action="/trattativa/modifyTrattativa/{{trattative[i][0]}}" method="POST">
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="{% if trattative[i][27] %}col-md-9{%else%}{%endif%}"  id="modifica">
+                                  <!-- Account details card-->
+                                  <div class="row mb-4">
+                                    <!--<div class="card-header">Modifica</div>-->
 
-                                  <input type="hidden" name="idClienteModify" id="idCliente"
-                                    value="{{trattative[i][2]}}">
-                                  <!-- Form Group (username)-->
-                                  <div class="row gx-3 mb-3">
-                                    <div class="col-md-4">
-                                      <label class="small mb-1" for="inputUsername">codiceCtrDigitali</label>
-                                      <input class="form-control" name="codiceCtrDigitaliModify" id="inputUsername"
-                                        type="text" placeholder="Enter your username" value="{{trattative[i][3]}}">
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label class="small mb-1" for="inputFirstName">codiceSalesHub</label>
-                                      <input class="form-control" name="codiceSalesHubModify" id="inputFirstName"
-                                        type="text" placeholder="Enter your first name" value="{{trattative[i][4]}}">
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label class="small mb-1" for="inputLastName">zona</label>
-                                      <input class="form-control" name="zonaModify" id="inputLastName" type="text"
-                                        placeholder="Enter your last name" value="{{trattative[i][6]}}">
-                                    </div>
-
-
-                                  </div>
-                                  <!-- Form Row-->
-                                  <div class="row gx-3 mb-3">
-                                    <!-- Form Group (first name)-->
-                                    <div class="col-md-6">
-                                      <label class="small mb-1" for="inputLastName">nomeOpportunita</label>
-                                      <input class="form-control" name="nomeOpportunitaModify" id="inputLastName"
-                                        type="text" placeholder="Enter your last name" value="{{trattative[i][8]}}">
-      
-                                    </div>
-                                    <!-- Form Group (last name)-->
-                                    <div class="col-md-6">
-                                      <label class="small mb-1" for="inputOrgName">tipo</label>
-                                      <input class="form-control" name="tipoModify" id="inputOrgName" type="text"
-                                        placeholder="Enter your organization name" value="{{trattative[i][7]}}">
-
-                                    </div>
-                                  </div>
-                                  <!-- Form Row        -->
-                                  <div class="row gx-3 mb-3">
-                                    <!-- Form Group (organization name)-->
-                                    <div class="col-md-6">
-      
-                                        <label class="small mb-1" for="inputFirstName">areaManager</label>
-                                        <input class="form-control" name="areaManagerModify" id="inputFirstName"
-                                          type="text" placeholder="Enter your first name" value="{{trattative[i][5]}}">
-                                    </div>
-                                    <!-- Form Group (location)-->
-                                    <div class="col-md-3">
-                                      <label class="small mb-1" for="inputLocation">dataCreazioneOpportunita</label>
-                                      <input class="form-control" name="dataCreazioneOpportunitaModify"
-                                        id="inputLocation" type="date" placeholder="Enter your location"
-                                        value="{{trattative[i][9]}}">
-                                    </div>
-                                    <div class="col-md-3">
-                                      <label class="small mb-1" for="inputBirthday">dataChiusura</label>
-                                      <input class="form-control" name="dataChiusuraModify" id="inputBirthday"
-                                        type="date" name="birthday" placeholder="Enter your birthday"
-                                        value="{{trattative[i][18]}}">
-                                    </div>
-                                  </div>
-                                  <!-- Form Row-->
-                                  <div class="row gx-3 mb-3">
-                                    <!-- Form Group (phone number)-->
-                                    <div class="col-md-3">
-
-                                      <label class="small mb-1" for="inputPhone">fase</label>
-                                      <select class="form-select" name="faseModify" aria-label="Default select example"
-                                        id="faseOptions">
-                                        <option value="{% if trattative[i][19] %}{{trattative[i][19]}}{%endif%}"
-                                          selected>
-                                          {% if trattative[i][25] %} {{trattative[i][25]}}{%endif%}</option>
-                                        {% for a in andamento %}
-
-                                        <option value="{{a.idAndamento}}">{{a.nome}}</option>
-                                        {% endfor %}
-                                      </select>
-
-                                    </div>
-                                    <!-- Form Group (birthday)-->
-                                    <div class="col-md-3">
-                                      <label class="small mb-1" for="inputBirthday">categoriaOffertaIT</label>
-                                      <select class="form-select" aria-label="Default select example"
-                                        id="categoriaOptions" name="categoriaOffertaITModify">
-                                        <option value="{% if trattative[i][12] %}{{trattative[i][12]}}{%endif%}"
-                                          selected>
-                                          {% if trattative[i][12] %}{{trattative[i][26]}}{%endif%}</option>
-                                        {% for c in categorie %}
-                                        <option value="{{c.idCategoria}}">{{c.nome}}</option>
-                                        {% endfor %}
-
-                                      </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                      <label class="small mb-1" for="inputBirthday">probabilita</label>
-                                      <input class="form-control" name="probabilitaModify" id="inputBirthday"
-                                        type="text" name="birthday" placeholder="Enter your birthday"
-                                        value="{{trattative[i][21]}}%">
-                                    </div>
-                                    <div class="col-md-3">
-                                      <label class="small mb-1" for="inputBirthday">inPaf</label>
-                                      <input class="form-control" name="inPafModify" id="inputBirthday" type="text"
-                                        name="birthday" placeholder="Enter your birthday" value="{{trattative[i][22]}}">
-                                    </div>
-
-                                  </div>
-
-                                  
-                                  <!-- Form Row-->
-                                  <div class="row gx-3 mb-3">
-                                    <!-- Form Group (phone number)-->
-                                    <div class="col-md-4">
-                                      <label class="small mb-1" for="inputLocation">fix</label>
-                                      <input class="form-control" name="fixModify" id="inputLocation" type="number"
-                                        placeholder="Enter your location" value="{{trattative[i][10]}}">
-
-                                    </div>
-                                    <!-- Form Group (birthday)-->
-                                    <div class="col-md-4">
-                                      <label class="small mb-1" for="inputPhone">mobile</label>
-                                      <input class="form-control" name="mobileModify" id="inputPhone" type="number"
-                                        placeholder="Enter your phone number" value="{{trattative[i][11]}}">
-                                      
-                                    </div>
-                                    <div class="col-md-4">
-                                      <label class="small mb-1" for="inputBirthday">it</label>
-                                      <input class="form-control" name="itModify" id="inputBirthday" type="text"
-                                        name="birthday" placeholder="Enter your birthday" value="{{trattative[i][13]}}">
-
-                                    </div>
-                                  </div>
-                                  <div class="row gx-3 mb-3">
-                                    <!-- Form Group (phone number)-->
-                                    <div class="col-md-3">
-                                      <label class="small mb-1" for="inputPhone">al</label>
-                                      <input class="form-control" name="alModify" id="inputPhone" type="tel"
-                                        placeholder="Enter your phone number" value="{{trattative[i][17]}}">
-                                    </div>
-                                    <!-- Form Group (birthday)-->
-                                    <div class="col-md-3">
-
-                                        <label class="small mb-1" for="inputBirthday">aom</label>
-                                        <input class="form-control" name="aomModify" id="inputBirthday" type="text"
-                                          name="birthday" placeholder="Enter your birthday" value="{{trattative[i][15]}}">
-                                      
-                                    </div>
-                                    <div class="col-md-3">
-                                      <label class="small mb-1" for="inputBirthday">mnp</label>
-                                      <input class="form-control" name="mnpModify" id="inputBirthday" type="text"
-                                        name="birthday" placeholder="Enter your birthday" value="{{trattative[i][16]}}">
-                                    </div>
-                                    <div class="col-md-3">
-                                      <label class="small mb-1" for="inputPhone">lineeFoniaFixModify</label>
-                                      <input class="form-control" name="lineeFoniaFixModify" id="inputPhone" type="tel"
-                                        placeholder="Enter your phone number" value="{{trattative[i][14]}}">
-                                    </div>
-                                  </div>
-                                  <div class="row gx-3 mb-3">
-                                    <!-- Form Group (phone number)-->
-
-                                    <div class="col-md-6">
-                                      <label class="small mb-1" for="inputBirthday">fornitore</label>
-                                      <input class="form-control" name="fornitoreModify" id="inputBirthday" type="text"
-                                        name="birthday" placeholder="Enter your birthday" value="{{trattative[i][24]}}">
-                                    </div>
-                                    <!-- Form Group (birthday)-->
-                                    <div class="col-md-6">
-                                                             
-                                      <label class="small mb-1" for="inputBirthday">noteSpecialista</label>
-                                      <input class="form-control" name="noteSpecialistaModify" id="inputBirthday"
-                                        type="text" name="birthday" placeholder="Enter your birthday"
-                                        value="{{trattative[i][20]}}">             
-  
-                                    </div>
-
-                                   
-                                  </div>
-
-                                  <!-- Save changes button-->
+                                      <input type="hidden" name="idClienteModify" id="idCliente"
+                                        value="{{trattative[i][2]}}">
+                                      <!-- Form Group (username)-->
+                                      <div class="row gx-3 mb-3">
+                                        <div class="col-md-4">
+                                          <label class="small mb-1"
+                                            for="codiceCtrDigitaliModify">codiceCtrDigitali</label>
+                                          <input class="form-control" name="codiceCtrDigitaliModify"
+                                            id="codiceCtrDigitaliModify" type="text" value="{{trattative[i][3]}}">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label class="small mb-1" for="codiceSalesHubModify">codiceSalesHub</label>
+                                          <input class="form-control" name="codiceSalesHubModify"
+                                            id="codiceSalesHubModify" type="text" value="{{trattative[i][4]}}">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label class="small mb-1" for="zonaModify">zona</label>
+                                          <input class="form-control" name="zonaModify" id="zonaModify" type="text"
+                                            value="{{trattative[i][6]}}">
+                                        </div>
 
 
-                                  <!--{%if trattative[i][25] %}
+                                      </div>
+                                      <!-- Form Row-->
+                                      <div class="row gx-3 mb-3">
+                                        <!-- Form Group (first name)-->
+                                        <div class="col-md-6">
+                                          <label class="small mb-1" for="nomeOpportunitaModify">nomeOpportunita</label>
+                                          <input class="form-control" name="nomeOpportunitaModify"
+                                            id="nomeOpportunitaModify" type="text" value="{{trattative[i][8]}}">
+
+                                        </div>
+                                        <!-- Form Group (last name)-->
+                                        <div class="col-md-6">
+                                          <label class="small mb-1" for="tipoModify">tipo</label>
+                                          <input class="form-control" name="tipoModify" id="tipoModify" type="text"
+                                            value="{{trattative[i][7]}}">
+
+                                        </div>
+                                      </div>
+                                      <!-- Form Row        -->
+                                      <div class="row gx-3 mb-3">
+                                        <!-- Form Group (organization name)-->
+                                        <div class="col-md-6">
+
+                                          <label class="small mb-1" for="areaManagerModify">areaManager</label>
+                                          <input class="form-control" name="areaManagerModify" id="areaManagerModify"
+                                            type="text" value="{{trattative[i][5]}}">
+                                        </div>
+                                        <!-- Form Group (location)-->
+                                        <div class="col-md-3">
+                                          <label class="small mb-1"
+                                            for="dataCreazioneOpportunitaModify">dataCreazioneOpportunita</label>
+                                          <input class="form-control" name="dataCreazioneOpportunitaModify"
+                                            id="dataCreazioneOpportunitaModify" type="date"
+                                            value="{{trattative[i][9]}}">
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label class="small mb-1" for="dataChiusuraModify">dataChiusura</label>
+                                          <input class="form-control" name="dataChiusuraModify" id="dataChiusuraModify"
+                                            type="date" value="{{trattative[i][18]}}">
+                                        </div>
+                                      </div>
+                                      <!-- Form Row-->
+                                      <div class="row gx-3 mb-3">
+                                        <!-- Form Group (phone number)-->
+                                        <div class="col-md-3">
+
+                                          <label class="small mb-1" for="faseModify">fase</label>
+                                          <select class="form-select" name="faseModify"
+                                            aria-label="Default select example" id="faseModify">
+                                            <option value="{% if trattative[i][19] %}{{trattative[i][19]}}{%endif%}"
+                                              selected>
+                                              {% if trattative[i][25] %} {{trattative[i][25]}}{%endif%}</option>
+                                            {% for a in andamento %}
+
+                                            <option value="{{a.idAndamento}}">{{a.nome}}</option>
+                                            {% endfor %}
+                                          </select>
+
+                                        </div>
+                                        <!-- Form Group (birthday)-->
+                                        <div class="col-md-3">
+                                          <label class="small mb-1"
+                                            for="categoriaOffertaITModify">categoriaOffertaIT</label>
+                                          <select class="form-select" aria-label="Default select example"
+                                            id="categoriaOffertaITModify" name="categoriaOffertaITModify">
+                                            <option value="{% if trattative[i][12] %}{{trattative[i][12]}}{%endif%}"
+                                              selected>
+                                              {% if trattative[i][12] %}{{trattative[i][26]}}{%endif%}</option>
+                                            {% for c in categorie %}
+                                            <option value="{{c.idCategoria}}">{{c.nome}}</option>
+                                            {% endfor %}
+
+                                          </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label class="small mb-1" for="probabilitaModify">probabilita</label>
+                                          <input class="form-control" name="probabilitaModify" id="probabilitaModify"
+                                            type="text" value="{{trattative[i][21]}}%">
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label class="small mb-1" for="inPafModify">inPaf</label>
+                                          <input class="form-control" name="inPafModify" id="inPafModify" type="text"
+                                            value="{{trattative[i][22]}}">
+                                        </div>
+
+                                      </div>
+
+
+                                      <!-- Form Row-->
+                                      <div class="row gx-3 mb-3">
+                                        <!-- Form Group (phone number)-->
+                                        <div class="col-md-4">
+                                          <label class="small mb-1" for="fixModify">fix</label>
+                                          <input class="form-control" name="fixModify" id="fixModify" type="number"
+                                            value="{% if trattative[i][10]%}{{trattative[i][10]}}{%else%}0.0{%endif%}">
+
+                                        </div>
+                                        <!-- Form Group (birthday)-->
+                                        <div class="col-md-4">
+                                          <label class="small mb-1" for="mobileModify">mobile</label>
+                                          <input class="form-control" name="mobileModify" id="mobileModify"
+                                            type="number"
+                                            value="{% if trattative[i][11] %}{{trattative[i][11]}}{%else%}0.0{%endif%}">
+
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label class="small mb-1" for="itModify">it</label>
+                                          <input class="form-control" name="itModify" id="itModify" type="text"
+                                            value="{{trattative[i][13]}}">
+
+                                        </div>
+                                      </div>
+                                      <div class="row gx-3 mb-3">
+                                        <!-- Form Group (phone number)-->
+                                        <div class="col-md-3">
+                                          <label class="small mb-1" for="alModify">al</label>
+                                          <input class="form-control" name="alModify" id="alModify" type="tel"
+                                            value="{{trattative[i][17]}}">
+                                        </div>
+                                        <!-- Form Group (birthday)-->
+                                        <div class="col-md-3">
+
+                                          <label class="small mb-1" for="aomModify">aom</label>
+                                          <input class="form-control" name="aomModify" id="aomModify" type="text"
+                                            value="{{trattative[i][15]}}">
+
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label class="small mb-1" for="mnpModify">mnp</label>
+                                          <input class="form-control" name="mnpModify" id="mnpModify" type="text"
+                                            value="{{trattative[i][16]}}">
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label class="small mb-1"
+                                            for="lineeFoniaFixModify">lineeFoniaFixModify</label>
+                                          <input class="form-control" name="lineeFoniaFixModify"
+                                            id="lineeFoniaFixModify" type="tel" value="{{trattative[i][14]}}">
+                                        </div>
+                                      </div>
+                                      <div class="row gx-3 mb-3">
+                                        <!-- Form Group (phone number)-->
+
+                                        <div class="col-md-6">
+                                          <label class="small mb-1" for="fornitoreModify">fornitore</label>
+                                          <input class="form-control" name="fornitoreModify" id="fornitoreModify"
+                                            type="text"
+                                            value="{% if trattative[i][24] == None %} {{trattative[i][24]}} {%else%}{%endif%}">
+                                        </div>
+                                        <!-- Form Group (birthday)-->
+                                        <div class="col-md-6">
+
+                                          <label class="small mb-1" for="noteSpecialistaModify">noteSpecialista</label>
+                                          <input class="form-control" name="noteSpecialistaModify"
+                                            id="noteSpecialistaModify" type="text"
+                                            value="{% if trattative[i][20] == None %}{{trattative[i][20]}} {%else%}{%endif%}">
+
+                                        </div>
+
+
+                                      </div>
+
+                                      <!-- Save changes button-->
+
+
+                                      <!--{%if trattative[i][25] %}
                                 <h5 class="page-heading">Appuntamenti assocciati</h5>
                                 <div class="card-body text-muted">
                                   <table class="table table-striped text-sm text-gray-700 mb-0" id="ordersDatatable">
@@ -510,20 +283,40 @@
                                   </table>
                                 </div>
                                 {%endif%}-->
+                                  
+                                  </div>
                                 </div>
+                                {% if trattative[i][27] %}
+                                <div class="col-md-3">
+                                  <div class="row mb-4">
+                                      <div class="list-group mt-2">
+                                      {% for a in trattative[i][27] %}
+                                      
+                                        <li class="list-group-item">
+                                          <div class="row mb-2">{{ a.titolo }}</div>
+                                          <div class="row">{{a.dataApp}}</div> 
+                                          
+                                        </li>
+                                      
+                                      {%endfor%}
+                                    </div>
+                                  </div>
+
+                                </div>
+                                {%endif%}
                               </div>
+                              <button class="btn btn-primary" type="submit">Salva le modifiche</button>
+                              <button class="btn btn-danger" onclick="elimina('{{trattative[i][0]}}')" type="button"
+                                style="float: right;">Elimina</button>
                             </div>
-                            <button class="btn btn-primary" type="submit">Salva le modifiche</button>
-                            <button class="btn btn-danger" onclick="elimina('{{trattative[i][0]}}')"
-                              type="button" style="float: right;">Elimina</button>
-                          </div>
-                        </form>
+                          </form>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  {% endfor %}
-                </tbody>
-              </table>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -658,7 +451,46 @@
     alert(selected);
   }
 
-  function elimina(id){
+  function myFunction(val) {
+    var input, filter, ul, li, i, j, txtValue;
+    var found = 0;
+    nameInput = "myInput";
+    namemyUL = "myUL"
+    input = document.getElementById(nameInput);
+    filter = input.value.toUpperCase();
+    ul = document.getElementById(namemyUL);
+    input = ul.getElementsByTagName("tr");
+    for (i = 0; i < input.length; i++) {
+
+      txtValue = input[i].getElementsByTagName("td")[0].innerHTML;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        input[i].style.display = "";
+      } else {
+        input[i].style.display = "none";
+      }
+      /*j = 0
+      found = 0
+      txtValue = input[i].getElementsByTagName("td");
+      console.log(txtValue);
+      while(j < txtValue.length && found != 0){
+        if (txtValue[j].innerHTML.toUpperCase().indexOf(filter) > -1)
+          found = 1
+        j++;
+      }
+      if(found == 1){
+        input[i].style.display = "none";
+      }*/
+
+
+    }
+  }
+
+  function showUp(el) {
+    el.value = "";
+  }
+
+
+  function elimina(id) {
     Swal.fire({
       title: "Sei sicuro?",
       text: "Una volta eliminata, non potrà essere ripristinata!",
@@ -671,14 +503,14 @@
     }).then((result) => {
       if (result.isConfirmed) {
         var xhr = new XMLHttpRequest();
-        str = '/trattativa/delete/'+id;
+        str = '/trattativa/delete/' + id;
         xhr.open("POST", str, true);
         xhr.send();
         location.reload();
       }
     });
   }
-  
+
 </script>
 
 {%endblock%}

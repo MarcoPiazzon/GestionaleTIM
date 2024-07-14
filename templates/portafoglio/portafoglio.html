@@ -9,6 +9,8 @@
     margin: 0;
     overflow-y: scroll;
     max-height: 200px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   #myUL li a {
@@ -180,7 +182,8 @@
             <div class="input-group ">
               <div class="col-11">
                 <input class="form-control" type="text" id="myInput" onkeyup="myFunction(0)" onclick="showUp(this,0)"
-                  placeholder="Cerca un cliente" title="Type in a name" value="{%if current_cliente %}{{current_cliente[5]}} {%endif%}">
+                  placeholder="Cerca un cliente" title="Type in a name"
+                  value="{%if current_cliente %}{{current_cliente[5]}} {%endif%}">
               </div>
               <div class="col-1">
 
@@ -471,11 +474,11 @@
                     </div>
                     <form action="/portafoglio/modifyTrattativa/{{trattative[i][0]}}" method="POST">
                       <div class="modal-body">
-                        <div id="modifica">
-                          <!-- Account details card-->
-                          <div class="row mb-4">
-                            <!--<div class="card-header">Modifica</div>-->
-                            <div class="card-body">
+                        <div class="row">
+                          <div class="{% if trattative[i][27] %}col-md-9{%else%}{%endif%}" id="modifica">
+                            <!-- Account details card-->
+                            <div class="row mb-4">
+                              <!--<div class="card-header">Modifica</div>-->
 
                               <input type="hidden" name="idClienteModify" id="idCliente" value="{{trattative[i][2]}}">
                               <!-- Form Group (username)-->
@@ -682,9 +685,29 @@
                               </table>
                             </div>
                             {%endif%}-->
+
                             </div>
                           </div>
+                          {% if trattative[i][27] %}
+                          <div class="col-md-3">
+                            <div class="row mb-4">
+                              <div class="list-group mt-2">
+                                {% for a in trattative[i][27] %}
+
+                                <li class="list-group-item">
+                                  <div class="row mb-2">{{ a.titolo }}</div>
+                                  <div class="row">{{a.dataApp}}</div>
+
+                                </li>
+
+                                {%endfor%}
+                              </div>
+                            </div>
+
+                          </div>
+                          {%endif%}
                         </div>
+
                         <button class="btn btn-primary" type="submit">Salva le modifiche</button>
                         <button class="btn btn-danger" onclick="sendData({{trattative[i].idTrattativa}})" type="button"
                           style="float: right;">Elimina</button>
@@ -874,7 +897,8 @@
                 <div class="col-md-3">
 
                   <label class="small mb-1" for="inputPhone">fase</label>
-                  <select class="form-select" name="faseAdd" aria-label="Default select example" id="faseOptions" required>
+                  <select class="form-select" name="faseAdd" aria-label="Default select example" id="faseOptions"
+                    required>
 
                     {% for a in andamento %}
 
@@ -981,7 +1005,7 @@
                 trattativa</button>
               <button class="btn btn-primary" type="button" style="float: right;" id="cleanFormTrattativa">Pulisci
                 tutto</button>
-              
+
 
             </form>
           </div>
@@ -996,7 +1020,7 @@
       <p>
       <div class="collapse" id="collapseExample">
 
-          
+
         <div class=" card card-body mb-2">
           <input class="form-control mb-2" type="text" id="myInput2" onkeyup="myFunction(2)" onclick="showUp(this,2)"
             placeholder="Search for names.." title="Type in a name">
@@ -1005,8 +1029,8 @@
             {% for contatto in contatti%}
             <input type="hidden" value="{{contatto.idContatto}}">
             <li class="list-group-item" onclick="getName(this,2, '{{contatto.nome}}')">
-               {% if contatto.nome%}
-              {{contatto.nome}} 
+              {% if contatto.nome%}
+              {{contatto.nome}}
               {%endif%}
               {%if contatto.secondoNome
               %}{{contatto.secondoNome}} {%endif%} {{contatto.cognome}}</li>
@@ -1099,10 +1123,10 @@
   }
 
 
-  function showUp(el,val) {
+  function showUp(el, val) {
     el.value = "";
     namemyUL = "myUL"
-    if(val == 2)
+    if (val == 2)
       namemyUL += "2"
     document.getElementById(namemyUL).style.display = "block";
   }
@@ -1111,7 +1135,7 @@
     var input, filter, ul, li, i, txtValue;
     nameInput = "myInput";
     namemyUL = "myUL"
-    if(val == 2){
+    if (val == 2) {
       nameInput += "2"
       namemyUL += "2"
     }
@@ -1136,7 +1160,7 @@
     console.log(el.previousElementSibling);
     nameInput = "myInput";
     namemyUL = "myUL";
-    if(val == 2){
+    if (val == 2) {
       nameInput += "2";
       namemyUL += "2";
     }
@@ -1296,6 +1320,6 @@
     //... and adds the "active" class on the current step:
     x[n].className += " active";
   }
-  </script>
+</script>
 
 {% endblock %}

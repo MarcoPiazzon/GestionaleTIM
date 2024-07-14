@@ -50,22 +50,24 @@ def home(idPort, id):
         
         
         if not (trattative is None):
-            #select appuntamento.titolo, trattativa.nomeOpportunita from ((appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento)
-            #join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa)
+        #select appuntamento.titolo, trattativa.nomeOpportunita from ((appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento)
+        #join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa)
             t_len = len(trattative)
             print(type(trattative))
             for i in range(0, t_len):
 
-                appuntamenti = conn.execute(select(appuntamento.c.titolo).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0])).fetchall()
+                appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0])).fetchall()
+                
                 print(appuntamenti)
+                print(type(appuntamenti))
                 trattative[i] = list(trattative[i])
-                if not (appuntamenti is None):
-                    
+                if (len(appuntamenti) > 0):
+                    print("Ho appuntamento")    
                     
                     trattative[i].append(appuntamenti)
                     print(trattative[i][25])
-            #print(len(trattative[0]))
-            #print(trattative)
+
+                print(len(trattative[i]))
     return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort, categorie=categorie, andamento=andamento, contatti=contatti)
 
 

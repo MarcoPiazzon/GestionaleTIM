@@ -139,11 +139,12 @@
   }
 </style>
 <script>
-   document.addEventListener('DOMContentLoaded', function () {
-    let test= {{ getP}};
-    alert(test[0]);
+ /* document.addEventListener('DOMContentLoaded', function () {
+    let test = {{ getP }}
+  };
+  alert(test[0]);
    })
-
+*/
 </script>
 
 <div class="page-holder bg-gray-100">
@@ -191,9 +192,10 @@
             <div class="card-body">
               <h5 class="card-title">{{ p.dataInserimento }}</h5>
               <a href="/portafoglio/{{ p.idPortafoglio }}/0" class="btn btn-primary" style="float: left;">Apri</a>
-                <button class="btn btn-danger" onclick="elimina({{p.idPortafoglio}})" style="float: right; margin-left: 10px;"><i
-                  class="fa fa-trash"></i></button>
-                
+
+              <button class="btn btn-danger" onclick="elimina({{p.idPortafoglio}})"
+                style="float: right; margin-left: 10px;"><i class="fa fa-trash"></i></button>
+
               <a class="btn btn-success" href="{{ url_for('.getExcel', id=p.idPortafoglio)}}" style="float: right;"><i
                   class="fa fa-download"></i></a>
             </div>
@@ -219,8 +221,10 @@
           <!-- step one -->
           <div class="step">
             <p class="mb-4">In questa prima parte andremo ad importare il <b> portafoglio</b></p>
-            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere sicuro, le colonne
-            <strong>devono</strong> andare dalla lettera 'A' alla lettera 'R'.</p>
+            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere
+              sicuro, le colonne
+              <strong>devono</strong> andare dalla lettera 'A' alla lettera 'R'.
+            </p>
             <p class="mb-4"> Se le righe non combaciano i problemi sono due</p>
             <ol>
               <li>Non hai trovato possibili righe nascoste</li>
@@ -233,8 +237,10 @@
           <!-- step two -->
           <div class="step">
 
-            <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del portafoglio.</p>
-            <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere presenti <strong>TUTTE</strong> e
+            <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del
+              portafoglio.</p>
+            <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere
+              presenti <strong>TUTTE</strong> e
               nel seguente <strong>ordine</strong>:</p>
             <ol>
               <li>TIPO_CLIENTE</li>
@@ -258,7 +264,9 @@
 
             </ol>
 
-           <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank" href="https://docs.google.com/spreadsheets/d/1BAIRFhBxXiRG9Azd3VZL__g0gsJgWfcr/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a> per un file di esempio</p>
+            <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank"
+                href="https://docs.google.com/spreadsheets/d/1BAIRFhBxXiRG9Azd3VZL__g0gsJgWfcr/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a>
+              per un file di esempio</p>
           </div>
 
           <!-- step three -->
@@ -268,7 +276,8 @@
               <label class="small mb-1" for="fileDoc">Portafoglio</label>
               <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
                 placeholder="Inserisci il file" aria-label="Upload" name="fileDoc"
-                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                required>
 
             </div>
             <p class="mb-4">Se non inserire le <strong>trattative</strong> puoi andare direttamente alla fine</p>
@@ -276,8 +285,10 @@
 
           <!-- step four -->
           <div class="step">
-            <p class="mb-4">In questa parte andremo ad importare le <strong>trattative</strong> in riferimento al <strong>portafoglio</strong></p>
-            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere sicuro, le colonne
+            <p class="mb-4">In questa parte andremo ad importare le <strong>trattative</strong> in riferimento al
+              <strong>portafoglio</strong></p>
+            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere
+              sicuro, le colonne
               devono andare dalla lettera 'A' alla lettera 'X'.</p>
             <p class="mb-4"> Se le righe non combaciano i problemi sono due</p>
             <ol>
@@ -290,8 +301,10 @@
 
           <!-- step five -->
           <div class="step">
-            <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del portafoglio.</p>
-            <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere presenti <strong>TUTTE</strong> e
+            <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del
+              portafoglio.</p>
+            <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere
+              presenti <strong>TUTTE</strong> e
               nel seguente <strong>ordine</strong>:</p>
             <ol>
               <li>CODICE CTR DIGITALE</li>
@@ -319,7 +332,9 @@
               <li>FORNITORE</li>
             </ol>
 
-            <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank" href="https://docs.google.com/spreadsheets/d/1KUg_MrHQoR0TzMWjXX9ZkFHMBTS6M9NX/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a> per un file di esempio</p>
+            <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank"
+                href="https://docs.google.com/spreadsheets/d/1KUg_MrHQoR0TzMWjXX9ZkFHMBTS6M9NX/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a>
+              per un file di esempio</p>
           </div>
 
           <!-- step six -->
@@ -343,7 +358,7 @@
           <!-- end previous / next buttons -->
         </form>
 
-        
+
       </div>
 
       <!-- <div class="row mb-3">
@@ -476,7 +491,7 @@
   const toast = new bootstrap.Toast(toastLiveExample);
   toast.show();
 
-  function elimina(id){
+  function elimina(id) {
     Swal.fire({
       title: "Sei sicuro?",
       text: "Una volta eliminato, non potrà essere ripristinato!",
@@ -490,8 +505,7 @@
       if (result.isConfirmed) {
         var xhr = new XMLHttpRequest();
         
-        str = '/home/delete/'+id;
-        alert(str);
+        str = '/home/delete/' + id;
         xhr.open("POST", str, true);
         xhr.send();
         location.reload();

@@ -9,6 +9,9 @@ import io
 import xlwt
 import psycopg2
 import psycopg2.extras
+import warnings
+
+warnings.simplefilter(action='ignore', category=UserWarning)
 
 titolo = "Home"
 @home_bp.route('/', methods=['GET', 'POST'])
@@ -34,51 +37,7 @@ def home():
 def removePortafoglio(id):
     print("rimuovo")
     print("sto cancellando")
-    try:
-        #Cancello tabella appuntamento 
-        # DELETE appuntamento FROM appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento 
-        # join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
-        conn.execute(delete(appuntamento).\
-                                    where(appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento).\
-                                    where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
-                                    where(trattativa.c.idCliente == cliente.c.idCliente).\
-                                    where(cliente.c.idPortafoglio == id)                                                    
-        )
-
-        #Cancello tabella trattativaappuntamento
-        # DELETE trattativaappuntamento FROM trattativaappuntamento join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa 
-        # join cliente on cliente.idCliente = trattativa.idCliente where cliente.idPortafoglio = 23 
-
-        conn.execute(
-            delete(trattativaappuntamento).\
-                where(trattativa.c.idCliente == cliente.c.idCliente).\
-                where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
-                where(trattativa.c.idCliente == cliente.c.idCliente).\
-                where(cliente.c.idPortafoglio == id)
-                                               
-        )
-
-        #Cancello trattattive
-        # delete trattativa from trattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
-       
-        conn.execute(delete(trattativa).\
-                    where(trattativa.c.idCliente == cliente.c.idCliente).\
-                    where(cliente.c.idPortafoglio == id)
-        )
-        
-        #Cancello clienti
-
-        conn.execute(delete(cliente).where(cliente.c.idPortafoglio == id))
-
-        #Cancello portafoglio
-
-        conn.execute(delete(portafoglio).where(portafoglio.c.idPortafoglio == id))
-        conn.commit()
-        print("ho cancellato quello che dovevo fare")
-    except Exception as error:
-        conn.rollback()
-        print(error.__cause__)
-        print(error)
+    print(id)
 
     return redirect(url_for('home_bp.home'))
 
@@ -118,6 +77,7 @@ def getCategoria(getCateOff, value):
 @home_bp.route('/addPortafoglio',methods=['POST'])
 @login_required
 def addPortafoglio():
+    warnings.simplefilter(action='ignore', category=UserWarning)
     print("sono quya")
     # Read the File using Flask request
     file = request.files['fileDoc']
