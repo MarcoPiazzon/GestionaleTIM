@@ -38,16 +38,11 @@ def removePortafoglio(id):
         #Cancello tabella appuntamento 
         # DELETE appuntamento FROM appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento 
         # join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
-        conn.execute(delete(appuntamento).select_from(join(appuntamento, 
-                                                           join(trattativaappuntamento, 
-                                                                join(
-                                                                    cliente, trattativa, cliente.c.idCliente == trattativa.c.idCliente
-                                                                    ), trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa 
-                                                                ), 
-                                                                appuntamento.c.idAppuntamento == trattativaappuntamento.c.idTrattativa
-
-                                                            )
-                                                    ).where(cliente.c.idPortafoglio == id)
+        conn.execute(delete(appuntamento).\
+                                    where(appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento).\
+                                    where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
+                                    where(trattativa.c.idCliente == cliente.c.idCliente).\
+                                    where(cliente.c.idPortafoglio == id)                                                    
         )
 
         #Cancello tabella trattativaappuntamento
@@ -55,23 +50,22 @@ def removePortafoglio(id):
         # join cliente on cliente.idCliente = trattativa.idCliente where cliente.idPortafoglio = 23 
 
         conn.execute(
-            delete(trattativaappuntamento).select_from(
-                                                        join(trattativaappuntamento, 
-                                                            join(trattativa, cliente, trattativa.c.idCliente == cliente.c.idCliente), 
-                                                            trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa)
-                                                        )
+            delete(trattativaappuntamento).\
+                where(trattativa.c.idCliente == cliente.c.idCliente).\
+                where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
+                where(trattativa.c.idCliente == cliente.c.idCliente).\
+                where(cliente.c.idPortafoglio == id)
+                                               
         )
 
         #Cancello trattattive
         # delete trattativa from trattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
        
-        conn.execute(delete(trattativa).select_from(
-                join(
-                    trattativa, cliente, trattativa.c.idCliente == cliente.c.idCliente
-                )
-            ).where(cliente.c.idPortafoglio == id)
+        conn.execute(delete(trattativa).\
+                    where(trattativa.c.idCliente == cliente.c.idCliente).\
+                    where(cliente.c.idPortafoglio == id)
         )
-
+        
         #Cancello clienti
 
         conn.execute(delete(cliente).where(cliente.c.idPortafoglio == id))
@@ -79,8 +73,8 @@ def removePortafoglio(id):
         #Cancello portafoglio
 
         conn.execute(delete(portafoglio).where(portafoglio.c.idPortafoglio == id))
-        
         conn.commit()
+        print("ho cancellato quello che dovevo fare")
     except Exception as error:
         conn.rollback()
         print(error.__cause__)
