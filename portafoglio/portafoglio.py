@@ -10,6 +10,8 @@ import xlwt
 import psycopg2
 import psycopg2.extras
 
+titolo = ""
+
 #idPort: idPortafoglio
 #id: idCliente
 @portafoglio_bp.route('/<int:idPort>/<int:id>')
@@ -20,12 +22,15 @@ def home(idPort, id):
     print(type(idPort))
     print(type(id))
     print(id is None)
+    if(idPort == 0):
+        return render_template("home/home.html")
     current_user.idPort = idPort
     clienti = None
     current_cliente = None
     trattative = None 
     t_len = 0
-    contatti = conn.execute(select(contatto).order_by(contatto.c.nome)).fetchall()
+    print()
+    contatti = conn.execute(select(contatto).where(contatto.c.idUtente == current_user.get_id()).order_by(contatto.c.nome)).fetchall()
     categorie = conn.execute(select(categoria)).fetchall()
     andamento = conn.execute(select(andamentotrattativa)).fetchall()
     if(idPort != 0):
@@ -284,15 +289,6 @@ def modifyCliente():
 
     return home(current_user.idPort, idCliente)
 
-def getFase(andtra, value):
-    for v in andtra:
-        if(value == v[1]):
-            return v[0]
-
-def getCategoria(getCateOff, value):
-    for v in getCateOff:
-        if(value == v[1]):
-            return v[0]
 
 @portafoglio_bp.route('/addTrattativaForm', methods=['POST'])
 @login_required
@@ -363,76 +359,6 @@ def addTrattativaForm():
         conn.rollback()
     
     return home(current_user.idPort, idCliente)
-
-@portafoglio_bp.route('/addTrattativa',methods=['POST'])
-@login_required
-def addPortafoglio():
-    # Read the File using Flask request
-    file = request.files['file']
-    idCliente = request.form['addTrattativaIdCliente']
-    # Parse the data as a Pandas DataFrame type
-    #data = pandas.read_excel(file)
- 
-    # Define variable to load the dataframe
-    dataframe = openpyxl.load_workbook(file, data_only=True)
-    
-    # Define variable to read sheet
-    dataframe1 = dataframe.active
-    
-    try:
-        print("sono qua 1")
-        print(dataframe1.max_row)
-        print(String(None))
-        andtra = conn.execute(select(andamentotrattativa)).fetchall()
-        getCateOff = conn.execute(select(categoria)).fetchall()
-        print(getFase(andtra, "IN TRATTATIVA"))
-        print("dopo")
-        for col in range(1, 4):
-            list = []
-            checkRow = True
-            for row in dataframe1.iter_cols(1, dataframe1.max_column):
-                if(row[col].value is not None):
-                    checkRow = False
-                    print((row[col].value), end= ", ")
-                list.append(row[col].value)
-            print()
-            if(checkRow == False):
-                conn.execute(insert(trattativa).values(
-                    idUtente = current_user.get_id(),
-                    idCliente = conn.execute(select(cliente.c.idCliente).where(list[4] == cliente.c.ragioneSociale)).fetchone()[0], #fare query che trova il nome e assegna l'id nella tabella cliente
-                    codiceCtrDigitali = list[0],
-                    codiceSalesHub = list[1],
-                    areaManager = list[2],
-                    zona = list[5],
-                    tipo = (list[6]),
-                    nomeOpportunita = list[7],
-                    dataCreazioneOpportunita = list[8], # da testare
-                    fix = list[9],
-                    mobile = list[10],
-                    categoriaOffertaIT = getCategoria(getCateOff, list[11]),
-                    it = (list[12]),
-                    lineeFoniaFix = (list[13]),
-                    aom = (list[14]),
-                    mnp = (list[15]),
-                    al = (list[16]),
-                    dataChiusura = (list[17]),
-                    fase = getFase(andtra, list[18])  ,
-                    noteSpecialista = (list[19]),
-                    probabilita = (list[20])*100,
-                    inPaf = None,
-                    record = list[22],
-                    fornitore = list[23],
-                ))
-        print("okokoko")
-        
-        conn.commit()
-    except:
-        print("rip trattative")
-        conn.rollback()
-    # Iterate the loop to read the cell values
-
-    # Return HTML snippet that will render the table
-    return home(current_user.get_id(), 0)
 
 @portafoglio_bp.route('/getExcel/<int:id>')
 def getExcel(id):

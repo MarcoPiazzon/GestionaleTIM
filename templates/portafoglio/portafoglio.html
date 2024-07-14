@@ -3,7 +3,7 @@
 {% block content %}
 
 <style>
-  #myUL {
+  .myUL {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -180,7 +180,7 @@
             <div class="input-group ">
               <div class="col-11">
                 <input class="form-control" type="text" id="myInput" onkeyup="myFunction(0)" onclick="showUp(this,0)"
-                  placeholder="Cerca un cliente" title="Type in a name" value="{{current_cliente[5]}}">
+                  placeholder="Cerca un cliente" title="Type in a name" value="{%if current_cliente[5] %}{{current_cliente[5]}} {%endif%}">
               </div>
               <div class="col-1">
 
@@ -193,7 +193,7 @@
             </div>
           </div>
 
-          <ul id="myUL" class="vertical-scrollable list-group">
+          <ul id="myUL" class="myUL vertical-scrollable list-group">
             {% if clienti %}
             {% for cliente in clienti%}
             <input type="hidden" value="{{cliente.idCliente}}">
@@ -699,32 +699,6 @@
 
         </div>
       </div>
-      {%else%}
-      <div class="row">
-
-
-        <!--<div class="container px-4 mt-4">
-          <h1 class="page-header text-center"> Trattative</h1>
-          <p>Qui è un po' vuoto, vuoi aggiungere delle trattative?</p>
-          <form class="dropzone dz-clickable" id="demo-upload" action="#" method="post" enctype="multipart/form-data">
-            <div class="dz-message">
-              <p>Drop files here or click to upload.</p>
-              <p><span class="note">(This is just a demo dropzone. Selected files are <strong>not</strong> actually
-                  uploaded.)</span></p>
-            </div>
-          </form>
-    <form action="/portafoglio/addTrattativa" method="post" enctype="multipart/form-data">
-    <div id="dropContainer" style="border:1px solid black;height:100px;">
-      Drop Here
-    </div>
-    Should update here:
-    <input type="hidden" name="addTrattativaIdCliente" value="{{current_cliente[0]}}">
-    <input type="file" name="file"
-      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-    <input type="submit" value="Upload">
-  </form>
-  -->
-      </div>
       {%endif%}
       <div class="col mb-4">
         <h1 class="page-heading my-5">Aggiungi nuove trattative</h1>
@@ -835,7 +809,7 @@
           <div class="card-body">
             <form action="/portafoglio/addTrattativaForm" method="POST">
 
-              <input type="hidden" name="idClienteAdd" id="idCliente" value="">
+              <input type="hidden" name="idClienteAdd" id="idCliente" value="{{current_cliente.idCliente}}">
               <!-- Form Group (username)-->
               <div class="row gx-3 mb-3">
                 <div class="col-md-4">
@@ -862,7 +836,7 @@
                 <div class="col-md-6">
                   <label class="small mb-1" for="inputLastName">nomeOpportunita</label>
                   <input class="form-control" name="nomeOpportunitaAdd" id="inputLastName" type="text"
-                    placeholder="Enter your last name" value="">
+                    placeholder="Enter your last name" value="" required>
 
                 </div>
                 <!-- Form Group (last name)-->
@@ -886,12 +860,12 @@
                 <div class="col-md-3">
                   <label class="small mb-1" for="inputLocation">dataCreazioneOpportunita</label>
                   <input class="form-control" name="dataCreazioneOpportunitaAdd" id="inputLocation" type="date"
-                    placeholder="Enter your location" value="">
+                    placeholder="Enter your location" value="" required>
                 </div>
                 <div class="col-md-3">
                   <label class="small mb-1" for="inputBirthday">dataChiusura</label>
                   <input class="form-control" name="dataChiusuraAdd" id="inputBirthday" type="date" name="birthday"
-                    placeholder="Enter your birthday" value="">
+                    placeholder="Enter your birthday" value="" required>
                 </div>
               </div>
               <!-- Form Row-->
@@ -900,7 +874,7 @@
                 <div class="col-md-3">
 
                   <label class="small mb-1" for="inputPhone">fase</label>
-                  <select class="form-select" name="faseAdd" aria-label="Default select example" id="faseOptions">
+                  <select class="form-select" name="faseAdd" aria-label="Default select example" id="faseOptions" required>
 
                     {% for a in andamento %}
 
@@ -913,7 +887,7 @@
                 <div class="col-md-3">
                   <label class="small mb-1" for="inputBirthday">categoriaOffertaIT</label>
                   <select class="form-select" aria-label="Default select example" id="categoriaOptions"
-                    name="categoriaOffertaITAdd">
+                    name="categoriaOffertaITAdd" required>
                     {% for c in categorie %}
                     <option value="{{c.idCategoria}}">{{c.nome}}</option>
                     {% endfor %}
@@ -923,7 +897,7 @@
                 <div class="col-md-3">
                   <label class="small mb-1" for="inputBirthday">probabilita</label>
                   <input class="form-control" name="probabilitaAdd" id="inputBirthday" type="text" name="birthday"
-                    placeholder="Enter your birthday" value="">
+                    placeholder="Enter your birthday" value="" required>
                 </div>
                 <div class="col-md-3">
                   <label class="small mb-1" for="inputBirthday">inPaf</label>
@@ -1021,15 +995,20 @@
     <div class="panel-group" id="fixedbutton">
       <p>
       <div class="collapse" id="collapseExample">
-        <div class="card card-body">
 
+          
+        <div class=" card card-body mb-2">
           <input class="form-control mb-2" type="text" id="myInput2" onkeyup="myFunction(2)" onclick="showUp(this,2)"
             placeholder="Search for names.." title="Type in a name">
-          <ul id="myUL2" class="vertical-scrollable list-group">
+          <ul id="myUL2" class="myUL vertical-scrollable list-group">
             {% if contatti %}
             {% for contatto in contatti%}
             <input type="hidden" value="{{contatto.idContatto}}">
-            <li class="list-group-item" onclick="getName(this,2, '{{contatto.nome}}')">{{contatto.nome}} {%if contatto.secondoNome
+            <li class="list-group-item" onclick="getName(this,2, '{{contatto.nome}}')">
+               {% if contatto.nome%}
+              {{contatto.nome}} 
+              {%endif%}
+              {%if contatto.secondoNome
               %}{{contatto.secondoNome}} {%endif%} {{contatto.cognome}}</li>
             {% endfor %}
             {%endif%}
@@ -1061,12 +1040,26 @@
     </div>
   </footer>
 </div>
-
-
+{% if message %}
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 20000;">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">{{titolo}}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{message}}
+    </div>
+  </div>
+</div>
+{%endif%}
 
 
 
 <script>
+  const toastLiveExample = document.getElementById('liveToast');
+  const toast = new bootstrap.Toast(toastLiveExample);
+  toast.show();
   /*
     const dropzone = new Dropzone("#demo-upload", {
       parallelUploads: 2,
@@ -1148,8 +1141,8 @@
       namemyUL += "2";
     }
 
-    document.getElementById("idSearch").value = el.previousElementSibling.value;
-    document.getElementById(nameInput).value = el.innerHTML;
+    document.getElementById("idSearch").value = el.previousElementSibling.value.trim();
+    document.getElementById(nameInput).value = el.innerHTML.trim();
     document.getElementById(namemyUL).style.display = "none";
   }
 

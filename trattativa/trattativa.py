@@ -39,3 +39,17 @@ def home(id):
     categorie = conn.execute(select(categoria)).fetchall()
     andamento = conn.execute(select(andamentotrattativa)).fetchall()
     return render_template ("/trattativa/trattativa.html",trattative = trattative, t_len = t_len, categorie = categorie, andamento = andamento)
+
+@trattativa_bp.route('/delete/<int:id>', methods=['POST'])
+def removeTrattativa(id):
+    print("REMOVE TRATTATIVA")
+    try:
+        conn.execute(delete(trattativa).where(trattativa.c.idTrattativa == id))
+        conn.execute(delete(trattativaappuntamento).where(trattativaappuntamento.c.idTrattitiva == id))
+        conn.commit()
+    except Exception as error:
+        conn.rollback()
+        print("rip")
+        print(error)
+        print(error.__cause__)   
+    return home()

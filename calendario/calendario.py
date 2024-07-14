@@ -6,10 +6,18 @@ from model import *
 import openpyxl
 from datetime import date
 
+titolo = "Calendario"
 
 @calendario_bp.route('/')
 def home():
-    events = conn.execute(select(appuntamento, utente.c.nome, utente.c.cognome).select_from(join(appuntamento, utente, appuntamento.c.idUtenteCreazione == utente.c.idUtente))).fetchall()
+    #events = conn.execute(select(appuntamento, utente.c.nome, utente.c.cognome).select_from(join(appuntamento, utente, appuntamento.c.idUtenteCreazione == utente.c.idUtente))).fetchall()
+    events = conn.execute(
+        select(appuntamento, utente.c.nome, utente.c.cognome, trattativa.c.idTrattativa, trattativa.c.nomeOpportunita).select_from(
+            join(utente, outerjoin(appuntamento, 
+                 outerjoin(trattativa, trattativaappuntamento, trattativa.c.idTrattativa == trattativaappuntamento.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento),utente.c.idUtente == appuntamento.c.idUtenteCreazione
+            )
+        )
+        ).fetchall()
     trattative = []
     try:
         #trattative = conn.execute(select(trattativa).where(trattativa.c.fase == 1)).fetchall()
@@ -17,12 +25,16 @@ def home():
         #trattative = conn.execute(select(trattativa)).fetchall()
         
         trattative = conn.execute(select(trattativa).select_from(join(trattativa,cliente, trattativa.c.idCliente == cliente.c.idCliente)).where(cliente.c.idPortafoglio==current_user.idPort)).fetchall()
+        
         print(trattativa)
     except Exception as error:
+        conn.rollback()
         print("rip")
         print(error.__cause__)
     
-    return render_template ("/calendario/calendario.html", events=events, trattative = trattative)
+    print(titolo)
+    print("rend cale")
+    return render_template ("/calendario/calendario.html", events=events, trattative = trattative, titolo = titolo)
 
 @calendario_bp.route('/remove/<int:id>', methods=['POST'])
 def removeAppuntamento(id):
@@ -36,6 +48,7 @@ def removeAppuntamento(id):
         print("rip")
         print(error.__cause__)
         conn.rollback()
+    
     return redirect(url_for('calendario_bp.home'))
 
 
@@ -69,6 +82,8 @@ def addAppuntamento():
         ))
         conn.commit()
         print("tutto bvene")
+        global message 
+        message = "Appuntamento aggiunto"
     except Exception as error:
         print("rip")
         print(error.__cause__)
@@ -98,6 +113,8 @@ def modifyAppuntamento():
         ))
         conn.commit()
         print("tutto bvene")
+        global message
+        message = "Appuntamento modificato"
     except Exception as error:
         print("rip")
         print(error.__cause__)

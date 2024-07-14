@@ -18,6 +18,7 @@
   .redEvent {
       background-color:#FF0000;
   }
+
   </style>
 <script>
 
@@ -47,7 +48,9 @@
               idAppuntamento: '{{event.idAppuntamento}}',
               idUtenteCreazione: '{{event.idUtenteCreazione}}',
               nome: '{{event.nome}}',
-              cognome: '{{event.cognome}}'
+              cognome: '{{event.cognome}}',
+              idTrattativa: '{{event.idTrattativa}}',
+              nomeOpportunita: '{{event.nomeOpportunita}}'
             },
             rendering: 'background'
           },
@@ -67,6 +70,12 @@
           document.getElementById("preventivoDaFare").value = info.event.extendedProps.preventivoDaFare;
           document.getElementById("dataApp").value = info.event.extendedProps.dataApp;
           document.getElementById("idUtenteCreazione").value = info.event.extendedProps.idUtenteCreazione;
+          
+          if(info.event.extendedProps.idTrattativa != "None" && info.event.extendedProps.nomeOpportunita != "None"){
+            document.getElementById("idtrattativa").value = info.event.extendedProps.idTrattativa;
+          document.getElementById("myInputModify").value = info.event.extendedProps.nomeOpportunita;
+  
+          }
         } else {
           alert("non esiste");
         }
@@ -87,7 +96,7 @@
 </script>
 
 <style>
-  #myUL {
+  .myUL {
     padding: 0;
     margin: 0;
     overflow-y: scroll;
@@ -164,7 +173,7 @@
                       </div>
                   </div>
                     
-                    <ul id="myULModify" class="vertical-scrollable list-group">
+                    <ul id="myULModify" class="myUL vertical-scrollable list-group">
                       {% if trattative%}
                       {% for t in trattative%}
                       <li class="list-group-item"
@@ -184,8 +193,8 @@
                 </div>
                 <!-- Save changes button-->
                 <button class="btn btn-primary" type="submit">Salva le modifiche</button>
-                <button class="btn btn-primary" type="button" id="btnElimina">Elimina appuntamento</button>
-                <button class="btn btn-primary" type="button" id="btnCrea" style="float: right;">Aggiungi
+                <button class="btn btn-primary" type="button" id="btnElimina" onclick="elimina()">Elimina appuntamento</button>
+                <button class="btn btn-primary" type="button" id="btnCrea" onclick="crea()" style="float: right;">Aggiungi
                   appuntamento</button>
               </form>
             </div>
@@ -235,11 +244,11 @@
                     <div class="row">
                       <div class="col-md-12">
                           <input class="form-control" type="text" id="myInputAdd" onkeyup="myFunction(this,1)"
-                              onclick="showUp(this,1)" placeholder="Search for names.." title="Type in a name">
+                              onclick="showUp(this,1)" placeholder="Search for names.." title="Type in a name" required>
                       </div>
                   </div>
                     
-                    <ul id="myULAdd" class="vertical-scrollable list-group">
+                    <ul id="myULAdd" class="myUL vertical-scrollable list-group">
                       {% if trattative%}
                       {% for t in trattative%}
                       <li class="list-group-item"
@@ -283,14 +292,28 @@
     </div>
   </footer>
 </div>
-
+{% if message %}
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 20000;">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">{{titolo}}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{message}}
+    </div>
+  </div>
+</div>
+{%endif%}
 
 
 
 
 
 <script>
-
+  const toastLiveExample = document.getElementById('liveToast');
+  const toast = new bootstrap.Toast(toastLiveExample);
+  toast.show();
 
   obj = document.getElementsByClassName("ls")
   for (let item of obj) {
@@ -319,7 +342,7 @@
     switch (s) {
       case 0:
         alert(id)
-        document.getElementById("idtrattativa").innerHTML = id;
+        document.getElementById("idtrattativa").value = id;
         console.log(document.getElementById("idtrattativa"));
         document.getElementById("myInputModify").value = el.innerHTML;
         document.getElementById("myULModify").style.display = "none";
@@ -328,27 +351,28 @@
         alert(id)
         document.getElementById("myInputAdd").value = el.innerHTML;
         document.getElementById("myULAdd").style.display = "none";
-        document.getElementById("idtrattativaAdd").innerHTML = id;
+        document.getElementById("idtrattativaAdd").value = id;
         console.log(document.getElementById("idtrattativaAdd"));
         break;
     }
 
   }
 
-  document.getElementById("btnCrea").addEventListener("click", function () {
+  function crea(){
     document.getElementById("modifica").style.display = "none";
     document.getElementById("crea").style.display = "block";
-  });
+  }
 
-  document.getElementById("btnElimina").addEventListener("click", function () {
+  function elimina(){
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Sei sicuro?",
+      text: "Una volta eliminata, non potrà essere ripristinata!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Elimina",
+      cancelButtonText: 'Indietro'
     }).then((result) => {
       if (result.isConfirmed) {
         var xhr = new XMLHttpRequest();
@@ -358,7 +382,8 @@
         location.reload();
       }
     });
-  });
+  }
+
 </script>
 
 <script>

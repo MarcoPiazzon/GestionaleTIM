@@ -10,12 +10,11 @@ import xlwt
 import psycopg2
 import psycopg2.extras
 
+titolo = "Home"
 @home_bp.route('/', methods=['GET', 'POST'])
 def home():
-    contatti = conn.execute(select(contatto)).fetchall()
+    contatti = conn.execute(select(contatto).where(contatto.c.idUtente == current_user.get_id())).fetchall()
     
-    #corsilaurea_all = conn.execute(select(corsilaurea)).fetchall()
-    contattiUtente = conn.execute(select(contatto)).fetchall()
     """conn.execute(insert(utente).values(
         nome = 'Marco',
         cognome= 'Piazzon',
@@ -28,27 +27,74 @@ def home():
     print(getPortafogliUtente)
     print(type(getPortafogliUtente))
     print("ho fatto questo")
-    return render_template ("/home/home.html",contattiUtente=contattiUtente, getP=getPortafogliUtente, len=len(getPortafogliUtente), contatti=contatti)
+    return render_template ("/home/home.html", getP=getPortafogliUtente, len=len(getPortafogliUtente), titolo=titolo)
 
-@home_bp.route("/delete/<int:id>", methods=['POST'])
+@home_bp.route("/delete/<int:id>", methods=['POST','GET'])
 @login_required
 def removePortafoglio(id):
     print("rimuovo")
+    print("sto cancellando")
     try:
-        conn.execute(delete(portafoglio).where(portafoglio.c.idPortafoglio == id))
-        conn.commit()
+        #Cancello tabella appuntamento 
+        # DELETE appuntamento FROM appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento 
+        # join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
+        conn.execute(delete(appuntamento).select_from(join(appuntamento, 
+                                                           join(trattativaappuntamento, 
+                                                                join(
+                                                                    cliente, trattativa, cliente.c.idCliente == trattativa.c.idCliente
+                                                                    ), trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa 
+                                                                ), 
+                                                                appuntamento.c.idAppuntamento == trattativaappuntamento.c.idTrattativa
 
+                                                            )
+                                                    ).where(cliente.c.idPortafoglio == id)
+        )
+
+        #Cancello tabella trattativaappuntamento
+        # DELETE trattativaappuntamento FROM trattativaappuntamento join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa 
+        # join cliente on cliente.idCliente = trattativa.idCliente where cliente.idPortafoglio = 23 
+
+        conn.execute(
+            delete(trattativaappuntamento).select_from(
+                                                        join(trattativaappuntamento, 
+                                                            join(trattativa, cliente, trattativa.c.idCliente == cliente.c.idCliente), 
+                                                            trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa)
+                                                        )
+        )
+
+        #Cancello trattattive
+        # delete trattativa from trattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
+       
+        conn.execute(delete(trattativa).select_from(
+                join(
+                    trattativa, cliente, trattativa.c.idCliente == cliente.c.idCliente
+                )
+            ).where(cliente.c.idPortafoglio == id)
+        )
+
+        #Cancello clienti
+
+        conn.execute(delete(cliente).where(cliente.c.idPortafoglio == id))
+
+        #Cancello portafoglio
+
+        conn.execute(delete(portafoglio).where(portafoglio.c.idPortafoglio == id))
+        
+        conn.commit()
     except Exception as error:
+        conn.rollback()
         print(error.__cause__)
+        print(error)
+
     return redirect(url_for('home_bp.home'))
 
 @home_bp.route('/portafoglio/<int:id>')
 @login_required
-def goToPortafoglio(id):
+def goToPortafoglio(id, message):
     print("cviao")
     print(id)
     clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti)
+    return render_template("/portafoglio/portafoglio.html", clienti=clienti, message = message, titolo ="Portafoglio")
 
 def filterNumber(val):
     if(val is None):
@@ -61,69 +107,26 @@ def filterNumber(val):
             return val[2:]
     
     return str(val)
-    
-@home_bp.route('/addContatti', methods=['POST'])
-@login_required
-def addContatti():
-    print("sono quya, contatti")
-    # Read the File using Flask request
-    file = request.files['file']
- 
-    # Define variable to load the dataframe
-    dataframe = openpyxl.load_workbook(file)
-    
-    # Define variable to read sheet
-    dataframe1 = dataframe.active
-    
-    try:
-        for col in range(1, 5):
-            list = []
-            for row in dataframe1.iter_cols(1, dataframe1.max_column):
-                list.append(row[col].value)
-            try:
-                conn.execute(insert(contatto).values(
-                    nome = list[0],
-                    idUtente = current_user.get_id(),
-                    secondoNome = list[1],
-                    cognome = list[2],
-                    viaUfficio1 = list[3],
-                    viaUfficio2 = list[4],
-                    viaUfficio3 = list[5],
-                    citta = list[6],
-                    provincia = list[7],
-                    cap = list[8],
-                    #numUfficio = list[9],
-                    #numUfficio2 = list[10],
-                    telefonoPrincipale = filterNumber(list[11]),
-                    faxAbitazione = filterNumber(list[12]),
-                    abitazione = list[13],
-                    abitazione2 = list[14],
-                    cellulare = filterNumber(list[15]),
-                    note = list[16],
-                    numeroID = list[17],
-                    paginaWeb = list[18],
-                    email1 = list[19],
-                    email2 = list[20]
-                ))
-            
-            except Exception as error:
-                print("ERRROREEEEEEEEEEEEEEEEEEEEEEE")
-                print(error.__cause__)
-        print("okokoko")
-        
-        conn.commit()
-    except Exception as error:
-        print("rip")
-        print(error.__cause__)
-        conn.rollback()
-    return redirect(url_for('home_bp.home', variable=0))
+
+
+def getFase(andtra, value):
+    for v in andtra:
+        if(value == v[1]):
+            return v[0]
+    return None
+
+def getCategoria(getCateOff, value):
+    for v in getCateOff:
+        if(value == v[1]):
+            return v[0]
+    return None
 
 @home_bp.route('/addPortafoglio',methods=['POST'])
 @login_required
 def addPortafoglio():
     print("sono quya")
     # Read the File using Flask request
-    file = request.files['file']
+    file = request.files['fileDoc']
  
     # Parse the data as a Pandas DataFrame type
     #data = pandas.read_excel(file)
@@ -133,53 +136,123 @@ def addPortafoglio():
     
     # Define variable to read sheet
     dataframe1 = dataframe.active
+
+    file2 = request.files['filePipeline']
+    # Parse the data as a Pandas DataFrame type
+    #data = pandas.read_excel(file)
+ 
+    # Define variable to load the dataframe
+    dataframe2 = openpyxl.load_workbook(file2, data_only=True)
     
+    # Define variable to read sheet
+    dataframe3 = dataframe2.active
+
+
+    id = 0
     try:
         res = conn.execute(insert(portafoglio).values(
             idUtente = current_user.get_id(),
             dataInserimento = date.today()
         ))
+        id = res.inserted_primary_key[0]
+        print("test della vita")
+        print(id)
         print("sono qua 1")
         for col in range(1, dataframe1.max_row):
-            list = []
-            for row in dataframe1.iter_cols(1, 18):
-                list.append(row[col].value)
-            print("sono qua 3")
-            print(list)
-            print(conn.execute(select(presidio.c.idPresidio).where(presidio.c.nome == list[3])).fetchone()[0])
-            print(conn.execute(select(tipocliente.c.idTipoCliente).where(tipocliente.c.nome == list[0])).fetchone()[0])
+            listapp = []
+            for row in dataframe1.iter_cols(1, dataframe1.max_column):
+                listapp.append(row[col].value)
+           # print("sono qua 3")
+           # print(listapp)
+           # print(conn.execute(select(presidio.c.idPresidio).where(presidio.c.nome == listapp[3])).fetchone()[0])
+           # print(conn.execute(select(tipocliente.c.idTipoCliente).where(tipocliente.c.nome == listapp[0])).fetchone()[0])
             conn.execute(insert(cliente).values(
                 idUtente = current_user.get_id(),
                 idPortafoglio = res.lastrowid,
-                tipoCliente = conn.execute(select(tipocliente.c.idTipoCliente).where(tipocliente.c.nome == list[0])).fetchone()[0], #da testare
-                cf = list[1],
-                ragioneSociale = list[2],
+                tipoCliente = conn.execute(select(tipocliente.c.idTipoCliente).where(tipocliente.c.nome == listapp[0])).fetchone()[0], #da testare
+                cf = listapp[1],
+                ragioneSociale = listapp[2],
                 
-                presidio = conn.execute(select(presidio.c.idPresidio).where(presidio.c.nome == list[3])).fetchone()[0],
-                indirizzoPrincipale = (list[4]),
+                presidio = conn.execute(select(presidio.c.idPresidio).where(presidio.c.nome == listapp[3])).fetchone()[0],
+                indirizzoPrincipale = (listapp[4]),
                 comunePrincipale = None,
-                capPrincipale = list[6],
-                provinciaDescPrincipale = list[7], 
-                provinciaSiglaPrincipale = list[8],
-                sediTot = (list[9]),
-                nLineeTot = (list[10]),
-                fisso = (list[11]),
-                mobile = (list[12]),
-                totale = (list[13]),
-                fatturatoCerved = (list[14]),
-                clienteOffMobScadenza = (list[15]),
-                fatturatoTim = (list[16]),
-                dipendenti = (list[17])
+                capPrincipale = listapp[6],
+                provinciaDescPrincipale = listapp[7], 
+                provinciaSiglaPrincipale = listapp[8],
+                sediTot = (listapp[9]),
+                nLineeTot = (listapp[10]),
+                fisso = (listapp[11]),
+                mobile = (listapp[12]),
+                totale = (listapp[13]),
+                fatturatoCerved = (listapp[14]),
+                clienteOffMobScadenza = (listapp[15]),
+                fatturatoTim = (listapp[16]),
+                dipendenti = (listapp[17])
             ))
         print("okokoko")
-        
+        print("sono qua 1")
+        print(dataframe3.max_row)
+        print(String(None))
+        andtra = conn.execute(select(andamentotrattativa)).fetchall()
+        getCateOff = conn.execute(select(categoria)).fetchall()
+        print(getFase(andtra, "IN TRATTATIVA"))
+        print("dopo")
+        for col in range(1, dataframe3.max_row):
+            listapp = []
+            checkRow = True
+            for row in dataframe3.iter_cols(1, dataframe3.max_column):
+                if(row[col].value is not None):
+                    checkRow = False
+                   # print((row[col].value), end= ", ")
+                listapp.append(row[col].value)
+            print()
+            if(checkRow == False):
+              #  print("sto testando id")
+              #  print(id)
+                idlist = conn.execute(select(cliente.c.idCliente).where(listapp[4] == cliente.c.ragioneSociale and cliente.c.idPortafoglio == id)).fetchall()
+                idlist = list(idlist)
+                numero = idlist[-1]
+                prob = None
+                if(listapp[20]):
+                    prob = listapp[20]*100
+                conn.execute(insert(trattativa).values(
+                    idUtente = current_user.get_id(),
+                    idCliente = numero[0], #fare query che trova il nome e assegna l'id nella tabella cliente
+                    codiceCtrDigitali = listapp[0],
+                    codiceSalesHub = listapp[1],
+                    areaManager = listapp[2],
+                    zona = listapp[5],
+                    tipo = (listapp[6]),
+                    nomeOpportunita = listapp[7],
+                    dataCreazioneOpportunita = listapp[8], # da testare
+                    fix = listapp[9],
+                    mobile = listapp[10],
+                    categoriaOffertaIT = getCategoria(getCateOff, listapp[11]),
+                    it = (listapp[12]),
+                    lineeFoniaFix = (listapp[13]),
+                    aom = (listapp[14]),
+                    mnp = (listapp[15]),
+                    al = (listapp[16]),
+                    dataChiusura = (listapp[17]),
+                    fase = getFase(andtra, listapp[18])  ,
+                    noteSpecialista = (listapp[19]),
+                    probabilita = prob,
+                    inPaf = None,
+                    record = listapp[22],
+                    fornitore = listapp[23],
+                ))
+        print("okokoko")
+        global message
+        message = "Portafoglio creato"
         conn.commit()
-    except:
+    except Exception as error:
         print("rip")
+        print(error)
+        print(error.__cause__)
         conn.rollback()
     
-    
-    return redirect(url_for('portafoglio_bp.home'))
+    clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
+    return render_template("/portafoglio/portafoglio.html", clienti=clienti, message = message, titolo ="Portafoglio")
 
 
 @home_bp.route('/getExcel/<int:id>')
