@@ -39,11 +39,11 @@ def home(idPort, id):
     if(id != 0):
         current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == id)).fetchone()
         trattative = conn.execute(
-            select(trattativa, andamentotrattativa.c.nome, categoria.c.nome).select_from(
-                join(andamentotrattativa,
-                    join(trattativa, categoria, trattativa.c.categoriaOffertaIT == categoria.c.idCategoria), 
-                trattativa.c.fase == andamentotrattativa.c.idAndamento)
-            ).where(trattativa.c.idCliente == id)
+            select(trattativa, andamentotrattativa.c.nome, categoria.c.nome).
+                outerjoin(andamentotrattativa).
+                outerjoin(categoria) 
+            .where(trattativa.c.idCliente == id)
+            .order_by(trattativa.c.nomeOpportunita)
         ).fetchall()
         print(current_cliente)
         print(trattative)
@@ -56,7 +56,7 @@ def home(idPort, id):
             print(type(trattative))
             for i in range(0, t_len):
 
-                appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0])).fetchall()
+                appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0]).order_by(appuntamento.c.dataApp)).fetchall()
                 
                 print(appuntamenti)
                 print(type(appuntamenti))
@@ -83,7 +83,7 @@ def getCliente():
     #print(request.form)
     idPort = request.form['idPort']
     id=request.form['idSearch']
-    
+    current_user.idPort = idPort
     return redirect(url_for('.home',idPort = idPort, id = id))
 
 @portafoglio_bp.route('/remove/<int:id>', methods=['POST'])
@@ -171,8 +171,9 @@ def addCliente():
 def modifyTrattativa(id):
     print("modifiy Trattativa prova")
     print(request.form)
+    idPort = 0
     try:
-        #idUtente = request.form['idUtente'] non lo ho
+        idPort = request.form['idPortModify']
         idCliente = request.form['idClienteModify']
         codiceCtrDigitali = request.form['codiceCtrDigitaliModify']
         codiceSalesHub = request.form['codiceSalesHubModify']
@@ -198,7 +199,7 @@ def modifyTrattativa(id):
         
         conn.execute(
             update(trattativa).where(trattativa.c.idTrattativa==id).values(
-                idUtente = 2,
+                idUtente = current_user.get_id(),
                 idCliente = idCliente,
                 codiceCtrDigitali = codiceCtrDigitali,
                 codiceSalesHub = codiceSalesHub,
@@ -232,7 +233,7 @@ def modifyTrattativa(id):
         conn.rollback()
 
 
-    return redirect(url_for('.home',idPort = current_user.idPort, id = idCliente))
+    return redirect(url_for('.home',idPort = idPort, id = idCliente))
 
 
 @portafoglio_bp.route('/modifyCliente', methods=['POST'])

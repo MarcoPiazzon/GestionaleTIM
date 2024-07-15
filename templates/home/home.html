@@ -139,12 +139,12 @@
   }
 </style>
 <script>
- /* document.addEventListener('DOMContentLoaded', function () {
-    let test = {{ getP }}
-  };
-  alert(test[0]);
-   })
-*/
+  /* document.addEventListener('DOMContentLoaded', function () {
+     let test = {{ getP }}
+   };
+   alert(test[0]);
+    })
+ */
 </script>
 
 <div class="page-holder bg-gray-100">
@@ -205,7 +205,7 @@
       </div>
       {%endif%}
       <div class="row mt-4 py-2">
-        <h1 class="page-heading">Aggiungi un nuovo portafoglio</h1>
+        <h1 class="page-heading text-center">Aggiungi un nuovo portafoglio</h1>
         <form id="signUpForm" action="/home/addPortafoglio" method="post" enctype="multipart/form-data">
           <!-- start step indicators -->
           <div class="form-header d-flex mb-4">
@@ -221,11 +221,17 @@
           <!-- step one -->
           <div class="step">
             <p class="mb-4">In questa prima parte andremo ad importare il <b> portafoglio</b></p>
-            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere
+            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>.<br><span>Come trovare le <strong>colonne nascoste?</strong></span></p>
+            
+            <ol>
+              <li>Seleziona il <strong>triangolo</strong> posto a <strong>sinistra della prima colonna e in alto alla prima riga</strong></li>
+              <li>Premi il tasto <strong>destro</strong> in un posto qualsiasi sulla zona selezionata, premi <strong>"Scopri"</strong></li>
+            </ol>
+             <p>Per essere
               sicuro, le colonne
               <strong>devono</strong> andare dalla lettera 'A' alla lettera 'R'.
             </p>
-            <p class="mb-4"> Se le righe non combaciano i problemi sono due</p>
+            <p class="mb-4">Se le righe non combaciano ancora i problemi sono due</p>
             <ol>
               <li>Non hai trovato possibili righe nascoste</li>
               <li>Sono presenti più righe del necessario.</li>
@@ -239,7 +245,7 @@
 
             <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del
               portafoglio.</p>
-            <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere
+            <p class="mb-4">Se trovi righe <strong>non menzionate </strong> in questo elenco, <strong>cancellale</strong>. Devono essere
               presenti <strong>TUTTE</strong> e
               nel seguente <strong>ordine</strong>:</p>
             <ol>
@@ -267,6 +273,8 @@
             <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank"
                 href="https://docs.google.com/spreadsheets/d/1BAIRFhBxXiRG9Azd3VZL__g0gsJgWfcr/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a>
               per un file di esempio</p>
+            <P>Se alcune colonne <strong>non sono presenti</strong>, crea una colonna vuota rispettando
+              l'ordine indicato sopra. <strong>Non serve</strong> andare a popolarla con dati.</P>
           </div>
 
           <!-- step three -->
@@ -286,10 +294,16 @@
           <!-- step four -->
           <div class="step">
             <p class="mb-4">In questa parte andremo ad importare le <strong>trattative</strong> in riferimento al
-              <strong>portafoglio</strong></p>
+              <strong>portafoglio</strong>
+            </p>
             <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere
               sicuro, le colonne
               devono andare dalla lettera 'A' alla lettera 'X'.</p>
+            <p class="mb-4">Come trovare le colonne nascoste?</p>
+            <ol>
+              <li>Seleziona il triangolo posto a sinitra della prima colonna e in alto alla prima riga</li>
+              <li>Premi il tasto destro in un posto qualsiasi sulla zona selezionata, premi "Scopri" </li>
+            </ol>
             <p class="mb-4"> Se le righe non combaciano i problemi sono due</p>
             <ol>
               <li>Non hai trovato possibili righe nascoste</li>
@@ -310,7 +324,6 @@
               <li>CODICE CTR DIGITALE</li>
               <li>CODICE SALES HUB</li>
               <li>AREA MANAGER</li>
-              <li>SA</li>
               <li>RAGIONE SOCIALE</li>
               <li>VENETO</li>
               <li>TIPO</li>
@@ -335,6 +348,8 @@
             <p class="mb-4">Se non ti trovi con i nomi o con le colonne, ti lascio il <a target="_blank"
                 href="https://docs.google.com/spreadsheets/d/1KUg_MrHQoR0TzMWjXX9ZkFHMBTS6M9NX/edit?usp=sharing&ouid=102720582862606875381&rtpof=true&sd=true">link</a>
               per un file di esempio</p>
+            <P>Se alcune colonne <strong>non sono presenti</strong>, crea una colonna vuota rispettando
+              l'ordine indicato sopra. <strong>Non serve</strong> andare a popolarla con dati.</P>
           </div>
 
           <!-- step six -->
@@ -504,9 +519,9 @@
     }).then((result) => {
       if (result.isConfirmed) {
         var xhr = new XMLHttpRequest();
-        
-        str = '/home/delete/' + id;
-        xhr.open("POST", str, true);
+
+        //str = ;
+        xhr.open("GET", '/home/delete/' + id, false);
         xhr.send();
         location.reload();
       }

@@ -41,7 +41,7 @@
                     <tr>
                       <th>Nome</th>
                       <th>Andamento</th>
-                      <th>Data</th>
+                      <th>Data Chiusura</th>
                     </tr>
                   </thead>
                   <tbody id="myUL">
@@ -49,8 +49,8 @@
                     {% for i in range (0, t_len) %}
                     <tr data-bs-toggle="modal" data-bs-target="#staticBackdrop{{i}}">
                       <td>{{trattative[i][8]}}</td>
-                      <td>{{trattative[i][25]}}</td>
-                      <td>{{trattative[i][18]}}</td>
+                      <td>{% if trattative[i][25] %} {{trattative[i][25]}} {%else%}Sconosciuto{%endif%}</td>
+                      <td>{% if trattative[i][18] %} {{trattative[i][18]}} {%else%}Non indicata {%endif%}</td>
                     </tr>
                     <div class="modal fade" id="staticBackdrop{{i}}" data-bs-backdrop="static" data-bs-keyboard="false"
                       tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

@@ -5,6 +5,7 @@ from model import *
 from login.login import bcrypt
 import openpyxl
 from datetime import date
+from datetime import datetime
 import io
 import xlwt
 import psycopg2
@@ -25,7 +26,7 @@ def home():
         psw=bcrypt.generate_password_hash('mp@gmail.com'+'ciao').decode('utf-8'),
         ))
     conn.commit()"""
-    getPortafogliUtente = conn.execute(select(portafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.dataInserimento.desc())).fetchall()
+    getPortafogliUtente = conn.execute(select(portafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.idPortafoglio.desc())).fetchall()
     getPortafogliUtente = list(getPortafogliUtente)
     print(getPortafogliUtente)
     print(type(getPortafogliUtente))
@@ -77,9 +78,11 @@ def removePortafoglio(id):
         conn.commit()
         print("ho cancellato quello che dovevo fare")
     except Exception as error:
-        conn.rollback()
+        print("rip")
         print(error.__cause__)
         print(error)
+        conn.rollback()
+
 
     return redirect(url_for('home_bp.home'))
 
@@ -106,17 +109,46 @@ def filterNumber(val):
 
 
 def getFase(andtra, value):
+    print(type(andtra[-1][0]))
+    if(value is None):
+        return andtra[-1][0]
     for v in andtra:
-        if(value == v[1]):
-            return v[0]
-    return None
+        if(value.upper() == v.nome.upper()):
+            return v.idAndamento
+    return andtra[-1][0]
 
 def getCategoria(getCateOff, value):
+    print(getCateOff[-1][0])
+    if(value is None):
+        return getCateOff[-1][0]
     for v in getCateOff:
-        if(value == v[1]):
-            return v[0]
-    return None
-
+        if(value.upper() == v.nome.upper()):
+            print("trovato" + str(v[0]))
+            return v.idCategoria
+    return getCateOff[-1][0]
+"""
+def convertDate(val):
+    if(val is None):
+        return None
+    
+    print
+    split_val = date.strftime(val, "%").split("-")
+    if(len(split_val) != 2):
+        return None
+     
+    months = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"]
+    month = None
+    
+    for i in range(len(months)):
+        if(months[i] == split_val[0]):
+            month = i+1
+    
+    day = str(split_val[1])
+    if(month is None or day is None):
+        return None
+    
+    return date(date.year, month, day) 
+"""
 @home_bp.route('/addPortafoglio',methods=['POST'])
 @login_required
 def addPortafoglio():
@@ -137,13 +169,6 @@ def addPortafoglio():
     file2 = request.files['filePipeline']
     # Parse the data as a Pandas DataFrame type
     #data = pandas.read_excel(file)
- 
-    # Define variable to load the dataframe
-    dataframe2 = openpyxl.load_workbook(file2, data_only=True)
-    
-    # Define variable to read sheet
-    dataframe3 = dataframe2.active
-
 
     newid = 0
     try:
@@ -153,17 +178,16 @@ def addPortafoglio():
         ))
         newid = res.inserted_primary_key[0]
         current_user.idPort = newid
-        print("test della vita")
-        print(newid)
-        print("sono qua 1")
+        #print("test della vita")
+        
+        #print(newid)
+        #print(res.lastrowid)
         for col in range(1, dataframe1.max_row):
             listapp = []
             for row in dataframe1.iter_cols(1, dataframe1.max_column):
                 listapp.append(row[col].value)
            # print("sono qua 3")
            # print(listapp)
-           # print(conn.execute(select(presidio.c.idPresidio).where(presidio.c.nome == listapp[3])).fetchone()[0])
-           # print(conn.execute(select(tipocliente.c.idTipoCliente).where(tipocliente.c.nome == listapp[0])).fetchone()[0])
             conn.execute(insert(cliente).values(
                 idUtente = current_user.get_id(),
                 idPortafoglio = res.lastrowid,
@@ -189,56 +213,76 @@ def addPortafoglio():
             ))
         print("okokoko")
         print("sono qua 1")
-        print(dataframe3.max_row)
-        print(String(None))
-        andtra = conn.execute(select(andamentotrattativa)).fetchall()
-        getCateOff = conn.execute(select(categoria)).fetchall()
-        print(getFase(andtra, "IN TRATTATIVA"))
-        print("dopo")
-        for col in range(1, dataframe3.max_row):
-            listapp = []
-            checkRow = True
-            for row in dataframe3.iter_cols(1, dataframe3.max_column):
-                if(row[col].value is not None):
-                    checkRow = False
-                   # print((row[col].value), end= ", ")
-                listapp.append(row[col].value)
-            print()
-            if(checkRow == False):
-              #  print("sto testando id")
-              #  print(id)
-                idlist = conn.execute(select(cliente.c.idCliente).where(listapp[4] == cliente.c.ragioneSociale and cliente.c.idPortafoglio == id)).fetchall()
-                idlist = list(idlist)
-                numero = idlist[-1]
-                prob = None
-                if(listapp[20]):
-                    prob = listapp[20]*100
-                conn.execute(insert(trattativa).values(
-                    idUtente = current_user.get_id(),
-                    idCliente = numero[0], #fare query che trova il nome e assegna l'id nella tabella cliente
-                    codiceCtrDigitali = listapp[0],
-                    codiceSalesHub = listapp[1],
-                    areaManager = listapp[2],
-                    zona = listapp[5],
-                    tipo = (listapp[6]),
-                    nomeOpportunita = listapp[7],
-                    dataCreazioneOpportunita = listapp[8], # da testare
-                    fix = listapp[9],
-                    mobile = listapp[10],
-                    categoriaOffertaIT = getCategoria(getCateOff, listapp[11]),
-                    it = (listapp[12]),
-                    lineeFoniaFix = (listapp[13]),
-                    aom = (listapp[14]),
-                    mnp = (listapp[15]),
-                    al = (listapp[16]),
-                    dataChiusura = (listapp[17]),
-                    fase = getFase(andtra, listapp[18])  ,
-                    noteSpecialista = (listapp[19]),
-                    probabilita = prob,
-                    inPaf = None,
-                    record = listapp[22],
-                    fornitore = listapp[23],
-                ))
+        if not (file2 is None):
+             
+            # Define variable to load the dataframe
+            dataframe2 = openpyxl.load_workbook(file2, data_only=True)
+            
+            # Define variable to read sheet
+            dataframe3 = dataframe2.active
+            #print(dataframe3.max_row)
+            andtra = conn.execute(select(andamentotrattativa)).fetchall()
+            for m in andtra:
+                print(m.idAndamento)
+                print(m.nome)
+            print(andtra)
+            print(andtra[0][0])
+            print(type(andtra[0][0]))
+            
+            getCateOff = conn.execute(select(categoria)).fetchall()
+            print("dopo")
+            for col in range(1, dataframe3.max_row):
+                listapp = []
+                checkRow = True
+                for row in dataframe3.iter_cols(1, dataframe3.max_column):
+                    if(row[col].value is not None):
+                        checkRow = False
+                    #print((row[col].value), end= ", ")
+                    listapp.append(row[col].value)
+                
+                if(checkRow == False):
+                    #print("sto testando id")
+                    #print(newid)
+                    idlist = conn.execute(select(cliente.c.idCliente,cliente.c.idPortafoglio).where(listapp[3] == cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == newid)).fetchall()
+                    print(len(listapp))
+                    idlist = list(idlist)
+                    #print("lista")
+                    #print(idlist)
+                    numero = idlist[-1]
+                    prob = None
+                    if(listapp[19]):
+                        prob = listapp[19]*100
+                    try:
+                        conn.execute(insert(trattativa).values(
+                            idUtente = current_user.get_id(),
+                            idCliente = numero[0], #fare query che trova il nome e assegna l'id nella tabella cliente
+                            codiceCtrDigitali = listapp[0],
+                            codiceSalesHub = listapp[1],
+                            areaManager = listapp[2],
+                            zona = listapp[4],
+                            tipo = (listapp[5]),
+                            nomeOpportunita = listapp[6],
+                            dataCreazioneOpportunita = (listapp[7]), # da testare
+                            fix = listapp[8],
+                            mobile = listapp[9],
+                            categoriaOffertaIT = getCategoria(getCateOff, listapp[10]),
+                            it = (listapp[11]),
+                            lineeFoniaFix = (listapp[12]),
+                            aom = (listapp[13]),
+                            mnp = (listapp[14]),
+                            al = (listapp[15]),
+                            dataChiusura = (listapp[16]),
+                            fase = getFase(andtra, listapp[17]) ,
+                            noteSpecialista = (listapp[18]),
+                            probabilita = prob,
+                            inPaf = None,
+                            record = listapp[21],
+                            fornitore = listapp[22],
+                        ))
+                    except Exception as error:
+                        print("rip row interna")
+                        print(error)
+                        print(error.__cause__)
         print("okokoko")
         global message
         message = "Portafoglio creato"

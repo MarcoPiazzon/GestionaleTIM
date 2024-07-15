@@ -9,32 +9,41 @@ from datetime import datetime
 
 @trattativa_bp.route('/<int:id>', methods=['GET', 'POST'])
 def home(id):
-    trattative = conn.execute(
-        select(trattativa, andamentotrattativa.c.nome, categoria.c.nome).
-            select_from(
-                join(categoria ,
-                    join(cliente, 
-                        join(trattativa, andamentotrattativa, trattativa.c.fase == andamentotrattativa.c.idAndamento),
-                    cliente.c.idCliente == trattativa.c.idCliente), 
-                categoria.c.idCategoria == trattativa.c.categoriaOffertaIT)
-            ).where(cliente.c.idUtente == current_user.get_id() and cliente.c.idPortafoglio == id)
-    ).fetchall()
+    #trattative = conn.execute(
+    #   select(trattativa, andamentotrattativa.c.nome, categoria.c.nome).
+    #        select_from(
+    #            outerjoin(categoria ,
+    #                outerjoin(cliente, 
+    #                    outerjoin(trattativa, andamentotrattativa, trattativa.c.fase == andamentotrattativa.c.idAndamento),
+    #                cliente.c.idCliente == trattativa.c.idCliente), 
+    #            categoria.c.idCategoria == trattativa.c.categoriaOffertaIT)
+    #        ).where(trattativa.c.idUtente == current_user.get_id()).where(cliente.c.idPortafoglio == id)
+    #).fetchall()
+    trattative = conn.execute(select(trattativa, andamentotrattativa.c.nome, categoria.c.nome)
+                    .join(cliente)
+                    .outerjoin(andamentotrattativa)
+                    .outerjoin(categoria)
+                    .where(trattativa.c.idUtente == current_user.get_id())
+                    .where(cliente.c.idPortafoglio == id)
+                    .order_by(trattativa.c.nomeOpportunita)).fetchall()
+    
+    print(len(trattative))
     t_len = 0
     if not (trattative is None):
         #select appuntamento.titolo, trattativa.nomeOpportunita from ((appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento)
         #join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa)
         t_len = len(trattative)
-        print(type(trattative))
-        todays_datetime = datetime(datetime.today().year, datetime.today().month, datetime.today().day)
+        #print(type(trattative))
+        todays_datetime = datetime(datetime.today().year, datetime.today().month, datetime.today().day, datetime.today().hour, datetime.today().minute, datetime.today().second)
         yesterday = datetime(2024,7,10)
-        print(todays_datetime > yesterday)
-        print(todays_datetime)            
+        #print(todays_datetime > yesterday)
+        #print(todays_datetime)            
         for i in range(0, t_len):
             
-            appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0] and appuntamento.c.dataApp >='2024-07-13')).fetchall()
+            appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0]).where(appuntamento.c.dataApp >= todays_datetime).order_by(appuntamento.c.dataApp)).fetchall()
             
-            print(appuntamenti)
-            print(type(appuntamenti))
+            #print(appuntamenti)
+            #print(type(appuntamenti))
             trattative[i] = list(trattative[i])
             if (len(appuntamenti) > 0):
                 print("Ho appuntamento")    
@@ -45,6 +54,8 @@ def home(id):
             print(len(trattative[i]))
     categorie = conn.execute(select(categoria)).fetchall()
     andamento = conn.execute(select(andamentotrattativa)).fetchall()
+    print("dopo")
+    print(len(trattative))
     return render_template ("/trattativa/trattativa.html",trattative = trattative, t_len = t_len, categorie = categorie, andamento = andamento)
 
 @trattativa_bp.route('/modifyTrattativa/<int:id>', methods=['POST'])
@@ -53,7 +64,6 @@ def modifyTrattativa(id):
     print("modifiy Trattativa prova")
     print(request.form)
     try:
-        #idUtente = request.form['idUtente'] non lo ho
         idCliente = request.form['idClienteModify']
         codiceCtrDigitali = request.form['codiceCtrDigitaliModify']
         codiceSalesHub = request.form['codiceSalesHubModify']
@@ -79,7 +89,7 @@ def modifyTrattativa(id):
         
         conn.execute(
             update(trattativa).where(trattativa.c.idTrattativa==id).values(
-                idUtente = 2,
+                idUtente = current_user.get_id(),
                 idCliente = idCliente,
                 codiceCtrDigitali = codiceCtrDigitali,
                 codiceSalesHub = codiceSalesHub,
@@ -113,7 +123,7 @@ def modifyTrattativa(id):
         conn.rollback()
 
 
-    return home(current_user.idPort)
+    return redirect(url_for('.home', id = current_user.idPort))
 
 
 @trattativa_bp.route('/delete/<int:id>', methods=['POST'])
@@ -130,4 +140,4 @@ def removeTrattativa(id):
         print(error)
         print(error.__cause__)   
     
-    return home(current_user.idPort)
+    return redirect(url_for('.home',id = current_user.idPort))

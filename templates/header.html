@@ -135,7 +135,7 @@
           <ul class="sidebar-menu list-unstyled collapse " id="cssDropdown">
             <li class="sidebar-list-item"><a class="sidebar-link text-muted" href="#">Cerca</a></li>
             <li class="sidebar-list-item"><a class="sidebar-link text-muted"
-                href="{{ url_for('trattativa.home', id=6) }}">Trattative</a></li>
+                href="{{ url_for('trattativa.home', id=current_user.idPort) }}">Trattative</a></li>
           </ul>
         </li>
         <li class="sidebar-list-item"><a class="sidebar-link text-muted" href="{{ url_for('calendario_bp.home') }}">
