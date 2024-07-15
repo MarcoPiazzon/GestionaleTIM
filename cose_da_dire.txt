@@ -1,3 +1,3 @@
-APPUNTAMENTO
+COMUNI
 
-Scelta della trattativa obbligatoria? Importante per la cancellazione del portafoglio, altrimenti bisogna modificare il
+Serve fare la scelta comuni tramite menu a tendina?

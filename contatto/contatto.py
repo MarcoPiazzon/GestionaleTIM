@@ -30,7 +30,7 @@ def getContatto():
     idContatto = request.form['idSearch']
     print(request.form)
     print(idContatto)
-    return home(idContatto)
+    return redirect(url_for('.home', id=idContatto))
 
 def filterNumber(val):
     if(val is None):
@@ -99,7 +99,7 @@ def addContatto():
         print(error.__cause__)
 
 
-    return home(id)
+    return redirect(url_for('.home', id= id))
 
 @contatto_bp.route('/addContattoFile', methods=['POST'])
 @login_required
@@ -156,7 +156,7 @@ def addContatti():
         print(error.__cause__)
         conn.rollback()
     
-    return home(0)
+    return redirect(url_for('.home', id = 0))
 
 @contatto_bp.route('/modifyContatto/<int:id>', methods=['POST'])
 @login_required
@@ -212,7 +212,7 @@ def modifyCliente(id):
         print(error.__cause__)
         conn.rollback()
 
-    return home(id)
+    return redirect(url_for('.home',id))
 
 @contatto_bp.route('/remove/<int:id>', methods=['POST'])
 @login_required
@@ -226,4 +226,4 @@ def removeContatto(id):
         print("rip")
         print(error.__cause__)
         conn.rollback()
-    return url_for('contatto_bp.home', id=0)
+    return url_for('.home', id=0)

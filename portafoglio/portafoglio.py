@@ -84,7 +84,7 @@ def getCliente():
     idPort = request.form['idPort']
     id=request.form['idSearch']
     
-    return home(idPort, id)
+    return redirect(url_for('.home',idPort = idPort, id = id))
 
 @portafoglio_bp.route('/remove/<int:id>', methods=['POST'])
 @login_required
@@ -114,6 +114,7 @@ def removeTrattativa(id):
 @portafoglio_bp.route('/add', methods=['POST'])
 @login_required
 def addCliente():
+    newId = 0
     try:
         print("addCliente")
         idPort = request.form['idPort']
@@ -133,16 +134,16 @@ def addCliente():
         fatturatoTim = request.form['fatturatoTim']
         clienteOffMobScadenza = request.form['clienteOffMobScadenza']
 
-        conn.execute(
+        ris = conn.execute(
             insert(cliente).values(
                 idUtente = current_user.get_id(),
                 idPortafoglio = idPort,
                 ragioneSociale = ragioneSociale,
                 cf = cf,
-                #presidio = presidio, gestire la foreign key
+                presidio = presidio,
                 indirizzoPrincipale = indirizzoPrincipale,
                 capPrincipale = capPrincipale,
-                # comunePrincipale = comunePrincipale, gestire la foreign key
+                comunePrincipale = comunePrincipale,
                 sediTot = sediTot,
                 dipendenti = dipendenti,
                 nLineeTot = nLineeTot,
@@ -154,6 +155,7 @@ def addCliente():
                 clienteOffMobScadenza = clienteOffMobScadenza,
             )
         )
+        newId = ris.inserted_primary_key[0]
         conn.commit()
         print("tutto bvene")
     except Exception as error:
@@ -162,10 +164,7 @@ def addCliente():
         conn.rollback()
     
 
-    #res.lastrowid, deve caricare questo id
-    idCliente = conn.execute(select(cliente.c.idCliente).where(cliente.c.ragioneSociale == ragioneSociale)).fetchone()[0]
-    
-    return home(idPort, idCliente)
+    return redirect(url_for('.home',idPort = idPort, id = newId))
 
 @portafoglio_bp.route('/modifyTrattativa/<int:id>', methods=['POST'])
 @login_required
@@ -233,7 +232,7 @@ def modifyTrattativa(id):
         conn.rollback()
 
 
-    return home(current_user.idPort, idCliente)
+    return redirect(url_for('.home',idPort = current_user.idPort, id = idCliente))
 
 
 @portafoglio_bp.route('/modifyCliente', methods=['POST'])
@@ -267,10 +266,10 @@ def modifyCliente():
                 idCliente = idCliente,
                 ragioneSociale = ragioneSociale,
                 cf = cf,
-                #presidio = presidio, gestire la foreign key
+                presidio = presidio,
                 indirizzoPrincipale = indirizzoPrincipale,
                 capPrincipale = capPrincipale,
-                # comunePrincipale = comunePrincipale, gestire la foreign key
+                comunePrincipale = comunePrincipale,
                 sediTot = sediTot,
                 dipendenti = dipendenti,
                 nLineeTot = nLineeTot,
@@ -289,7 +288,7 @@ def modifyCliente():
         print(error.__cause__)
         conn.rollback()
 
-    return home(current_user.idPort, idCliente)
+    return redirect(url_for('.home',idPort = current_user.idPort, id = idCliente))
 
 
 @portafoglio_bp.route('/addTrattativaForm', methods=['POST'])
@@ -360,7 +359,7 @@ def addTrattativaForm():
         print(error.__cause__)
         conn.rollback()
     
-    return home(current_user.idPort, idCliente)
+    return redirect(url_for('.home',idPort = current_user.idPort, id = idCliente))
 
 @portafoglio_bp.route('/getExcel/<int:id>')
 def getExcel(id):

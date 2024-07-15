@@ -38,8 +38,51 @@ def removePortafoglio(id):
     print("rimuovo")
     print("sto cancellando")
     print(id)
+    try:
+        #Cancello tabella appuntamento 
+        # DELETE appuntamento FROM appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento 
+        # join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
+        conn.execute(delete(appuntamento).\
+                                    where(appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento).\
+                                    where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
+                                    where(trattativa.c.idCliente == cliente.c.idCliente).\
+                                    where(cliente.c.idPortafoglio == id)                                                    
+        )
+
+        #Cancello tabella trattativaappuntamento
+
+
+        conn.execute(delete(trattativaappuntamento).\
+                where(trattativa.c.idCliente == cliente.c.idCliente).\
+                where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
+                where(trattativa.c.idCliente == cliente.c.idCliente).\
+                where(cliente.c.idPortafoglio == id)
+        )
+        
+
+        #Cancello trattattive
+        # delete trattativa from trattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
+        conn.execute(delete(trattativa).\
+                    where(trattativa.c.idCliente == cliente.c.idCliente).\
+                    where(cliente.c.idPortafoglio == id)
+        )
+        
+        #Cancello clienti
+        conn.execute(delete(cliente).where(cliente.c.idPortafoglio == id))
+
+        #Cancello portafoglio
+
+        conn.execute(delete(portafoglio).where(portafoglio.c.idPortafoglio == id))
+        
+        conn.commit()
+        print("ho cancellato quello che dovevo fare")
+    except Exception as error:
+        conn.rollback()
+        print(error.__cause__)
+        print(error)
 
     return redirect(url_for('home_bp.home'))
+
 
 @home_bp.route('/portafoglio/<int:id>')
 @login_required
@@ -102,15 +145,16 @@ def addPortafoglio():
     dataframe3 = dataframe2.active
 
 
-    id = 0
+    newid = 0
     try:
         res = conn.execute(insert(portafoglio).values(
             idUtente = current_user.get_id(),
             dataInserimento = date.today()
         ))
-        id = res.inserted_primary_key[0]
+        newid = res.inserted_primary_key[0]
+        current_user.idPort = newid
         print("test della vita")
-        print(id)
+        print(newid)
         print("sono qua 1")
         for col in range(1, dataframe1.max_row):
             listapp = []
@@ -127,9 +171,9 @@ def addPortafoglio():
                 cf = listapp[1],
                 ragioneSociale = listapp[2],
                 
-                presidio = conn.execute(select(presidio.c.idPresidio).where(presidio.c.nome == listapp[3])).fetchone()[0],
+                presidio = listapp[3],
                 indirizzoPrincipale = (listapp[4]),
-                comunePrincipale = None,
+                comunePrincipale = listapp[5],
                 capPrincipale = listapp[6],
                 provinciaDescPrincipale = listapp[7], 
                 provinciaSiglaPrincipale = listapp[8],
@@ -205,8 +249,7 @@ def addPortafoglio():
         print(error.__cause__)
         conn.rollback()
     
-    clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
-    return render_template("/portafoglio/portafoglio.html", clienti=clienti, message = message, titolo ="Portafoglio")
+    return redirect(url_for("portafoglio_bp.home", idPort = newid, id = 0))
 
 
 @home_bp.route('/getExcel/<int:id>')

@@ -31,7 +31,7 @@ def home(id):
         print(todays_datetime)            
         for i in range(0, t_len):
             
-            appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0] and appuntamento.c.dataApp >= todays_datetime)).fetchall()
+            appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0] and appuntamento.c.dataApp >='2024-07-13')).fetchall()
             
             print(appuntamenti)
             print(type(appuntamenti))
