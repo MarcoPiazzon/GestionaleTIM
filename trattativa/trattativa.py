@@ -19,7 +19,11 @@ def home(id):
     #            categoria.c.idCategoria == trattativa.c.categoriaOffertaIT)
     #        ).where(trattativa.c.idUtente == current_user.get_id()).where(cliente.c.idPortafoglio == id)
     #).fetchall()
-    trattative = conn.execute(select(trattativa, andamentotrattativa.c.nome, categoria.c.nome)
+    tratVinte= 0
+    tratPerse = 0
+    tratVinteMoney = 0
+    clienti = conn.execute(select(cliente.c.ragioneSociale, cliente.c.idCliente).where(cliente.c.idPortafoglio == id)).fetchall()
+    trattative = conn.execute(select(trattativa, andamentotrattativa.c.nome, categoria.c.nome, cliente.c.ragioneSociale)
                     .join(cliente)
                     .outerjoin(andamentotrattativa)
                     .outerjoin(categoria)
@@ -33,13 +37,27 @@ def home(id):
         #select appuntamento.titolo, trattativa.nomeOpportunita from ((appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento)
         #join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa)
         t_len = len(trattative)
+        
         #print(type(trattative))
         todays_datetime = datetime(datetime.today().year, datetime.today().month, datetime.today().day, datetime.today().hour, datetime.today().minute, datetime.today().second)
         yesterday = datetime(2024,7,10)
         #print(todays_datetime > yesterday)
         #print(todays_datetime)            
         for i in range(0, t_len):
-            
+            #test per vedere le trattative vinte
+            print(trattative[i])
+            if(trattative[i][25].upper() == "VINTA"):
+                tratVinte += 1 
+                if not (trattative[i][10] is None):
+                    tratVinteMoney += trattative[i][10]
+                if not (trattative[i][11] is None):
+                    tratVinteMoney += trattative[i][11]
+                if not (trattative[i][13] is None):
+                    tratVinteMoney += trattative[i][13]
+
+            if(trattative[i][25].upper() == "PERSA"):
+                tratPerse += 1
+
             appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0]).where(appuntamento.c.dataApp >= todays_datetime).order_by(appuntamento.c.dataApp)).fetchall()
             
             #print(appuntamenti)
@@ -56,7 +74,10 @@ def home(id):
     andamento = conn.execute(select(andamentotrattativa)).fetchall()
     print("dopo")
     print(len(trattative))
-    return render_template ("/trattativa/trattativa.html",trattative = trattative, t_len = t_len, categorie = categorie, andamento = andamento)
+    print(tratVinte)
+    print(tratVinteMoney)
+    print(tratPerse)
+    return render_template ("/trattativa/trattativa.html",trattative = trattative, t_len = t_len, categorie = categorie, andamento = andamento, tratVinte = tratVinte, tratPerse = tratPerse, tratVinteMoney = tratVinteMoney, clienti = clienti)
 
 @trattativa_bp.route('/modifyTrattativa/<int:id>', methods=['POST'])
 @login_required
@@ -127,6 +148,7 @@ def modifyTrattativa(id):
 
 
 @trattativa_bp.route('/delete/<int:id>', methods=['POST'])
+@login_required
 def removeTrattativa(id):
     print("REMOVE TRATTATIVA")
     print(current_user.idPort)

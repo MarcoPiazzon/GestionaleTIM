@@ -1,4 +1,5 @@
 from contatto import contatto_bp
+from contatto import message
 from flask import Blueprint,render_template, url_for, redirect, request
 from flask_login import *
 from home import *
@@ -6,11 +7,11 @@ from model import *
 import openpyxl
 from datetime import date
 
-
 @contatto_bp.route('/<int:id>/', methods=['POST', 'GET'])
 def home(id):
     print("sono nwellA HOM")
     current_contatto = None
+
     contatti = None
     # valore di default, indica che non sto cercando nessun utente
     try:
@@ -22,14 +23,20 @@ def home(id):
         print("rip")
         print(error)
         print(error.__cause__)
-    return render_template("/contatto/contatto.html", contatti=contatti, current_contatto=current_contatto)
+    print(current_contatto)
+    print(message)
+    
+    return render_template("/contatto/contatto.html", contatti=contatti, current_contatto=current_contatto, mess = message)
     
 
 @contatto_bp.route('/getContatto', methods=['POST'])
 def getContatto():
+    
     idContatto = request.form['idSearch']
     print(request.form)
     print(idContatto)
+    global message
+    message = "PRESO IL CONTAT"
     return redirect(url_for('.home', id=idContatto))
 
 def filterNumber(val):
@@ -62,7 +69,6 @@ def addContatto():
     abitazione = request.form['abitazioneAdd']
     cellulare = request.form['cellulareAdd']
     note = request.form['noteAdd']
-    numeroID = request.form['numeroIDAdd']
     email1 = request.form['email1Add']
     email2 = request.form['email2Add']
     paginaWeb = request.form['paginaWebAdd']
@@ -85,7 +91,6 @@ def addContatto():
             abitazione = abitazione,
             cellulare = cellulare,
             note = note,
-            numeroID = numeroID,
             email1 = email1,
             email2 = email2,
             paginaWeb = paginaWeb
@@ -139,10 +144,9 @@ def addContatti():
                     abitazione2 = list[14],
                     cellulare = filterNumber(list[15]),
                     note = list[16],
-                    numeroID = list[17],
-                    paginaWeb = list[18],
-                    email1 = list[19],
-                    email2 = list[20]
+                    paginaWeb = list[17],
+                    email1 = list[18],
+                    email2 = list[19]
                 ))
             
             except Exception as error:
@@ -162,6 +166,7 @@ def addContatti():
 @login_required
 def modifyCliente(id):
     print("modifica conattto")
+    print(request.form)
     nome = request.form['nome']
     secondoNome = request.form['secondoNome']
     cognome = request.form['cognome']
@@ -177,7 +182,6 @@ def modifyCliente(id):
     abitazione = request.form['abitazione']
     cellulare = request.form['cellulare']
     note = request.form['note']
-    numeroID = request.form['numeroID']
     email1 = request.form['email1']
     email2 = request.form['email2']
     paginaWeb = request.form['paginaWeb']
@@ -200,7 +204,6 @@ def modifyCliente(id):
             abitazione = abitazione,
             cellulare = cellulare,
             note = note,
-            numeroID = numeroID,
             email1 = email1,
             email2 = email2,
             paginaWeb = paginaWeb
@@ -212,7 +215,7 @@ def modifyCliente(id):
         print(error.__cause__)
         conn.rollback()
 
-    return redirect(url_for('.home',id))
+    return redirect(url_for('.home',id = id))
 
 @contatto_bp.route('/remove/<int:id>', methods=['POST'])
 @login_required

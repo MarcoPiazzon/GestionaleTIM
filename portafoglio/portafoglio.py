@@ -28,6 +28,7 @@ def home(idPort, id):
     clienti = None
     current_cliente = None
     trattative = None 
+    namePortafoglio = conn.execute(select(portafoglio.c.dataInserimento).where(portafoglio.c.idPortafoglio)).fetchone()[0]
     t_len = 0
     print()
     contatti = conn.execute(select(contatto).where(contatto.c.idUtente == current_user.get_id()).order_by(contatto.c.nome)).fetchall()
@@ -49,7 +50,9 @@ def home(idPort, id):
         print(trattative)
         
         
+
         if not (trattative is None):
+            
         #select appuntamento.titolo, trattativa.nomeOpportunita from ((appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento)
         #join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa)
             t_len = len(trattative)
@@ -68,7 +71,7 @@ def home(idPort, id):
                     print(trattative[i][25])
 
                 print(len(trattative[i]))
-    return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort, categorie=categorie, andamento=andamento, contatti=contatti)
+    return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort, categorie=categorie, andamento=andamento, contatti=contatti, name = namePortafoglio)
 
 
 @portafoglio_bp.route('/portafoglio/<int:id>')
@@ -110,6 +113,40 @@ def removeTrattativa(id):
         conn.rollback()
     
     return home(current_user.idPort, getIdCliente)
+
+@portafoglio_bp.route('/removeCliente/<int:id>', methods=['POST'])
+@login_required
+def removeCliente(id):
+    print("REMOVE CLIENTE")
+    conn.execute(delete(appuntamento).\
+                                where(appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento).\
+                                where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
+                                where(trattativa.c.idCliente == cliente.c.idCliente).\
+                                where(cliente.c.idCliente == id)                                                    
+    )
+
+    #Cancello tabella trattativaappuntamento
+
+
+    conn.execute(delete(trattativaappuntamento).\
+            where(trattativa.c.idCliente == cliente.c.idCliente).\
+            where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
+            where(trattativa.c.idCliente == cliente.c.idCliente).\
+            where(cliente.c.idCliente == id)
+    )
+    
+
+    #Cancello trattattive
+    # delete trattativa from trattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
+    conn.execute(delete(trattativa).\
+                where(trattativa.c.idCliente == cliente.c.idCliente).\
+                where(cliente.c.idCliente == id)
+    )
+    
+    #Cancello clienti
+    conn.execute(delete(cliente).where(cliente.c.idCliente == id))
+    print("HO FATTO TUTTO")
+    return redirect(url_for('.home', idPort = current_user.idPort, id = 0))
 
 @portafoglio_bp.route('/add', methods=['POST'])
 @login_required
@@ -193,7 +230,10 @@ def modifyTrattativa(id):
         dataChiusura = request.form['dataChiusuraModify']
         fase = request.form['faseModify']
         noteSpecialista = request.form['noteSpecialistaModify']
-        probabilita = (request.form['probabilitaModify'])[:-1]
+        probabilita = (request.form['probabilitaModify'])
+        if not (probabilita is None):
+            if("%" in probabilita):
+                probabilita = probabilita[:-1]
         inPaf = request.form['inPafModify']
         fornitore = request.form['fornitoreModify']
         

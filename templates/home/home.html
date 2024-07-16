@@ -137,6 +137,33 @@
     background-color: #fff;
     color: #009688;
   }
+  .modal-content-color{
+    background-color: transparent !important;
+  }
+
+  .modal-content{
+    background-color: transparent !important;
+  }
+
+  .modal-dialog.centered{
+    background-color: transparent !important;
+  }
+
+  .modal-dialog{
+    background-color: transparent !important;
+  }
+
+  .modal{
+    background-color: transparent !important;
+  }
+
+  .modal-body{
+    background-color: transparent !important;
+  }
+
+  .modal-content-bg{
+    background-color: transparent !important;
+  }
 </style>
 <script>
   /* document.addEventListener('DOMContentLoaded', function () {
@@ -145,6 +172,7 @@
    alert(test[0]);
     })
  */
+  
 </script>
 
 <div class="page-holder bg-gray-100">
@@ -222,14 +250,14 @@
           <div class="step">
             <p class="mb-4">In questa prima parte andremo ad importare il <b> portafoglio</b></p>
             <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>.<br><span>Come trovare le <strong>colonne nascoste?</strong></span></p>
-            
+            <img  class="img-fluid mb-4"  src="{{ url_for('static',filename='images/excel.gif') }}" >
             <ol>
               <li>Seleziona il <strong>triangolo</strong> posto a <strong>sinistra della prima colonna e in alto alla prima riga</strong></li>
               <li>Premi il tasto <strong>destro</strong> in un posto qualsiasi sulla zona selezionata, premi <strong>"Scopri"</strong></li>
             </ol>
-             <p>Per essere
-              sicuro, le colonne
-              <strong>devono</strong> andare dalla lettera 'A' alla lettera 'R'.
+            
+             <p>Le colonne
+              <strong>devono</strong> essere in ordine alfabetico completo dalla lettera 'A' alla lettera 'R'.
             </p>
             <p class="mb-4">Se le righe non combaciano ancora i problemi sono due</p>
             <ol>
@@ -296,18 +324,18 @@
             <p class="mb-4">In questa parte andremo ad importare le <strong>trattative</strong> in riferimento al
               <strong>portafoglio</strong>
             </p>
-            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>. Per essere
-              sicuro, le colonne
-              devono andare dalla lettera 'A' alla lettera 'X'.</p>
+            <p class="mb-4">Come prima cosa, controlla che non esistano colonne <strong>nascoste</strong>.Le colonne
+              devono essere in ordine alfabetico completo dalla lettera 'A' alla lettera 'X'.</p>
             <p class="mb-4">Come trovare le colonne nascoste?</p>
+            <img  class="img-fluid mb-4"  src="{{ url_for('static',filename='images/excel.gif') }}" >
             <ol>
               <li>Seleziona il triangolo posto a sinitra della prima colonna e in alto alla prima riga</li>
               <li>Premi il tasto destro in un posto qualsiasi sulla zona selezionata, premi "Scopri" </li>
             </ol>
-            <p class="mb-4"> Se le righe non combaciano i problemi sono due</p>
+            <p class="mb-4"> Se le colonne non combaciano i problemi sono due</p>
             <ol>
-              <li>Non hai trovato possibili righe nascoste</li>
-              <li>Sono presenti più righe del necessario.</li>
+              <li>Non hai trovato possibili colonne nascoste</li>
+              <li>Sono presenti più colonne del necessario.</li>
             </ol>
             <p class="mb-4"> Se ricadi nel caso due, puoi proseguire</p>
 
@@ -317,7 +345,7 @@
           <div class="step">
             <p class="mb-4">La <strong>posizione</strong> delle colonne è molto importante per la creazione del
               portafoglio.</p>
-            <p class="mb-4">Se trovi righe non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere
+            <p class="mb-4">Se trovi colonne non menzionate in questo elenco, <strong>cancellale</strong>. Devono essere
               presenti <strong>TUTTE</strong> e
               nel seguente <strong>ordine</strong>:</p>
             <ol>
@@ -500,6 +528,17 @@
 </div>
 {%endif%}
 
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: transparent;">
+      <div class="modal-body">
+        <img class="img-fluid" src="{{ url_for('static',filename='images/loading.gif') }}">
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
   new DataTable('#datatable1');
   const toastLiveExample = document.getElementById('liveToast');
@@ -521,7 +560,7 @@
         var xhr = new XMLHttpRequest();
 
         //str = ;
-        xhr.open("GET", '/home/delete/' + id, false);
+        xhr.open("POST", '/home/delete/' + id, false);
         xhr.send();
         location.reload();
       }
@@ -529,6 +568,13 @@
   }
 
 </script>
+<script>// <![CDATA[
+  function loading(){
+    console.log("askoipskdaspdjmaskmnd");
+    $("#loading").show();
+      //$("#content").hide();       
+  }
+// ]]></script>
 <script>var currentTab = 0; // Current tab is set to be the first tab (0)
   showTab(currentTab); // Display the current tab
 
@@ -545,6 +591,7 @@
     console.log(n);
     if (n == (x.length - 1)) {
       document.getElementById("nextBtn").innerHTML = "CREA";
+      
     } else {
       console.log("cambio avanti")
       a = document.createElement("i")
@@ -569,6 +616,10 @@
     // if you have reached the end of the form...
     if (currentTab >= x.length) {
       // ... the form gets submitted:
+      var myModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
+        keyboard: false
+      })
+      myModal.show()
       document.getElementById("signUpForm").submit();
       return false;
     }

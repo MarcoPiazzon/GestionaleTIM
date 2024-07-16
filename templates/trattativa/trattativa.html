@@ -48,7 +48,7 @@
 
                     {% for i in range (0, t_len) %}
                     <tr data-bs-toggle="modal" data-bs-target="#staticBackdrop{{i}}">
-                      <td>{{trattative[i][8]}}</td>
+                      <td>{% if trattative[i][8] %}{{trattative[i][8]}}{%else%}Non definito{%endif%}</td>
                       <td>{% if trattative[i][25] %} {{trattative[i][25]}} {%else%}Sconosciuto{%endif%}</td>
                       <td>{% if trattative[i][18] %} {{trattative[i][18]}} {%else%}Non indicata {%endif%}</td>
                     </tr>
@@ -63,198 +63,212 @@
                           <form action="/trattativa/modifyTrattativa/{{trattative[i][0]}}" method="POST">
                             <div class="modal-body">
                               <div class="row">
-                                <div class="{% if trattative[i][27] %}col-md-9{%else%}{%endif%}"  id="modifica">
+                                <div class="{% if trattative[i][28] %}col-md-9{%else%}{%endif%}" id="modifica">
                                   <!-- Account details card-->
                                   <div class="row mb-4">
                                     <!--<div class="card-header">Modifica</div>-->
+                                    <!-- Form Group (username)-->
+                                    <div class="row gx-3 mb-3">
+                                      <div class="col">
+                                        <label class="small mb-1" for="idClienteModify">Cliente assocciato</label>
+                                        <select class="form-select" name="idClienteModify"
+                                          aria-label="Default select example" id="idClienteModify">
+                                          <option value="{% if trattative[i][2] %}{{trattative[i][2]}}{%endif%}"
+                                            selected>
+                                            {% if trattative[i][27] %} {{trattative[i][27]}}{%endif%}</option>
+                                          {% for a in clienti %}
 
-                                      <input type="hidden" name="idClienteModify" id="idCliente"
-                                        value="{{trattative[i][2]}}">
-                                      <!-- Form Group (username)-->
-                                      <div class="row gx-3 mb-3">
-                                        <div class="col-md-4">
-                                          <label class="small mb-1"
-                                            for="codiceCtrDigitaliModify">codiceCtrDigitali</label>
-                                          <input class="form-control" name="codiceCtrDigitaliModify"
-                                            id="codiceCtrDigitaliModify" type="text" value="{{trattative[i][3]}}">
-                                        </div>
-                                        <div class="col-md-4">
-                                          <label class="small mb-1" for="codiceSalesHubModify">codiceSalesHub</label>
-                                          <input class="form-control" name="codiceSalesHubModify"
-                                            id="codiceSalesHubModify" type="text" value="{{trattative[i][4]}}">
-                                        </div>
-                                        <div class="col-md-4">
-                                          <label class="small mb-1" for="zonaModify">zona</label>
-                                          <input class="form-control" name="zonaModify" id="zonaModify" type="text"
-                                            value="{{trattative[i][6]}}">
-                                        </div>
-
-
+                                          <option value="{{a.idCliente}}">{{a.ragioneSociale}}</option>
+                                          {% endfor %}
+                                        </select>
                                       </div>
-                                      <!-- Form Row-->
-                                      <div class="row gx-3 mb-3">
-                                        <!-- Form Group (first name)-->
-                                        <div class="col-md-6">
-                                          <label class="small mb-1" for="nomeOpportunitaModify">nomeOpportunita</label>
-                                          <input class="form-control" name="nomeOpportunitaModify"
-                                            id="nomeOpportunitaModify" type="text" value="{{trattative[i][8]}}">
-
-                                        </div>
-                                        <!-- Form Group (last name)-->
-                                        <div class="col-md-6">
-                                          <label class="small mb-1" for="tipoModify">tipo</label>
-                                          <input class="form-control" name="tipoModify" id="tipoModify" type="text"
-                                            value="{{trattative[i][7]}}">
-
-                                        </div>
+                                    </div>
+                                    <div class="row gx-3 mb-3">
+                                      <div class="col-md-4">
+                                        <label class="small mb-1"
+                                          for="codiceCtrDigitaliModify">codiceCtrDigitali</label>
+                                        <input class="form-control" name="codiceCtrDigitaliModify"
+                                          id="codiceCtrDigitaliModify" type="text"
+                                          value="{%if trattative[i][3] %}{{trattative[i][3]}}{%endif%}">
                                       </div>
-                                      <!-- Form Row        -->
-                                      <div class="row gx-3 mb-3">
-                                        <!-- Form Group (organization name)-->
-                                        <div class="col-md-6">
-
-                                          <label class="small mb-1" for="areaManagerModify">areaManager</label>
-                                          <input class="form-control" name="areaManagerModify" id="areaManagerModify"
-                                            type="text" value="{{trattative[i][5]}}">
-                                        </div>
-                                        <!-- Form Group (location)-->
-                                        <div class="col-md-3">
-                                          <label class="small mb-1"
-                                            for="dataCreazioneOpportunitaModify">dataCreazioneOpportunita</label>
-                                          <input class="form-control" name="dataCreazioneOpportunitaModify"
-                                            id="dataCreazioneOpportunitaModify" type="date"
-                                            value="{{trattative[i][9]}}">
-                                        </div>
-                                        <div class="col-md-3">
-                                          <label class="small mb-1" for="dataChiusuraModify">dataChiusura</label>
-                                          <input class="form-control" name="dataChiusuraModify" id="dataChiusuraModify"
-                                            type="date" value="{{trattative[i][18]}}">
-                                        </div>
+                                      <div class="col-md-4">
+                                        <label class="small mb-1" for="codiceSalesHubModify">codiceSalesHub</label>
+                                        <input class="form-control" name="codiceSalesHubModify"
+                                          id="codiceSalesHubModify" type="text"
+                                          value="{%if trattative[i][4]%}{{trattative[i][4]}}{%endif%}">
                                       </div>
-                                      <!-- Form Row-->
-                                      <div class="row gx-3 mb-3">
-                                        <!-- Form Group (phone number)-->
-                                        <div class="col-md-3">
-
-                                          <label class="small mb-1" for="faseModify">fase</label>
-                                          <select class="form-select" name="faseModify"
-                                            aria-label="Default select example" id="faseModify">
-                                            <option value="{% if trattative[i][19] %}{{trattative[i][19]}}{%endif%}"
-                                              selected>
-                                              {% if trattative[i][25] %} {{trattative[i][25]}}{%endif%}</option>
-                                            {% for a in andamento %}
-
-                                            <option value="{{a.idAndamento}}">{{a.nome}}</option>
-                                            {% endfor %}
-                                          </select>
-
-                                        </div>
-                                        <!-- Form Group (birthday)-->
-                                        <div class="col-md-3">
-                                          <label class="small mb-1"
-                                            for="categoriaOffertaITModify">categoriaOffertaIT</label>
-                                          <select class="form-select" aria-label="Default select example"
-                                            id="categoriaOffertaITModify" name="categoriaOffertaITModify">
-                                            <option value="{% if trattative[i][12] %}{{trattative[i][12]}}{%endif%}"
-                                              selected>
-                                              {% if trattative[i][12] %}{{trattative[i][26]}}{%endif%}</option>
-                                            {% for c in categorie %}
-                                            <option value="{{c.idCategoria}}">{{c.nome}}</option>
-                                            {% endfor %}
-
-                                          </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                          <label class="small mb-1" for="probabilitaModify">probabilita</label>
-                                          <input class="form-control" name="probabilitaModify" id="probabilitaModify"
-                                            type="text" value="{{trattative[i][21]}}%">
-                                        </div>
-                                        <div class="col-md-3">
-                                          <label class="small mb-1" for="inPafModify">inPaf</label>
-                                          <input class="form-control" name="inPafModify" id="inPafModify" type="text"
-                                            value="{{trattative[i][22]}}">
-                                        </div>
-
+                                      <div class="col-md-4">
+                                        <label class="small mb-1" for="zonaModify">zona</label>
+                                        <input class="form-control" name="zonaModify" id="zonaModify" type="text"
+                                          value="{%if trattative[i][6]%}{{trattative[i][6]}}{%endif%}">
                                       </div>
 
 
-                                      <!-- Form Row-->
-                                      <div class="row gx-3 mb-3">
-                                        <!-- Form Group (phone number)-->
-                                        <div class="col-md-4">
-                                          <label class="small mb-1" for="fixModify">fix</label>
-                                          <input class="form-control" name="fixModify" id="fixModify" type="number"
-                                            value="{% if trattative[i][10]%}{{trattative[i][10]}}{%else%}0.0{%endif%}">
-
-                                        </div>
-                                        <!-- Form Group (birthday)-->
-                                        <div class="col-md-4">
-                                          <label class="small mb-1" for="mobileModify">mobile</label>
-                                          <input class="form-control" name="mobileModify" id="mobileModify"
-                                            type="number"
-                                            value="{% if trattative[i][11] %}{{trattative[i][11]}}{%else%}0.0{%endif%}">
-
-                                        </div>
-                                        <div class="col-md-4">
-                                          <label class="small mb-1" for="itModify">it</label>
-                                          <input class="form-control" name="itModify" id="itModify" type="text"
-                                            value="{{trattative[i][13]}}">
-
-                                        </div>
-                                      </div>
-                                      <div class="row gx-3 mb-3">
-                                        <!-- Form Group (phone number)-->
-                                        <div class="col-md-3">
-                                          <label class="small mb-1" for="alModify">al</label>
-                                          <input class="form-control" name="alModify" id="alModify" type="tel"
-                                            value="{{trattative[i][17]}}">
-                                        </div>
-                                        <!-- Form Group (birthday)-->
-                                        <div class="col-md-3">
-
-                                          <label class="small mb-1" for="aomModify">aom</label>
-                                          <input class="form-control" name="aomModify" id="aomModify" type="text"
-                                            value="{{trattative[i][15]}}">
-
-                                        </div>
-                                        <div class="col-md-3">
-                                          <label class="small mb-1" for="mnpModify">mnp</label>
-                                          <input class="form-control" name="mnpModify" id="mnpModify" type="text"
-                                            value="{{trattative[i][16]}}">
-                                        </div>
-                                        <div class="col-md-3">
-                                          <label class="small mb-1"
-                                            for="lineeFoniaFixModify">lineeFoniaFixModify</label>
-                                          <input class="form-control" name="lineeFoniaFixModify"
-                                            id="lineeFoniaFixModify" type="tel" value="{{trattative[i][14]}}">
-                                        </div>
-                                      </div>
-                                      <div class="row gx-3 mb-3">
-                                        <!-- Form Group (phone number)-->
-
-                                        <div class="col-md-6">
-                                          <label class="small mb-1" for="fornitoreModify">fornitore</label>
-                                          <input class="form-control" name="fornitoreModify" id="fornitoreModify"
-                                            type="text"
-                                            value="{% if trattative[i][24] == None %} {{trattative[i][24]}} {%else%}{%endif%}">
-                                        </div>
-                                        <!-- Form Group (birthday)-->
-                                        <div class="col-md-6">
-
-                                          <label class="small mb-1" for="noteSpecialistaModify">noteSpecialista</label>
-                                          <input class="form-control" name="noteSpecialistaModify"
-                                            id="noteSpecialistaModify" type="text"
-                                            value="{% if trattative[i][20] == None %}{{trattative[i][20]}} {%else%}{%endif%}">
-
-                                        </div>
-
+                                    </div>
+                                    <!-- Form Row-->
+                                    <div class="row gx-3 mb-3">
+                                      <!-- Form Group (first name)-->
+                                      <div class="col-md-6">
+                                        <label class="small mb-1" for="nomeOpportunitaModify">nomeOpportunita</label>
+                                        <input class="form-control" name="nomeOpportunitaModify"
+                                          id="nomeOpportunitaModify" type="text"
+                                          value="{%if trattative[i][8]%}{{trattative[i][8]}}{%endif%}">
 
                                       </div>
+                                      <!-- Form Group (last name)-->
+                                      <div class="col-md-6">
+                                        <label class="small mb-1" for="tipoModify">tipo</label>
+                                        <input class="form-control" name="tipoModify" id="tipoModify" type="text"
+                                          value="{%if trattative[i][7] %}{{trattative[i][7]}}{%endif%}">
 
-                                      <!-- Save changes button-->
+                                      </div>
+                                    </div>
+                                    <!-- Form Row        -->
+                                    <div class="row gx-3 mb-3">
+                                      <!-- Form Group (organization name)-->
+                                      <div class="col-md-6">
+
+                                        <label class="small mb-1" for="areaManagerModify">areaManager</label>
+                                        <input class="form-control" name="areaManagerModify" id="areaManagerModify"
+                                          type="text" value="{%if trattative[i][5] %}{{trattative[i][5]}}{%endif%}">
+                                      </div>
+                                      <!-- Form Group (location)-->
+                                      <div class="col-md-3">
+                                        <label class="small mb-1"
+                                          for="dataCreazioneOpportunitaModify">dataCreazioneOpportunita</label>
+                                        <input class="form-control" name="dataCreazioneOpportunitaModify"
+                                          id="dataCreazioneOpportunitaModify" type="date" value="{{trattative[i][9]}}">
+                                      </div>
+                                      <div class="col-md-3">
+                                        <label class="small mb-1" for="dataChiusuraModify">dataChiusura</label>
+                                        <input class="form-control" name="dataChiusuraModify" id="dataChiusuraModify"
+                                          type="date" value="{{trattative[i][18]}}">
+                                      </div>
+                                    </div>
+                                    <!-- Form Row-->
+                                    <div class="row gx-3 mb-3">
+                                      <!-- Form Group (phone number)-->
+                                      <div class="col-md-3">
+
+                                        <label class="small mb-1" for="faseModify">fase</label>
+                                        <select class="form-select" name="faseModify"
+                                          aria-label="Default select example" id="faseModify">
+                                          <option value="{% if trattative[i][19] %}{{trattative[i][19]}}{%endif%}"
+                                            selected>
+                                            {% if trattative[i][25] %} {{trattative[i][25]}}{%endif%}</option>
+                                          {% for a in andamento %}
+
+                                          <option value="{{a.idAndamento}}">{{a.nome}}</option>
+                                          {% endfor %}
+                                        </select>
+
+                                      </div>
+                                      <!-- Form Group (birthday)-->
+                                      <div class="col-md-3">
+                                        <label class="small mb-1"
+                                          for="categoriaOffertaITModify">categoriaOffertaIT</label>
+                                        <select class="form-select" aria-label="Default select example"
+                                          id="categoriaOffertaITModify" name="categoriaOffertaITModify">
+                                          <option value="{% if trattative[i][12] %}{{trattative[i][12]}}{%endif%}"
+                                            selected>
+                                            {% if trattative[i][12] %}{{trattative[i][26]}}{%endif%}</option>
+                                          {% for c in categorie %}
+                                          <option value="{{c.idCategoria}}">{{c.nome}}</option>
+                                          {% endfor %}
+
+                                        </select>
+                                      </div>
+                                      <div class="col-md-3">
+                                        <label class="small mb-1" for="probabilitaModify">probabilita</label>
+                                        <input class="form-control" name="probabilitaModify" id="probabilitaModify"
+                                          type="text" value="{%if trattative[i][21]%}{{trattative[i][21]}}%{%endif%}">
+                                      </div>
+                                      <div class="col-md-3">
+                                        <label class="small mb-1" for="inPafModify">inPaf</label>
+                                        <input class="form-control" name="inPafModify" id="inPafModify" type="text"
+                                          value="{%if trattative[i][22]%}{{trattative[i][22]}}{%endif%}">
+                                      </div>
+
+                                    </div>
 
 
-                                      <!--{%if trattative[i][25] %}
+                                    <!-- Form Row-->
+                                    <div class="row gx-3 mb-3">
+                                      <!-- Form Group (phone number)-->
+                                      <div class="col-md-4">
+                                        <label class="small mb-1" for="fixModify">fix</label>
+                                        <input class="form-control" name="fixModify" id="fixModify" type="number"
+                                          placeholder="{% if trattative[i][10] == None%}0.0{%endif%}"
+                                          value="{% if trattative[i][10]%}{{trattative[i][10]}}{%endif%}">
+
+                                      </div>
+                                      <!-- Form Group (birthday)-->
+                                      <div class="col-md-4">
+                                        <label class="small mb-1" for="mobileModify">mobile</label>
+                                        <input class="form-control" name="mobileModify" id="mobileModify" type="number"
+                                          placeholder="{% if trattative[i][11] == None%}0.0{%endif%}"
+                                          value="{% if trattative[i][11] %}{{trattative[i][11]}}{%endif%}">
+
+                                      </div>
+                                      <div class="col-md-4">
+                                        <label class="small mb-1" for="itModify">it</label>
+                                        <input class="form-control" name="itModify" id="itModify" type="number"
+                                          placeholder="{% if trattative[i][13] == None%}0.0{%endif%}"
+                                          value="{% if trattative[i][13]%}{{trattative[i][13]}}{%endif%}">
+
+                                      </div>
+                                    </div>
+                                    <div class="row gx-3 mb-3">
+                                      <!-- Form Group (phone number)-->
+                                      <div class="col-md-3">
+                                        <label class="small mb-1" for="alModify">al</label>
+                                        <input class="form-control" name="alModify" id="alModify" type="text"
+                                          value="{% if trattative[i][17] %}{{trattative[i][17]}}{%endif%}">
+                                      </div>
+                                      <!-- Form Group (birthday)-->
+                                      <div class="col-md-3">
+
+                                        <label class="small mb-1" for="aomModify">aom</label>
+                                        <input class="form-control" name="aomModify" id="aomModify" type="text"
+                                          value="{% if trattative[i][15]%}{{trattative[i][15]}}{%endif%}">
+
+                                      </div>
+                                      <div class="col-md-3">
+                                        <label class="small mb-1" for="mnpModify">mnp</label>
+                                        <input class="form-control" name="mnpModify" id="mnpModify" type="text"
+                                          value="{% if trattative[i][16]%}{{trattative[i][16]}}{%endif%}">
+                                      </div>
+                                      <div class="col-md-3">
+                                        <label class="small mb-1" for="lineeFoniaFixModify">lineeFoniaFixModify</label>
+                                        <input class="form-control" name="lineeFoniaFixModify" id="lineeFoniaFixModify"
+                                          type="text" value="{% if trattative[i][14] %}{{trattative[i][14]}}{%endif%}">
+                                      </div>
+                                    </div>
+                                    <div class="row gx-3 mb-3">
+                                      <!-- Form Group (phone number)-->
+
+                                      <div class="col-md-6">
+                                        <label class="small mb-1" for="fornitoreModify">fornitore</label>
+                                        <input class="form-control" name="fornitoreModify" id="fornitoreModify"
+                                          type="text" value="{% if trattative[i][24]%}{{trattative[i][24]}}{%endif%}">
+                                      </div>
+                                      <!-- Form Group (birthday)-->
+                                      <div class="col-md-6">
+
+                                        <label class="small mb-1" for="noteSpecialistaModify">noteSpecialista</label>
+                                        <input class="form-control" name="noteSpecialistaModify"
+                                          id="noteSpecialistaModify" type="text"
+                                          value="{% if trattative[i][20]%}{{trattative[i][20]}}{%endif%}">
+
+                                      </div>
+
+
+                                    </div>
+
+                                    <!-- Save changes button-->
+
+
+                                    <!--{%if trattative[i][25] %}
                                 <h5 class="page-heading">Appuntamenti assocciati</h5>
                                 <div class="card-body text-muted">
                                   <table class="table table-striped text-sm text-gray-700 mb-0" id="ordersDatatable">
@@ -283,21 +297,21 @@
                                   </table>
                                 </div>
                                 {%endif%}-->
-                                  
+
                                   </div>
                                 </div>
-                                {% if trattative[i][27] %}
+                                {% if trattative[i][28] %}
                                 <div class="col-md-3">
                                   <div class="row mb-4">
-                                      <div class="list-group mt-2">
-                                      {% for a in trattative[i][27] %}
-                                      
-                                        <li class="list-group-item">
-                                          <div class="row mb-2">{{ a.titolo }}</div>
-                                          <div class="row">{{a.dataApp}}</div> 
-                                          
-                                        </li>
-                                      
+                                    <div class="list-group mt-2">
+                                      {% for a in trattative[i][28] %}
+
+                                      <li class="list-group-item">
+                                        <div class="row mb-2">{{ a.titolo }}</div>
+                                        <div class="row">{{a.dataApp}}</div>
+
+                                      </li>
+
                                       {%endfor%}
                                     </div>
                                   </div>
@@ -328,45 +342,19 @@
             <div class="card-body d-flex flex-column justify-content-between">
               <div class="row gx-1">
                 <div class="col">
-                  <svg class="svg-icon text-red mb-3">
+                  <svg class="svg-icon text-green mb-3">
                     <use xlink:href="icons/orion-svg-sprite.71e9f5f2.svg#speed-1"> </use>
                   </svg>
                 </div>
                 <div class="col text-end">
-                  <h4 class="h3 mb-1 text-red">$10,500</h4>
-                  <p> <span class="badge badge-success-light"><i class="fas fa-arrow-up me-2"></i>+20.3%</span>
+                  <h4 class="h3 mb-1 text-green">{{ tratVinte}}</h4>
                   </p>
                 </div>
               </div>
-              <p class="subtitle text-gray-600 mb-1">Vendite</p>
+              <p class="subtitle text-gray-600 mb-1">Trattative vinte</p>
               <div class="progress">
-                <div class="progress-bar bg-red" role="progressbar" aria-valuenow="85" aria-valuemin="0"
-                  aria-valuemax="100" style="width:85%"> </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- /Widget Type 9-->
-        <!-- Widget Type 9-->
-        <div class="col-sm-6 col-lg-3 mb-4">
-          <div class="card h-100">
-            <div class="card-body d-flex flex-column justify-content-between">
-              <div class="row gx-1">
-                <div class="col">
-                  <svg class="svg-icon text-blue mb-3">
-                    <use xlink:href="icons/orion-svg-sprite.71e9f5f2.svg#news-1"> </use>
-                  </svg>
-                </div>
-                <div class="col text-end">
-                  <h4 class="h3 mb-1 text-blue">584</h4>
-                  <p> <span class="badge badge-success-light"><i class="fas fa-arrow-up me-2"></i>+3.3%</span>
-                  </p>
-                </div>
-              </div>
-              <p class="subtitle text-gray-600 mb-1">Clienti totali</p>
-              <div class="progress">
-                <div class="progress-bar bg-blue" role="progressbar" aria-valuenow="75" aria-valuemin="0"
-                  aria-valuemax="100" style="width:75%"> </div>
+                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="85" aria-valuemin="0"
+                  aria-valuemax="100" style="width:{{tratVinte* 100 / t_len}}%"> </div>
               </div>
             </div>
           </div>
@@ -383,19 +371,19 @@
                   </svg>
                 </div>
                 <div class="col text-end">
-                  <h4 class="h3 mb-1 text-primary">876</h4>
-                  <p> <span class="badge badge-success-light"><i class="fas fa-arrow-up me-2"></i>+10.5%</span>
+                  <h4 class="h3 mb-1 text-primary">{{ t_len - tratPerse - tratVinte}}</h4>
                   </p>
                 </div>
               </div>
-              <p class="subtitle text-gray-600 mb-1">Trattative totali</p>
+              <p class="subtitle text-gray-600 mb-1">Trattative non concluse</p>
               <div class="progress">
                 <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="67" aria-valuemin="0"
-                  aria-valuemax="100" style="width:67%"> </div>
+                  aria-valuemax="100" style="width:{{ (t_len - tratPerse - tratVinte) * 100 / t_len  }}%"> </div>
               </div>
             </div>
           </div>
         </div>
+
         <!-- /Widget Type 9-->
         <!-- Widget Type 9-->
         <div class="col-sm-6 col-lg-3 mb-4">
@@ -409,15 +397,38 @@
                   </svg>
                 </div>
                 <div class="col text-end">
-                  <h4 class="h3 mb-1 text-green">3,500</h4>
-                  <p> <span class="badge badge-danger-light"><i class="fas fa-arrow-down me-2"></i>-5.8%</span>
+                  <h4 class="h3 mb-1 text-red">{{ tratPerse}}</h4>
                   </p>
                 </div>
               </div>
-              <p class="subtitle text-gray-600 mb-1">Visitors</p>
+              <p class="subtitle text-gray-600 mb-1">trattative perse</p>
               <div class="progress">
-                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="93" aria-valuemin="0"
-                  aria-valuemax="100" style="width:93%"> </div>
+                <div class="progress-bar bg-red" role="progressbar" aria-valuenow="93" aria-valuemin="0"
+                  aria-valuemax="100" style="width:{{ tratPerse * 100 / t_len}}%"> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- /Widget Type 9-->
+        <!-- Widget Type 9-->
+        <div class="col-sm-6 col-lg-3 mb-4">
+          <div class="card h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+              <div class="row gx-1">
+                <div class="col">
+                  <svg class="svg-icon text-blue mb-3">
+                    <use xlink:href="icons/orion-svg-sprite.71e9f5f2.svg#news-1"> </use>
+                  </svg>
+                </div>
+                <div class="col text-end">
+                  <h4 class="h3 mb-1 text-green">{{ tratVinteMoney}}€</h4>
+                </div>
+              </div>
+              <p class="subtitle text-gray-600 mb-1">Guadagni</p>
+              <div class="progress">
+                <div class="progress-bar bg-green" role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                  aria-valuemax="100" style="width:100%"> </div>
               </div>
             </div>
           </div>

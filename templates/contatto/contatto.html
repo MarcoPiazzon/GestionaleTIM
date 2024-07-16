@@ -13,7 +13,7 @@
         scrollbar-width: none;
     }
 
-    #myUL::-webkit-scrollbar{
+    #myUL::-webkit-scrollbar {
         display: none;
     }
 </style>
@@ -173,13 +173,13 @@
                         <input type="hidden" value="{{contatto.idContatto}}">
                         <li class="list-group-item" onclick="getName(this)">
                             {% if contatto.nome %}
-                                {{contatto.nome}} 
+                            {{contatto.nome}}
                             {%endif%}
                             {%if contatto.secondoNome%}
-                                {{contatto.secondoNome}} 
-                            {%endif%} 
+                            {{contatto.secondoNome}}
+                            {%endif%}
                             {% if contatto.cognome %}
-                                {{contatto.cognome}}
+                            {{contatto.cognome}}
                             {%endif%}
                         </li>
                         {% endfor %}
@@ -203,23 +203,21 @@
                                         <!-- Form Row-->
                                         <div class="row gx-3 mb-3">
                                             <div class="col-md-4">
-                                                <label class="small mb-1" for="nome">Nome contatto</label>
+                                                <label class="small mb-1" for="nome">Nome</label>
                                                 <input class="form-control" name="nome" id="nome" type="text"
-                                                    placeholder=""
                                                     value="{%if current_contatto.nome%}{{current_contatto.nome}}{%endif%}">
                                             </div>
                                             <!-- Form Group (first name)-->
                                             <div class="col-md-4">
-                                                <label class="small mb-1" for="secondoNome">secondoNome</label>
+                                                <label class="small mb-1" for="secondoNome">Secondo Nome</label>
                                                 <input class="form-control" name="secondoNome" id="secondoNome"
-                                                    type="text" placeholder=""
+                                                    type="text"
                                                     value="{%if current_contatto.secondoNome%}{{current_contatto.secondoNome}}{%endif%}">
                                             </div>
                                             <!-- Form Group (last name)-->
                                             <div class="col-md-4">
-                                                <label class="small mb-1" for="cognome">cognome</label>
+                                                <label class="small mb-1" for="cognome">Cognome</label>
                                                 <input class="form-control" name="cognome" id="cognome" type="text"
-                                                    placeholder=""
                                                     value="{%if current_contatto.cognome %}{{current_contatto.cognome}} {%endif%}">
                                             </div>
                                         </div>
@@ -228,22 +226,22 @@
                                         <div class="row gx-3 mb-3">
                                             <!-- Form Group (organization name)-->
                                             <div class="col-md-4">
-                                                <label class="small mb-1" for="viaUfficio1">viaUfficio1</label>
+                                                <label class="small mb-1" for="viaUfficio1">Via Ufficio 1</label>
                                                 <input class="form-control" name="viaUfficio1" id="viaUfficio1"
-                                                    type="text" placeholder=""
+                                                    type="text"
                                                     value="{%if current_contatto.viaUfficio1 %}{{current_contatto.viaUfficio1}}{%endif%}">
                                             </div>
                                             <!-- Form Group (location)-->
                                             <div class="col-md-4">
-                                                <label class="small mb-1" for="viaUfficio2">viaUfficio2</label>
+                                                <label class="small mb-1" for="viaUfficio2">Via Ufficio 2</label>
                                                 <input class="form-control" name="viaUfficio2" id="viaUfficio2"
-                                                    type="text" placeholder=""
+                                                    type="text"
                                                     value="{%if current_contatto.viaUfficio2 %}{{current_contatto.viaUfficio2}}{%endif%}">
                                             </div>
                                             <div class="col-md-4">
-                                                <label class="small mb-1" for="viaUfficio3">viaUfficio3</label>
+                                                <label class="small mb-1" for="viaUfficio3">Via Ufficio 3</label>
                                                 <input class="form-control" name="viaUfficio3" id="viaUfficio3"
-                                                    type="text" placeholder=""
+                                                    type="text"
                                                     value="{%if current_contatto.viaUfficio3 %}{{current_contatto.viaUfficio3}} {%endif%}">
                                             </div>
                                         </div>
@@ -252,90 +250,78 @@
                                         <!-- Form Row-->
                                         <div class="row gx-3 mb-3">
                                             <div class="col-md-3">
-                                                <label class="small mb-1" for="provincia">provincia</label>
+                                                <label class="small mb-1" for="provincia">Provincia</label>
                                                 <input class="form-control" name="provincia" id="provincia" type="text"
-                                                    placeholder=""
                                                     value="{%if current_contatto.provincia %}{{current_contatto.provincia}}{%endif%}">
                                             </div>
                                             <!-- Form Group (phone number)-->
                                             <div class="col-md-3">
-                                                <label class="small mb-1" for="cap">cap</label>
+                                                <label class="small mb-1" for="cap">CAP</label>
                                                 <input class="form-control" name="cap" id="cap" type="text"
-                                                    placeholder=""
                                                     value="{%if current_contatto.cap %}{{current_contatto.cap}}{%endif%}">
                                             </div>
                                             <!-- Form Group (birthday)-->
                                             <div class="col-md-3">
-                                                <label class="small mb-1" for="numUfficio">numUfficio</label>
-                                                <input class="form-control" name="numUfficio" id="numUfficio"
-                                                    type="text" name="birthday" placeholder=""
+                                                <label class="small mb-1" for="numUfficio">Numero Ufficio</label>
+                                                <input class="form-control" name="numUfficio" id="numUfficio" type="tel"
                                                     value="{% if current_contatto.numUfficio %}{{current_contatto.numUfficio}} {%endif%}">
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="small mb-1" for="numUfficio2">numUfficio2</label>
+                                                <label class="small mb-1" for="numUfficio2">Numero Ufficio 2</label>
                                                 <input class="form-control" name="numUfficio2" id="numUfficio2"
-                                                    type="text" name="birthday" placeholder=""
+                                                    type="tel"
                                                     value="{% if current_contatto.numUfficio2 %}{{current_contatto.numUfficio2}}{%endif%}">
                                             </div>
                                         </div>
                                         <!-- Form Row-->
                                         <div class="row gx-3 mb-3">
                                             <div class="col-md-3">
-                                                <label class="small mb-1"
-                                                    for="telefonoPrincipale">telefonoPrincipale</label>
+                                                <label class="small mb-1" for="telefonoPrincipale">Telefono
+                                                    Principale</label>
                                                 <input class="form-control" name="telefonoPrincipale"
-                                                    id="telefonoPrincipale" type="tel" placeholder=""
+                                                    id="telefonoPrincipale" type="tel"
                                                     value="{% if current_contatto.telefonoPrincipale %}{{current_contatto.telefonoPrincipale}}{%endif%}">
                                             </div>
                                             <!-- Form Group (first name)-->
                                             <div class="col-md-3">
-                                                <label class="small mb-1" for="faxAbitazione">faxAbitazione</label>
+                                                <label class="small mb-1" for="faxAbitazione">Fax Abitazione</label>
                                                 <input class="form-control" name="faxAbitazione" id="faxAbitazione"
-                                                    type="text" placeholder=""
+                                                    type="text"
                                                     value="{% if current_contatto.faxAbitazione %}{{current_contatto.faxAbitazione}}{%endif%}">
                                             </div>
                                             <!-- Form Group (last name)-->
                                             <div class="col-md-3">
-                                                <label class="small mb-1" for="abitazione">abitazione</label>
+                                                <label class="small mb-1" for="abitazione">Abitazione</label>
                                                 <input class="form-control" name="abitazione" id="abitazione"
-                                                    type="text" placeholder=""
+                                                    type="text"
                                                     value="{% if current_contatto.abitazione %}{{current_contatto.abitazione}} {%endif%}">
                                             </div>
                                             <div class="col-md-3">
-                                                <label class="small mb-1" for="cellulare">cellulare</label>
-                                                <input class="form-control" name="cellulare" id="cellulare" type="text"
-                                                    placeholder=""
+                                                <label class="small mb-1" for="cellulare">Cellulare</label>
+                                                <input class="form-control" name="cellulare" id="cellulare" type="tel"
                                                     value="{% if current_contatto.cellulare %}{{current_contatto.cellulare}}{%endif%}">
                                             </div>
                                         </div>
                                         <!-- Form Row        -->
                                         <div class="row gx-3 mb-3">
                                             <!-- Form Group (organization name)-->
-                                            <div class="col-md-3">
-                                                <label class="small mb-1" for="email1">email1</label>
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="email1">Email 1</label>
                                                 <input class="form-control" name="email1" id="email1" type="email"
-                                                    placeholder=""
                                                     value="{% if current_contatto.email1 %}{{current_contatto.email1}}{%endif%}">
                                             </div>
                                             <!-- Form Group (birthday)-->
-                                            <div class="col-md-3">
-                                                <label class="small mb-1" for="email2">email2</label>
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="email2">Email 2</label>
                                                 <input class="form-control" name="email2" id="email2" type="email"
-                                                    name="birthday" placeholder=""
                                                     value="{%if current_contatto.email2 %}{{current_contatto.email2}}{%endif%}">
                                             </div>
-                                            <!-- Form Group (location)-->
-                                            <div class="col-md-3">
-                                                <label class="small mb-1" for="note">note</label>
-                                                <input class="form-control" name="note" id="note" type="text"
-                                                    placeholder=""
-                                                    value="{% if current_contatto.note %}{{current_contatto.note}}{%endif%}">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="small mb-1" for="numeroID">numeroID</label>
-                                                <input class="form-control" name="numeroID" id="numeroID" type="text"
-                                                    placeholder=""
-                                                    value="{% if current_contatto.numeroID %}{{current_contatto.numeroID}} {%endif%}">
+                                        </div>
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col">
+                                                <label class="small mb-1" for="note">Note</label>
+                                                <textarea class="form-control" name="note" id="note" rows="3"
+                                                    type="text">{% if current_contatto.note %}{{current_contatto.note}}{%endif%}</textarea>
                                             </div>
                                         </div>
                                         <!-- Form Row-->
@@ -343,15 +329,16 @@
                                             <!-- Form Group (phone number)-->
 
                                             <div class="col-md-12">
-                                                <label class="small mb-1" for="paginaWeb">paginaWeb</label>
+                                                <label class="small mb-1" for="paginaWeb">Pagina Web</label>
                                                 <input class="form-control" name="paginaWeb" id="paginaWeb" type="text"
-                                                    placeholder=""
                                                     value="{%if current_contatto.paginaWeb %}{{current_contatto.paginaWeb}}{%endif%}">
                                             </div>
                                         </div>
                                         <!-- Save changes button-->
-                                        <button class="btn btn-primary" type="submit" style="float: left;">Salva modifiche</button>
-                                        <button class="btn btn-danger" type="button" id="btnElimina" style="float: right;">Elimina</button>
+                                        <button class="btn btn-primary" type="submit" style="float: left;">Salva
+                                            modifiche</button>
+                                        <button class="btn btn-danger" type="button" id="btnElimina"
+                                            style="float: right;">Elimina</button>
                                     </form>
                                 </div>
                             </div>
@@ -380,7 +367,8 @@
                 </div>-->
                 <div class="row mt-4 py-2" id="contattoFile" style="display: none;">
 
-                    <form id="signUpForm" action="/contatto/addContattoFile" method="post" enctype="multipart/form-data">
+                    <form id="signUpForm" action="/contatto/addContattoFile" method="post"
+                        enctype="multipart/form-data">
                         <!-- start step indicators -->
                         <div class="form-header d-flex mb-4">
                             <span class="stepIndicator">Controllo righe 1</span>
@@ -392,9 +380,17 @@
                         <!-- step one -->
                         <div class="step">
                             <p class="mb-4">Come prima cosa, controlla che non esistano colonne
-                                <strong>nascoste</strong>.
-                                Per essere sicuro, le colonne
-                                <strong>devono</strong> andare dalla lettera 'A' alla lettera 'R'.
+                                <strong>nascoste</strong>.<br><span>Come trovare le <strong>colonne
+                                        nascoste?</strong></span>
+                            </p>
+                            <img  class="img-fluid mb-4"  src="{{ url_for('static',filename='images/excel.gif') }}" >
+                            <ol>
+                                <li>Seleziona il triangolo posto a sinitra della prima colonna e in alto alla prima riga</li>
+                                <li>Premi il tasto destro in un posto qualsiasi sulla zona selezionata, premi "Scopri" </li>
+                              </ol>
+                            <p>
+                                Le colonne
+                                <strong>devono</strong> essere in ordine alfabetico completo dalla lettera 'A' alla lettera 'R'.
                             </p>
                             <p class="mb-4"> Se le righe non combaciano i problemi sono due</p>
                             <ol>
@@ -453,10 +449,10 @@
                         <div class="step">
                             <p class="mb-4">Carica il file qua sotto.</p>
                             <div class="input-group mb-4">
-                                <label class="small mb-1" for="fileDoc">Contatti</label>
-                                <input type="file" class="form-control" id="inputGroupFile04"
+                                <label class="small mb-1" for="fileContatti">Contatti</label>
+                                <input type="file" class="form-control" id="fileContatti"
                                     aria-describedby="inputGroupFileAddon04" placeholder="Inserisci il file"
-                                    aria-label="Upload" name="fileContatti"
+                                    aria-label="Upload" name="fileContatti" 
                                     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
 
                             </div>
@@ -580,27 +576,25 @@
                                 <!-- Form Row        -->
                                 <div class="row gx-3 mb-3">
                                     <!-- Form Group (organization name)-->
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <label class="small mb-1" for="email1">email1</label>
                                         <input class="form-control" name="email1Add" id="email1" type="email"
                                             placeholder="" value="">
                                     </div>
                                     <!-- Form Group (birthday)-->
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <label class="small mb-1" for="email2">email2</label>
                                         <input class="form-control" name="email2Add" id="email2" type="email"
                                             name="birthday" placeholder="" value="">
                                     </div>
                                     <!-- Form Group (location)-->
+
+                                </div>
+                                <div class="row gx-3 mb-3">
                                     <div class="col-md-3">
                                         <label class="small mb-1" for="note">note</label>
                                         <input class="form-control" name="noteAdd" id="note" type="text" placeholder=""
                                             value="">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="small mb-1" for="numeroID">numeroID</label>
-                                        <input class="form-control" name="numeroIDAdd" id="numeroID" type="text"
-                                            placeholder="" value="">
                                     </div>
                                 </div>
                                 <!-- Form Row-->
@@ -637,7 +631,15 @@
         </div>
     </footer>
 </div>
-
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: transparent;">
+            <div class="modal-body">
+                <img class="img-fluid" src="{{ url_for('static',filename='images/loading.gif') }}">
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -683,11 +685,10 @@
     }
 
     function getName(el) {
-
-        console.log(el);
+        alert(el.innerText);
         console.log(el.previousElementSibling);
         document.getElementById("idSearch").value = el.previousElementSibling.value.trim();
-        document.getElementById("myInput").value = el.innerHTML.trim();
+        document.getElementById("myInput").value = el.innerText.trim();
         document.getElementById("myUL").style.display = "none";
     }
 
@@ -705,7 +706,7 @@
                 var xhr = new XMLHttpRequest();
                 val = '{{current_contatto.idContatto}}';
                 alert(val);
-                xhr.open("POST", '/contatto/remove/' + val, true);
+                xhr.open("POST", '/contatto/remove/' + val, false);
                 xhr.send();
                 location.reload();
             }
@@ -752,6 +753,10 @@
         // if you have reached the end of the form...
         if (currentTab >= x.length) {
             // ... the form gets submitted:
+            var myModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
+                keyboard: false
+            })
+            myModal.show()
             document.getElementById("signUpForm").submit();
             return false;
         }
