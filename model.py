@@ -16,6 +16,8 @@ cliente = Table('cliente',metadata, autoload_with=engine)
 clienteappuntamento = Table('clienteappuntamento',metadata, autoload_with=engine)
 #comune = Table('comune',metadata, autoload_with=engine)
 contatto = Table('contatto',metadata, autoload_with=engine)
+it_table = Table('it',metadata, autoload_with=engine)
+
 partecipanti = Table('partecipanti',metadata, autoload_with=engine)
 portafoglio = Table('portafoglio',metadata, autoload_with=engine)
 #presidio = Table('presidio',metadata, autoload_with=engine)

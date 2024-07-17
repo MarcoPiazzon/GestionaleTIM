@@ -322,12 +322,6 @@
                       placeholder="Enter your birthday"
                       value="{% if current_cliente[19]%}{{current_cliente[19]}} {%else%}0.0{% endif%}">
                   </div>
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">clienteOffMobScadenza</label>
-                    <input class="form-control" name="clienteOffMobScadenza" id="inputBirthday" type="text"
-                      name="birthday" placeholder="Enter your birthday"
-                      value="{% if current_cliente[18]%}{{current_cliente[18]}} {%else%}0.0{% endif%}">
-                  </div>
                 </div>
                 <!-- Save changes button-->
                 <button class="btn btn-primary" type="submit">Salva le modifiche</button>
@@ -437,17 +431,13 @@
                     <input class="form-control cfcl" name="fatturatoTim" id="inputBirthday" type="text" name="birthday"
                       placeholder="Enter your birthday" value="">
                   </div>
-                  <div class="col-md-4">
-                    <label class="small mb-1" for="inputBirthday">clienteOffMobScadenza</label>
-                    <input class="form-control cfcl" name="clienteOffMobScadenza" id="inputBirthday" type="text"
-                      name="birthday" placeholder="Enter your birthday" value="">
-                  </div>
                 </div>
                 <!-- Save changes button-->
                 <button class="btn btn-primary" type="submit">Aggiungi cliente</button>
                 <button class="btn btn-primary" type="button" id="cleanFormCliente" onclick="clean('cfcl')">Cancella
                   tutto</button>
-                <button class="btn btn-primary" type="button" style="float: right;" onclick="hideAddCliente()">Annulla</button>
+                <button class="btn btn-primary" type="button" style="float: right;"
+                  onclick="hideAddCliente()">Annulla</button>
               </form>
             </div>
           </div>
@@ -534,22 +524,15 @@
                               </div>
                               <!-- Form Row        -->
                               <div class="row gx-3 mb-3">
-                                <!-- Form Group (organization name)-->
-                                <div class="col-md-6">
-
-                                  <label class="small mb-1" for="areaManagerModify">areaManager</label>
-                                  <input class="form-control" name="areaManagerModify" id="areaManagerModify"
-                                    type="text" value="{% if trattative[i][5] %}{{trattative[i][5]}}{%endif%}">
-                                </div>
                                 <!-- Form Group (location)-->
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                   <label class="small mb-1"
                                     for="dataCreazioneOpportunitaModify">dataCreazioneOpportunita</label>
                                   <input class="form-control" name="dataCreazioneOpportunitaModify"
                                     id="dataCreazioneOpportunitaModify" type="date"
                                     value="{% if trattative[i][9] %}{{trattative[i][9]}}{%endif%}">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                   <label class="small mb-1" for="inputBirthday">dataChiusura</label>
                                   <input class="form-control" name="dataChiusuraModify" id="inputBirthday" type="date"
                                     value="{% if trattative[i][18] %}{{trattative[i][18]}}{%endif%}">
@@ -896,20 +879,13 @@
               </div>
               <!-- Form Row        -->
               <div class="row gx-3 mb-3">
-                <!-- Form Group (organization name)-->
-                <div class="col-md-6">
-
-                  <label class="small mb-1" for="inputFirstName">areaManager</label>
-                  <input class="form-control cftr" name="areaManagerAdd" id="inputFirstName" type="text"
-                    placeholder="Enter your first name" value="">
-                </div>
                 <!-- Form Group (location)-->
-                <div class="col-md-3">
+                <div class="col-md-6">
                   <label class="small mb-1" for="inputLocation">dataCreazioneOpportunita</label>
                   <input class="form-control cftr" name="dataCreazioneOpportunitaAdd" id="inputLocation" type="date"
                     placeholder="Enter your location" value="" required>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                   <label class="small mb-1" for="inputBirthday">dataChiusura</label>
                   <input class="form-control cftr" name="dataChiusuraAdd" id="inputBirthday" type="date" name="birthday"
                     placeholder="Enter your birthday" value="" required>
@@ -1039,55 +1015,229 @@
 
       {%endif%}
 
-
-    </section>
-    <div class="panel-group" id="fixedbutton">
-      <p>
-      <div class="collapse" id="collapseExample">
-
-
-        <div class=" card card-body mb-2">
-          <input class="form-control mb-2" type="text" id="myInput2" onkeyup="myFunction(2)" onclick="showUp(this,2)"
-            placeholder="Search for names.." title="Type in a name">
-          <ul id="myUL2" class="myUL vertical-scrollable list-group">
-            {% if contatti %}
-            {% for contatto in contatti%}
-            <input type="hidden" value="{{contatto.idContatto}}">
-            <li class="list-group-item" onclick="getName(this,2, '{{contatto.nome}}')">
-              {% if contatto.nome%}
-              {{contatto.nome}}
-              {%endif%}
-              {%if contatto.secondoNome
-              %}{{contatto.secondoNome}} {%endif%} {{contatto.cognome}}</li>
-            {% endfor %}
-            {%endif%}
-          </ul>
-
-        </div>
-      </div>
-      <button class="btn btn-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
-        aria-expanded="false" aria-controls="collapseExample">
-        <i class="fa-solid fa-address-book"></i>
-      </button>
-      </p>
-
-    </div>
-  </div>
-  <div>
-
-  </div>
-  <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
-    <div class="container-fluid">
+      {% if getIt %}
       <div class="row">
-        <div class="col-md-6 text-center text-md-start fw-bold">
-          <p class="mb-2 mb-md-0 fw-bold">MP © 2024</p>
+
+        <div class="container px-4 mt-4">
+          <h1 class="page-heading">Trattative</h1>
+          <table class="table table-condensed" style="border-collapse:collapse;">
+            <thead>
+              <tr>
+                <th>Servizio</th>
+                <th>TGU</th>
+                <th>dataAttivazione</th>
+                <th>dataScadenza</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {% for i in range (0, getIt_len)%}
+              <tr data-bs-toggle="modal" data-bs-target="#staticBackdrop{{i}}">
+                <td>{% if trattative[i][2]%}{{trattative[i][2]}}{%else%}Non definito{%endif%}</td>
+                <td>{% if trattative[i][4] %} {{trattative[i][4]}} {%else%}Sconosciuto{%endif%}</td>
+                <td>{% if trattative[i][5] %} {{trattative[i][5]}} {%else%}Non indicata {%endif%}</td>
+                <td>{% if trattative[i][6] %} {{trattative[i][6]}} {%else%}Non indicata {%endif%}</td>
+              </tr>
+              <div class="modal fade" id="staticBackdrop{{i}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="staticBackdropLabel">{{trattative[i][2]}}</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/portafoglio/modifyIt/{{trattative[i][0]}}" method="POST">
+                      <div class="modal-body">
+                        <div class="row">
+                          <input type="hidden" name="idClienteAddIt" id="idCliente"
+                            value="{{current_cliente.idCliente}}">
+                          <!-- Form Group (username)-->
+                          <div class="row gx-3 mb-3">
+                            <div class="col-md-4">
+                              <label class="small mb-1" for="servizioAdd">Servizio</label>
+                              <input class="form-control cftr" name="servizioAdd" id="servizioAdd" type="text" value="">
+                            </div>
+                            <div class="col-md-4">
+                              <label class="small mb-1" for="quantitaAdd">Quantita</label>
+                              <input class="form-control cftr" name="quantitaAdd" id="quantitaAdd" type="number"
+                                value="">
+                            </div>
+                            <div class="col-md-4">
+                              <label class="small mb-1" for="tguAdd">TGU</label>
+                              <input class="form-control cftr" name="tguAdd" id="tguAdd" type="text" value="">
+                            </div>
+                          </div>
+                          <!-- Form Row-->
+                          <div class="row gx-3 mb-3">
+                            <!-- Form Group (first name)-->
+                            <div class="col-md-6">
+                              <label class="small mb-1" for="dataAttivazioneAdd">Data Attivazione</label>
+                              <input class="form-control cftr" name="dataAttivazioneAdd" id="dataAttivazioneAdd"
+                                type="date" value="" required>
+                            </div>
+                            <!-- Form Group (last name)-->
+                            <div class="col-md-6">
+                              <label class="small mb-1" for="dataScadenzaAdd">Data Scadenza</label>
+                              <input class="form-control cftr" name="dataScadenzaAdd" id="dataScadenzaAdd" type="date"
+                                value="">
+
+                            </div>
+                          </div>
+                          <!-- Form Row        -->
+                          <div class="row gx-3 mb-3">
+                            <!-- Da mettere type float -->
+                            <div class="col-md-6">
+                              <label class="small mb-1" for="canoneAnnuoAdd">Canone Annuo</label>
+                              <input class="form-control cftr" name="canoneAnnuoAdd" id="canoneAnnuoAdd" type="number"
+                                value="" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="small mb-1" for="canoneMeseAdd">Canone Mese</label>
+                              <input class="form-control cftr" name="canoneMeseAdd" id="canoneMeseAdd" type="number"
+                                value="" required>
+                            </div>
+                          </div>
+                          <!-- Save changes button-->
+                          <button class="btn btn-primary" type="submit" style="float: left;"
+                            id="btnCreaTrattativa">Aggiungi
+                            trattativa</button>
+                          <button class="btn btn-primary" type="button" style="float: right;" id="cleanFormTrattativa"
+                            onclick="clean('cftr')">Pulisci
+                            tutto</button>
+                        </div>
+                      </div>
+                      <button class="btn btn-primary" type="submit">Salva le modifiche</button>
+                      <button class="btn btn-danger" onclick="sendData({{trattative[i][0]}})" type="button"
+                        style="float: right;">Elimina</button>
+                  </div>
+
+                  </form>
+                </div>
+              </div>
         </div>
-        <div class="col-md-6 text-center text-md-end text-gray-400">
-          <p class="mb-0">Version 1.0.0</p>
-        </div>
+        {% endfor %}
+        </tbody>
+        </table>
+
+      </div>
+  </div>
+
+
+  {%endif%}
+
+  <div class="col mb-4">
+    <h1 class="page-heading my-5">Aggiungi nuovo IT</h1>
+    <div class="card mb-4" id="formIt">
+      <div class="card-header">Nuovo IT</div>
+      <div class="card-body">
+        <form action="/portafoglio/addItForm" method="POST">
+          <div class="row">
+            <input type="hidden" name="idClienteAddIt" id="idCliente" value="{{current_cliente.idCliente}}">
+            <!-- Form Group (username)-->
+            <div class="row gx-3 mb-3">
+              <div class="col-md-4">
+                <label class="small mb-1" for="servizioAdd">Servizio</label>
+                <input class="form-control cftr" name="servizioAdd" id="servizioAdd" type="text" value="">
+              </div>
+              <div class="col-md-4">
+                <label class="small mb-1" for="quantitaAdd">Quantita</label>
+                <input class="form-control cftr" name="quantitaAdd" id="quantitaAdd" type="number" value="">
+              </div>
+              <div class="col-md-4">
+                <label class="small mb-1" for="tguAdd">TGU</label>
+                <input class="form-control cftr" name="tguAdd" id="tguAdd" type="text" value="">
+              </div>
+            </div>
+            <!-- Form Row-->
+            <div class="row gx-3 mb-3">
+              <!-- Form Group (first name)-->
+              <div class="col-md-6">
+                <label class="small mb-1" for="dataAttivazioneAdd">Data Attivazione</label>
+                <input class="form-control cftr" name="dataAttivazioneAdd" id="dataAttivazioneAdd" type="date" value=""
+                  >
+              </div>
+              <!-- Form Group (last name)-->
+              <div class="col-md-6">
+                <label class="small mb-1" for="dataScadenzaAdd">Data Scadenza</label>
+                <input class="form-control cftr" name="dataScadenzaAdd" id="dataScadenzaAdd" type="date" value="">
+
+              </div>
+            </div>
+            <!-- Form Row        -->
+            <div class="row gx-3 mb-3">
+              <!-- Da mettere type float -->
+              <div class="col-md-6">
+                <label class="small mb-1" for="canoneAnnuoAdd">Canone Annuo</label>
+                <input class="form-control cftr" name="canoneAnnuoAdd" id="canoneAnnuoAdd" type="number" value=""
+                  >
+              </div>
+              <div class="col-md-6">
+                <label class="small mb-1" for="canoneMeseAdd">Canone Mese</label>
+                <input class="form-control cftr" name="canoneMeseAdd" id="canoneMeseAdd" type="number" value=""
+                  >
+              </div>
+            </div>
+            <!-- Save changes button-->
+            
+          </div>
+          <button class="btn btn-primary" type="submit" style="float: left;" id="btnCreaTrattativa">Aggiungi
+            trattativa</button>
+          <button class="btn btn-primary" type="button" style="float: right;" id="cleanFormTrattativa"
+            onclick="clean('cftr')">Pulisci
+            tutto</button>
+        </form>
       </div>
     </div>
-  </footer>
+  </div>
+
+  </section>
+  <div class="panel-group" id="fixedbutton">
+    <p>
+    <div class="collapse" id="collapseExample">
+
+
+      <div class=" card card-body mb-2">
+        <input class="form-control mb-2" type="text" id="myInput2" onkeyup="myFunction(2)" onclick="showUp(this,2)"
+          placeholder="Search for names.." title="Type in a name">
+        <ul id="myUL2" class="myUL vertical-scrollable list-group">
+          {% if contatti %}
+          {% for contatto in contatti%}
+          <input type="hidden" value="{{contatto.idContatto}}">
+          <li class="list-group-item" onclick="getName(this,2, '{{contatto.nome}}')">
+            {% if contatto.nome%}
+            {{contatto.nome}}
+            {%endif%}
+            {%if contatto.secondoNome
+            %}{{contatto.secondoNome}} {%endif%} {{contatto.cognome}}</li>
+          {% endfor %}
+          {%endif%}
+        </ul>
+
+      </div>
+    </div>
+    <button class="btn btn-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+      aria-expanded="false" aria-controls="collapseExample">
+      <i class="fa-solid fa-address-book"></i>
+    </button>
+    </p>
+
+  </div>
+</div>
+<div>
+
+</div>
+<footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 text-center text-md-start fw-bold">
+        <p class="mb-2 mb-md-0 fw-bold">MP © 2024</p>
+      </div>
+      <div class="col-md-6 text-center text-md-end text-gray-400">
+        <p class="mb-0">Version 1.0.0</p>
+      </div>
+    </div>
+  </div>
+</footer>
 </div>
 {% if message %}
 <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 20000;">
@@ -1106,7 +1256,7 @@
 
 
 <script>
-  function hideAddCliente(){
+  function hideAddCliente() {
     document.getElementById("crea").style.display = "none";
     document.getElementById("modifica").style.display = "block";
   }
@@ -1227,8 +1377,8 @@
       localStorage.setItem("add" + item.name, "");
     }
   }
-  
-  
+
+
   function eliminaCliente(val) {
     Swal.fire({
       title: "Sei sicuro?",

@@ -6,3 +6,9 @@ passlib
 WeasyPrint 
 flask-bcrypt
 xlwt
+Click
+itsdangerous
+Jinja2
+uWSGI
+Werkzeug
+MarkupSafe

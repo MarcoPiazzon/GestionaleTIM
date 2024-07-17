@@ -40,6 +40,7 @@
                   <thead>
                     <tr>
                       <th>Nome</th>
+                      <th>Cliente</th>
                       <th>Andamento</th>
                       <th>Data Chiusura</th>
                     </tr>
@@ -49,6 +50,7 @@
                     {% for i in range (0, t_len) %}
                     <tr data-bs-toggle="modal" data-bs-target="#staticBackdrop{{i}}">
                       <td>{% if trattative[i][8] %}{{trattative[i][8]}}{%else%}Non definito{%endif%}</td>
+                      <td>{{ trattative[i][27] }}</td>
                       <td>{% if trattative[i][25] %} {{trattative[i][25]}} {%else%}Sconosciuto{%endif%}</td>
                       <td>{% if trattative[i][18] %} {{trattative[i][18]}} {%else%}Non indicata {%endif%}</td>
                     </tr>

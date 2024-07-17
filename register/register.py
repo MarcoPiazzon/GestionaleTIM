@@ -27,11 +27,13 @@ def insertuser():
         cognome=request.form['cognome'],
         password=bcrypt.generate_password_hash(request.form['email']+request.form['password']).decode('utf-8'),
         email=request.form['email'],
+        areaManager = request.form['areaManager']
         ris = conn.execute(insert(utente).values(
             nome = nome,
             cognome=cognome,
             psw=password,
             email=email,
+            areaManager = areaManager
             ))
         conn.commit()
         print(ris.inserted_primary_key[0])
