@@ -27,8 +27,6 @@ def home(id):
                     .join(cliente)
                     .outerjoin(andamentotrattativa)
                     .outerjoin(categoria)
-                    .where(trattativa.c.idUtente == current_user.get_id())
-                    .where(cliente.c.idPortafoglio == id)
                     .order_by(trattativa.c.nomeOpportunita)).fetchall()
     
     print(len(trattative))

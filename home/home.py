@@ -176,12 +176,14 @@ def addPortafoglio():
             idUtente = current_user.get_id(),
             dataInserimento = date.today()
         ))
+
         newid = res.inserted_primary_key[0]
+        
         current_user.idPort = newid
         #print("test della vita")
-        
-        #print(newid)
-        #print(res.lastrowid)
+        print("test id")
+        print(newid)
+        print(res.lastrowid)
         for col in range(1, dataframe1.max_row):
             listapp = []
             for row in dataframe1.iter_cols(1, dataframe1.max_column):
@@ -190,7 +192,7 @@ def addPortafoglio():
            # print(listapp)
             conn.execute(insert(cliente).values(
                 idUtente = current_user.get_id(),
-                idPortafoglio = res.lastrowid,
+                idPortafoglio = newid,
                 tipoCliente = conn.execute(select(tipocliente.c.idTipoCliente).where(tipocliente.c.nome == listapp[0])).fetchone()[0], #da testare
                 cf = listapp[1],
                 ragioneSociale = listapp[2],
@@ -211,6 +213,7 @@ def addPortafoglio():
                 fatturatoTim = (listapp[16]),
                 dipendenti = (listapp[17])
             ))
+            print("insert")
         print("okokoko")
         print("sono qua 1")
         if not (file2 is None):
@@ -242,12 +245,14 @@ def addPortafoglio():
                 
                 if(checkRow == False):
                     #print("sto testando id")
-                    #print(newid)
-                    idlist = conn.execute(select(cliente.c.idCliente,cliente.c.idPortafoglio).where(listapp[3] == cliente.c.ragioneSociale).where(cliente.c.idPortafoglio == newid)).fetchall()
-                    print(len(listapp))
-                    idlist = list(idlist)
-                    #print("lista")
+                    #print(listapp)
+                    #print(listapp[3])
+                    idlist = conn.execute(select(cliente.c.idCliente,cliente.c.idPortafoglio).where(listapp[3] == cliente.c.ragioneSociale)).fetchall()
+                    print(len(idlist))
                     #print(idlist)
+                    idlist = list(idlist)
+                    print("lista")
+                    print(idlist)
                     numero = idlist[-1]
                     prob = None
                     if(listapp[19]):
@@ -258,7 +263,7 @@ def addPortafoglio():
                             idCliente = numero[0], #fare query che trova il nome e assegna l'id nella tabella cliente
                             codiceCtrDigitali = listapp[0],
                             codiceSalesHub = listapp[1],
-                            areaManager = listapp[2],
+                            areaManager = conn.execute(select(utente.c.areaManager).where(utente.c.idUtente == current_user.get_id())),
                             zona = listapp[4],
                             tipo = (listapp[5]),
                             nomeOpportunita = listapp[6],

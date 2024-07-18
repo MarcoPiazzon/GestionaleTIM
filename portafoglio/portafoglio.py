@@ -28,9 +28,11 @@ def home(idPort, id):
     clienti = None
     current_cliente = None
     trattative = None 
-    namePortafoglio = conn.execute(select(portafoglio.c.dataInserimento).where(portafoglio.c.idPortafoglio)).fetchone()[0]
+    getIt = None
+    #namePortafoglio = conn.execute(select(portafoglio.c.dataInserimento).where(portafoglio.c.idPortafoglio == id)).fetchone()[0]
     t_len = 0
-    print()
+    getIt_len = 0
+    #print()
     contatti = conn.execute(select(contatto).where(contatto.c.idUtente == current_user.get_id()).order_by(contatto.c.nome)).fetchall()
     categorie = conn.execute(select(categoria)).fetchall()
     andamento = conn.execute(select(andamentotrattativa)).fetchall()
@@ -41,13 +43,20 @@ def home(idPort, id):
         current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == id)).fetchone()
         trattative = conn.execute(
             select(trattativa, andamentotrattativa.c.nome, categoria.c.nome).
-                outerjoin(andamentotrattativa).
-                outerjoin(categoria) 
+                join(andamentotrattativa).
+                join(categoria) 
             .where(trattativa.c.idCliente == id)
             .order_by(trattativa.c.nomeOpportunita)
         ).fetchall()
-        print(current_cliente)
-        print(trattative)
+        getIt = conn.execute(select(it_table, cliente.c.ragioneSociale)
+                             .join(cliente)
+                             .where(it_table.c.idCliente == id)
+                             ).fetchall()
+        print(getIt)
+        if not (getIt is None):
+            getIt_len = len(getIt)
+        #print(current_cliente)
+        #print(trattative)
         
         
 
@@ -56,22 +65,22 @@ def home(idPort, id):
         #select appuntamento.titolo, trattativa.nomeOpportunita from ((appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento)
         #join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa)
             t_len = len(trattative)
-            print(type(trattative))
+            #print(type(trattative))
             for i in range(0, t_len):
 
                 appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0]).order_by(appuntamento.c.dataApp)).fetchall()
                 
-                print(appuntamenti)
-                print(type(appuntamenti))
+                #print(appuntamenti)
+                #print(type(appuntamenti))
                 trattative[i] = list(trattative[i])
                 if (len(appuntamenti) > 0):
-                    print("Ho appuntamento")    
+                    #print("Ho appuntamento")    
                     
                     trattative[i].append(appuntamenti)
-                    print(trattative[i][25])
+                    #print(trattative[i][25])
 
-                print(len(trattative[i]))
-    return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort, categorie=categorie, andamento=andamento, contatti=contatti, name = namePortafoglio)
+                #print(len(trattative[i]))
+    return render_template ("/portafoglio/portafoglio.html", clienti=clienti, current_cliente=current_cliente, trattative=trattative, t_len=t_len, idPort=idPort, categorie=categorie, andamento=andamento, contatti=contatti, name = "", getIt = getIt, getIt_len = getIt_len)
 
 
 @portafoglio_bp.route('/portafoglio/<int:id>')
@@ -169,7 +178,6 @@ def addCliente():
         totale = request.form['totale']
         fatturatoCerved = request.form['fatturatoCerved']
         fatturatoTim = request.form['fatturatoTim']
-        clienteOffMobScadenza = request.form['clienteOffMobScadenza']
 
         ris = conn.execute(
             insert(cliente).values(
@@ -189,7 +197,6 @@ def addCliente():
                 totale = totale,
                 fatturatoCerved = fatturatoCerved,
                 fatturatoTim = fatturatoTim,
-                clienteOffMobScadenza = clienteOffMobScadenza,
             )
         )
         newId = ris.inserted_primary_key[0]
@@ -296,7 +303,6 @@ def modifyCliente():
         totale = request.form['totale']
         fatturatoCerved = request.form['fatturatoCerved']
         fatturatoTim = request.form['fatturatoTim']
-        clienteOffMobScadenza = request.form['clienteOffMobScadenza']
         print(idCliente)
         print(sediTot)
         print(type(sediTot))
@@ -319,7 +325,6 @@ def modifyCliente():
                 totale = totale,
                 fatturatoCerved = fatturatoCerved,
                 fatturatoTim = fatturatoTim,
-                clienteOffMobScadenza = clienteOffMobScadenza,
             )
         )
         conn.commit()
@@ -402,6 +407,43 @@ def addTrattativaForm():
     
     return redirect(url_for('.home',idPort = current_user.idPort, id = idCliente))
 
+@portafoglio_bp.route('/addItForm', methods=['POST'])
+@login_required
+def addItForm():
+    try:
+        print("addIt")
+        #print(request.form)
+        idCliente = request.form['idClienteAddIt']
+        servizio = request.form['servizioAdd']
+        quantita = request.form['quantitaAdd']
+        tgu = request.form['tguAdd']
+        dataAttivazione = request.form['dataAttivazioneAdd']
+        dataScadenza = request.form['dataScadenzaAdd']
+        canoneAnnuo = request.form['canoneAnnuoAdd']
+        canoneMese = request.form['canoneMeseAdd']
+
+        conn.execute(insert(it_table).values(
+            idCliente = idCliente,
+            servizio = servizio,
+            quantita = quantita,
+            tgu = tgu,
+            dataAttivazione = dataAttivazione,
+            dataScadenza = dataScadenza,
+            canoneAnnuo = canoneAnnuo,
+            canoneMese = canoneMese
+        ))
+        conn.commit()
+        
+        print("tutto bene add")
+    except Exception as error:
+        print("rip")
+        print(error)
+        print(error.__cause__)
+        conn.rollback()
+    
+    return redirect(url_for('.home',idPort = current_user.idPort, id = idCliente))
+
+
 @portafoglio_bp.route('/getExcel/<int:id>')
 def getExcel(id):
     print("sto creando il file")
@@ -451,7 +493,6 @@ def getExcel(id):
         sh.write(idx+1, 12, row['mobile'])
         sh.write(idx+1, 13, row['totale'])
         sh.write(idx+1, 14, row['fatturatoCerved'])
-        sh.write(idx+1, 15, row['clienteOffMobScadenza'])
         sh.write(idx+1, 16, row['fatturatoTim'])
         sh.write(idx+1, 17, row['dipendenti'])
         idx += 1
@@ -548,6 +589,5 @@ def getExcelTrattative(id):
                 mobile = correctValue(list[12]),
                 totale = correctValue(list[12]),
                 fatturatoCerved = correctValue(list[13]),
-                clienteOffMobScadenza = correctValue(list[14]),
                 fatturatoTim = correctValue(list[15]),
                 dipendenti = correctValue(list[16])"""
