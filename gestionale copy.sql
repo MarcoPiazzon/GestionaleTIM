@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE andamentotrattativa (
-  idAndamento int(11) NOT NULL,
-  nome varchar(255) DEFAULT NULL
+  idAndamento int8 NOT NULL,
+  nome text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -49,12 +49,12 @@ INSERT INTO andamentotrattativa (idAndamento, nome) VALUES
 --
 
 CREATE TABLE appuntamento (
-  idAppuntamento int(11) NOT NULL,
-  idUtenteCreazione int(11) NOT NULL,
-  titolo varchar(255) DEFAULT NULL,
-  varieDiscussioni varchar(255) DEFAULT NULL,
-  preventivoDaFare varchar(255) DEFAULT NULL,
-  dataApp datetime DEFAULT NULL
+  idAppuntamento int8 NOT NULL,
+  idUtenteCreazione int8 NOT NULL,
+  titolo text DEFAULT NULL,
+  varieDiscussioni text DEFAULT NULL,
+  preventivoDaFare text DEFAULT NULL,
+  dataApp date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -71,9 +71,9 @@ INSERT INTO appuntamento (idAppuntamento, idUtenteCreazione, titolo, varieDiscus
 --
 
 CREATE TABLE categoria (
-  idCategoria int(11) NOT NULL,
-  nome varchar(255) DEFAULT NULL,
-  descrizione varchar(255) DEFAULT NULL
+  idCategoria int8 NOT NULL,
+  nome text DEFAULT NULL,
+  descrizione text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -103,27 +103,27 @@ INSERT INTO categoria (idCategoria, nome, descrizione) VALUES
 --
 
 CREATE TABLE cliente (
-  idCliente int(11) NOT NULL,
-  idUtente int(11) NOT NULL,
-  idPortafoglio int(11) NOT NULL,
-  tipoCliente int(11) DEFAULT NULL,
-  cf varchar(255) DEFAULT NULL,
-  ragioneSociale varchar(255) DEFAULT NULL,
-  presidio varchar(255) DEFAULT NULL,
-  indirizzoPrincipale varchar(255) DEFAULT NULL,
-  comunePrincipale int(11) DEFAULT NULL,
-  capPrincipale varchar(255) DEFAULT NULL,
-  provinciaDescPrincipale varchar(255) DEFAULT NULL,
-  provinciaSiglaPrincipale varchar(255) DEFAULT NULL,
-  sediTot int(11) DEFAULT NULL,
-  nLineeTot int(11) DEFAULT NULL,
+  idCliente int8 NOT NULL,
+  idUtente int8 NOT NULL,
+  idPortafoglio int8 NOT NULL,
+  tipoCliente int8 DEFAULT NULL,
+  cf text DEFAULT NULL,
+  ragioneSociale text DEFAULT NULL,
+  presidio text DEFAULT NULL,
+  indirizzoPrincipale text DEFAULT NULL,
+  comunePrincipale int8 DEFAULT NULL,
+  capPrincipale text DEFAULT NULL,
+  provinciaDescPrincipale text DEFAULT NULL,
+  provinciaSiglaPrincipale text DEFAULT NULL,
+  sediTot int8 DEFAULT NULL,
+  nLineeTot int8 DEFAULT NULL,
   fisso float DEFAULT NULL,
   mobile float DEFAULT NULL,
   totale float DEFAULT NULL,
-  fatturatoCerved varchar(255) DEFAULT NULL,
-  clienteOffMobScadenza varchar(255) DEFAULT NULL,
+  fatturatoCerved text DEFAULT NULL,
+  clienteOffMobScadenza text DEFAULT NULL,
   fatturatoTim float DEFAULT NULL,
-  dipendenti int(11) DEFAULT NULL
+  dipendenti int8 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -150,6 +150,9 @@ INSERT INTO cliente (idCliente, idUtente, idPortafoglio, tipoCliente, cf, ragion
 (6570, 2, 106, 3, '2206860278', 'BERENGO S.P.A.', 'PRESIDIO CB', 'V. DELL\'ELETTRICITA\' - MESTRE 2', 0, '30175', 'VENEZIA', 'VE', 7, 30, 25444.6, 2222.42, 27667, '39552000', NULL, 6086, 113),
 (6571, 2, 106, 2, '4068540261', 'BIO-HOUSE SRL', 'PROSPECT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (6572, 2, 106, 3, '2037210271', 'CA  DA MOSTO S.P.A.', 'PRESIDIO CB', 'V. VENEZIA 146', 0, '30037', 'VENEZIA', 'VE', 7, 19, 39943.7, 1067.38, 41011.1, '27507000', NULL, 167, 91),
+
+
+
 (6573, 2, 106, 2, '3987541202', 'CARDUCCI STORE SRL', 'PROSPECT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (6574, 2, 106, 1, '1730390265', 'CARTOPLASTICA S.R.L.', 'PRESIDIO CB', NULL, 0, '31030', 'TREVISO', 'TV', NULL, NULL, 0, 270, 270, '0', '0', NULL, NULL),
 (6575, 2, 106, 2, '3564180267', 'CENTRO SISTEMI S.R.L.', 'PROSPECT', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -1450,8 +1453,8 @@ INSERT INTO cliente (idCliente, idUtente, idPortafoglio, tipoCliente, cf, ragion
 --
 
 CREATE TABLE clienteappuntamento (
-  idCliente int(11) NOT NULL,
-  idAppuntamento int(11) NOT NULL
+  idCliente int8 NOT NULL,
+  idAppuntamento int8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1461,28 +1464,28 @@ CREATE TABLE clienteappuntamento (
 --
 
 CREATE TABLE contatto (
-  idContatto int(11) NOT NULL,
-  idUtente int(11) NOT NULL,
-  nome varchar(255) DEFAULT NULL,
-  secondoNome varchar(255) DEFAULT NULL,
-  cognome varchar(255) DEFAULT NULL,
-  viaUfficio1 varchar(255) DEFAULT NULL,
-  viaUfficio2 varchar(255) DEFAULT NULL,
-  viaUfficio3 varchar(255) DEFAULT NULL,
-  citta varchar(255) DEFAULT NULL,
-  provincia varchar(255) DEFAULT NULL,
-  cap varchar(255) DEFAULT NULL,
-  numUfficio varchar(255) DEFAULT NULL,
-  numUfficio2 varchar(255) DEFAULT NULL,
-  telefonoPrincipale varchar(255) DEFAULT NULL,
-  faxAbitazione varchar(255) DEFAULT NULL,
-  abitazione varchar(255) DEFAULT NULL,
-  abitazione2 varchar(255) DEFAULT NULL,
-  cellulare varchar(255) DEFAULT NULL,
-  note varchar(255) DEFAULT NULL,
-  paginaWeb varchar(255) DEFAULT NULL,
-  email1 varchar(255) DEFAULT NULL,
-  email2 varchar(255) DEFAULT NULL
+  idContatto int8 NOT NULL,
+  idUtente int8 NOT NULL,
+  nome text DEFAULT NULL,
+  secondoNome text DEFAULT NULL,
+  cognome text DEFAULT NULL,
+  viaUfficio1 text DEFAULT NULL,
+  viaUfficio2 text DEFAULT NULL,
+  viaUfficio3 text DEFAULT NULL,
+  citta text DEFAULT NULL,
+  provincia text DEFAULT NULL,
+  cap text DEFAULT NULL,
+  numUfficio text DEFAULT NULL,
+  numUfficio2 text DEFAULT NULL,
+  telefonoPrincipale text DEFAULT NULL,
+  faxAbitazione text DEFAULT NULL,
+  abitazione text DEFAULT NULL,
+  abitazione2 text DEFAULT NULL,
+  cellulare text DEFAULT NULL,
+  note text DEFAULT NULL,
+  paginaWeb text DEFAULT NULL,
+  email1 text DEFAULT NULL,
+  email2 text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -4464,8 +4467,8 @@ INSERT INTO contatto (idContatto, idUtente, nome, secondoNome, cognome, viaUffic
 --
 
 CREATE TABLE partecipanti (
-  idAppuntamento int(11) NOT NULL,
-  idUtente int(11) NOT NULL
+  idAppuntamento int8 NOT NULL,
+  idUtente int8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -4475,8 +4478,8 @@ CREATE TABLE partecipanti (
 --
 
 CREATE TABLE portafoglio (
-  idPortafoglio int(11) NOT NULL,
-  idUtente int(11) NOT NULL,
+  idPortafoglio int8 NOT NULL,
+  idUtente int8 NOT NULL,
   dataInserimento date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -4503,8 +4506,8 @@ INSERT INTO portafoglio (idPortafoglio, idUtente, dataInserimento) VALUES
 --
 
 CREATE TABLE tipocliente (
-  idTipoCliente int(11) NOT NULL,
-  nome varchar(255) DEFAULT NULL
+  idTipoCliente int8 NOT NULL,
+  nome text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -4524,31 +4527,31 @@ INSERT INTO tipocliente (idTipoCliente, nome) VALUES
 --
 
 CREATE TABLE trattativa (
-  idTrattativa int(11) NOT NULL,
-  idUtente int(11) DEFAULT NULL,
-  idCliente int(11) DEFAULT NULL,
-  codiceCtrDigitali varchar(255) DEFAULT NULL,
-  codiceSalesHub varchar(255) DEFAULT NULL,
-  areaManager varchar(255) DEFAULT NULL,
-  zona varchar(255) DEFAULT NULL,
-  tipo varchar(255) DEFAULT NULL,
-  nomeOpportunita varchar(255) DEFAULT NULL,
+  idTrattativa int8 NOT NULL,
+  idUtente int8 DEFAULT NULL,
+  idCliente int8 DEFAULT NULL,
+  codiceCtrDigitali text DEFAULT NULL,
+  codiceSalesHub text DEFAULT NULL,
+  areaManager text DEFAULT NULL,
+  zona text DEFAULT NULL,
+  tipo text DEFAULT NULL,
+  nomeOpportunita text DEFAULT NULL,
   dataCreazioneOpportunita date DEFAULT NULL,
   fix float DEFAULT NULL,
   mobile float DEFAULT NULL,
-  categoriaOffertaIT int(11) DEFAULT NULL,
+  categoriaOffertaIT int8 DEFAULT NULL,
   it float DEFAULT NULL,
   lineeFoniaFix float DEFAULT NULL,
   aom float DEFAULT NULL,
   mnp float DEFAULT NULL,
   al float DEFAULT NULL,
   dataChiusura date DEFAULT NULL,
-  fase int(11) DEFAULT NULL,
-  noteSpecialista varchar(255) DEFAULT NULL,
-  probabilita int(11) DEFAULT NULL,
+  fase int8 DEFAULT NULL,
+  noteSpecialista text DEFAULT NULL,
+  probabilita int8 DEFAULT NULL,
   inPaf tinyint(1) DEFAULT NULL,
-  record int(11) DEFAULT NULL,
-  fornitore varchar(255) DEFAULT NULL
+  record int8 DEFAULT NULL,
+  fornitore text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -5115,8 +5118,8 @@ DELIMITER ;
 --
 
 CREATE TABLE trattativaappuntamento (
-  idTrattativa int(11) NOT NULL,
-  idAppuntamento int(11) NOT NULL
+  idTrattativa int8 NOT NULL,
+  idAppuntamento int8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -5133,11 +5136,11 @@ INSERT INTO trattativaappuntamento (idTrattativa, idAppuntamento) VALUES
 --
 
 CREATE TABLE utente (
-  idUtente int(11) NOT NULL,
-  nome varchar(255) NOT NULL,
-  cognome varchar(255) NOT NULL,
-  email varchar(255) NOT NULL,
-  psw varchar(255) NOT NULL
+  idUtente int8 NOT NULL,
+  nome text NOT NULL,
+  cognome text NOT NULL,
+  email text NOT NULL,
+  psw text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -5155,8 +5158,8 @@ INSERT INTO utente (idUtente, nome, cognome, email, psw) VALUES
 --
 
 CREATE TABLE utentehacontatto (
-  idUtente int(11) NOT NULL,
-  idContatto int(11) NOT NULL
+  idUtente int8 NOT NULL,
+  idContatto int8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -5264,55 +5267,55 @@ ALTER TABLE utentehacontatto
 -- AUTO_INCREMENT per la tabella andamentotrattativa
 --
 ALTER TABLE andamentotrattativa
-  MODIFY idAndamento int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY idAndamento int8 NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella appuntamento
 --
 ALTER TABLE appuntamento
-  MODIFY idAppuntamento int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY idAppuntamento int8 NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT per la tabella categoria
 --
 ALTER TABLE categoria
-  MODIFY idCategoria int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY idCategoria int8 NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT per la tabella cliente
 --
 ALTER TABLE cliente
-  MODIFY idCliente int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8781;
+  MODIFY idCliente int8 NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8781;
 
 --
 -- AUTO_INCREMENT per la tabella contatto
 --
 ALTER TABLE contatto
-  MODIFY idContatto int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2959;
+  MODIFY idContatto int8 NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2959;
 
 --
 -- AUTO_INCREMENT per la tabella portafoglio
 --
 ALTER TABLE portafoglio
-  MODIFY idPortafoglio int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
+  MODIFY idPortafoglio int8 NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- AUTO_INCREMENT per la tabella tipocliente
 --
 ALTER TABLE tipocliente
-  MODIFY idTipoCliente int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY idTipoCliente int8 NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella trattativa
 --
 ALTER TABLE trattativa
-  MODIFY idTrattativa int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3639;
+  MODIFY idTrattativa int8 NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3639;
 
 --
 -- AUTO_INCREMENT per la tabella utente
 --
 ALTER TABLE utente
-  MODIFY idUtente int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY idUtente int8 NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Limiti per le tabelle scaricate
