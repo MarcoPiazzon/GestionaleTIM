@@ -209,8 +209,8 @@
           <ul id="myUL" class="myUL vertical-scrollable list-group">
             {% if clienti %}
             {% for cliente in clienti%}
-            <input type="hidden" value="{{cliente.idCliente}}">
-            <li class="list-group-item" onclick="getName(this,0,0)">{{cliente.ragioneSociale}}</li>
+            <input type="hidden" value="{{cliente.idcliente}}">
+            <li class="list-group-item" onclick="getName(this,0,0)">{{cliente.ragionesociale}}</li>
             {% endfor %}
             {%endif%}
           </ul>
@@ -550,7 +550,7 @@
                                       {% if trattative[i][25] %} {{trattative[i][25]}}{%endif%}</option>
                                     {% for a in andamento %}
 
-                                    <option value="{{a.idAndamento}}">{{a.nome}}</option>
+                                    <option value="{{a.idandamento}}">{{a.nome}}</option>
                                     {% endfor %}
                                   </select>
 
@@ -563,7 +563,7 @@
                                     <option value="{% if trattative[i][12] %}{{trattative[i][12]}}{%endif%}" selected>
                                       {% if trattative[i][12] %}{{trattative[i][26]}}{%endif%}</option>
                                     {% for c in categorie %}
-                                    <option value="{{c.idCategoria}}">{{c.nome}}</option>
+                                    <option value="{{c.idcategoria}}">{{c.nome}}</option>
                                     {% endfor %}
 
                                   </select>
@@ -703,7 +703,7 @@
 
                                 <li class="list-group-item">
                                   <div class="row mb-2">{{ a.titolo }}</div>
-                                  <div class="row">{{a.dataApp}}</div>
+                                  <div class="row">{{a.dataapp}}</div>
 
                                 </li>
 
@@ -839,7 +839,7 @@
           <div class="card-body">
             <form action="/portafoglio/addTrattativaForm" method="POST">
 
-              <input type="hidden" name="idClienteAdd" id="idCliente" value="{{current_cliente.idCliente}}">
+              <input type="hidden" name="idClienteAdd" id="idCliente" value="{{current_cliente.idcliente}}">
               <!-- Form Group (username)-->
               <div class="row gx-3 mb-3">
                 <div class="col-md-4">
@@ -902,7 +902,7 @@
 
                     {% for a in andamento %}
 
-                    <option value="{{a.idAndamento}}">{{a.nome}}</option>
+                    <option value="{{a.idandamento}}">{{a.nome}}</option>
                     {% endfor %}
                   </select>
 
@@ -913,7 +913,7 @@
                   <select class="form-select" aria-label="Default select example" id="categoriaOptions"
                     name="categoriaOffertaITAdd" required>
                     {% for c in categorie %}
-                    <option value="{{c.idCategoria}}">{{c.nome}}</option>
+                    <option value="{{c.idcategoria}}">{{c.nome}}</option>
                     {% endfor %}
 
                   </select>
@@ -1019,7 +1019,7 @@
       <div class="row">
 
         <div class="container px-4 mt-4">
-          <h1 class="page-heading">Trattative</h1>
+          <h1 class="page-heading">IT</h1>
           <table class="table table-condensed" style="border-collapse:collapse;">
             <thead>
               <tr>
@@ -1032,54 +1032,56 @@
             <tbody>
 
               {% for i in range (0, getIt_len)%}
-              <tr data-bs-toggle="modal" data-bs-target="#staticBackdrop{{i}}">
-                <td>{% if trattative[i][2]%}{{trattative[i][2]}}{%else%}Non definito{%endif%}</td>
-                <td>{% if trattative[i][4] %} {{trattative[i][4]}} {%else%}Sconosciuto{%endif%}</td>
-                <td>{% if trattative[i][5] %} {{trattative[i][5]}} {%else%}Non indicata {%endif%}</td>
-                <td>{% if trattative[i][6] %} {{trattative[i][6]}} {%else%}Non indicata {%endif%}</td>
+              <tr data-bs-toggle="modal" data-bs-target="#staticit{{i}}">
+                <td>{% if getIt[i][2]%}{{getIt[i][2]}}{%else%}Non definito{%endif%}</td>
+                <td>{% if getIt[i][4] %} {{getIt[i][4]}} {%else%}Sconosciuto{%endif%}</td>
+                <td>{% if getIt[i][5] %} {{getIt[i][5]}} {%else%}Non indicata {%endif%}</td>
+                <td>{% if getIt[i][6] %} {{getIt[i][6]}} {%else%}Non indicata {%endif%}</td>
               </tr>
-              <div class="modal fade" id="staticBackdrop{{i}}" data-bs-backdrop="static" data-bs-keyboard="false"
-                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal fade" id="staticit{{i}}" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="staticitLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl modal-dialog-centered">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="staticBackdropLabel">{{trattative[i][2]}}</h1>
+                      <h1 class="modal-title fs-5" id="staticitLabel">{{getIt[i][2]}}</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="/portafoglio/modifyIt/{{trattative[i][0]}}" method="POST">
+                    <form action="/portafoglio/modifyIt/{{getIt[i][0]}}" method="POST">
                       <div class="modal-body">
                         <div class="row">
-                          <input type="hidden" name="idClienteAddIt" id="idCliente"
-                            value="{{current_cliente.idCliente}}">
+                          <input type="hidden" name="idClienteModifyIt" id="idCliente"
+                            value="{{current_cliente.idcliente}}">
                           <!-- Form Group (username)-->
                           <div class="row gx-3 mb-3">
                             <div class="col-md-4">
-                              <label class="small mb-1" for="servizioAdd">Servizio</label>
-                              <input class="form-control cftr" name="servizioAdd" id="servizioAdd" type="text" value="">
+                              <label class="small mb-1" for="servizioModify">Servizio</label>
+                              <input class="form-control cftr" name="servizioModify" id="servizioModify" type="text"
+                                value="{{getIt[i][2]}}">
                             </div>
                             <div class="col-md-4">
-                              <label class="small mb-1" for="quantitaAdd">Quantita</label>
-                              <input class="form-control cftr" name="quantitaAdd" id="quantitaAdd" type="number"
-                                value="">
+                              <label class="small mb-1" for="quantitaModify">Quantita</label>
+                              <input class="form-control cftr" name="quantitaModify" id="quantitaModify" type="number"
+                                value="{{getIt[i][3]}}">
                             </div>
                             <div class="col-md-4">
-                              <label class="small mb-1" for="tguAdd">TGU</label>
-                              <input class="form-control cftr" name="tguAdd" id="tguAdd" type="text" value="">
+                              <label class="small mb-1" for="tguModify">TGU</label>
+                              <input class="form-control cftr" name="tguModify" id="tguModify" type="text"
+                                value="{{getIt[i][4]}}">
                             </div>
                           </div>
                           <!-- Form Row-->
                           <div class="row gx-3 mb-3">
                             <!-- Form Group (first name)-->
                             <div class="col-md-6">
-                              <label class="small mb-1" for="dataAttivazioneAdd">Data Attivazione</label>
-                              <input class="form-control cftr" name="dataAttivazioneAdd" id="dataAttivazioneAdd"
-                                type="date" value="" required>
+                              <label class="small mb-1" for="dataAttivazioneModify">Data Attivazione</label>
+                              <input class="form-control cftr" name="dataAttivazioneModify" id="dataAttivazioneModify"
+                                type="date" value="getIt[i][5]" required>
                             </div>
                             <!-- Form Group (last name)-->
                             <div class="col-md-6">
-                              <label class="small mb-1" for="dataScadenzaAdd">Data Scadenza</label>
-                              <input class="form-control cftr" name="dataScadenzaAdd" id="dataScadenzaAdd" type="date"
-                                value="">
+                              <label class="small mb-1" for="dataScadenzaModify">Data Scadenza</label>
+                              <input class="form-control cftr" name="dataScadenzaModify" id="dataScadenzaModify" type="date"
+                                value="{{getIt[i][6]}}">
 
                             </div>
                           </div>
@@ -1087,28 +1089,24 @@
                           <div class="row gx-3 mb-3">
                             <!-- Da mettere type float -->
                             <div class="col-md-6">
-                              <label class="small mb-1" for="canoneAnnuoAdd">Canone Annuo</label>
-                              <input class="form-control cftr" name="canoneAnnuoAdd" id="canoneAnnuoAdd" type="number"
-                                value="" required>
+                              <label class="small mb-1" for="canoneAnnuoModify">Canone Annuo</label>
+                              <input class="form-control cftr" name="canoneAnnuoModify" id="canoneAnnuoModify" type="number"
+                                value="{{getIt[i][7]}}" required>
                             </div>
                             <div class="col-md-6">
-                              <label class="small mb-1" for="canoneMeseAdd">Canone Mese</label>
-                              <input class="form-control cftr" name="canoneMeseAdd" id="canoneMeseAdd" type="number"
-                                value="" required>
+                              <label class="small mb-1" for="canoneMeseModify">Canone Mese</label>
+                              <input class="form-control cftr" name="canoneMeseModify" id="canoneMeseModify" type="number"
+                                value="{{getIt[i][8]}}" required>
                             </div>
                           </div>
-                          <!-- Save changes button-->
-                          <button class="btn btn-primary" type="submit" style="float: left;"
-                            id="btnCreaTrattativa">Aggiungi
-                            trattativa</button>
-                          <button class="btn btn-primary" type="button" style="float: right;" id="cleanFormTrattativa"
-                            onclick="clean('cftr')">Pulisci
-                            tutto</button>
+
                         </div>
+                        <!-- Save changes button-->
+                        <button class="btn btn-primary" type="submit" style="float: left;">Salva le modifiche</button>
+                        <button class="btn btn-danger" onclick="deleteItData({{getIt[i][0]}})" type="button"
+                          style="float: right;">Elimina</button>
                       </div>
-                      <button class="btn btn-primary" type="submit">Salva le modifiche</button>
-                      <button class="btn btn-danger" onclick="sendData({{trattative[i][0]}})" type="button"
-                        style="float: right;">Elimina</button>
+
                   </div>
 
                   </form>
@@ -1132,20 +1130,20 @@
       <div class="card-body">
         <form action="/portafoglio/addItForm" method="POST">
           <div class="row">
-            <input type="hidden" name="idClienteAddIt" id="idCliente" value="{{current_cliente.idCliente}}">
+            <input type="hidden" name="idClienteAddIt" id="idCliente" value="{{current_cliente.idcliente}}">
             <!-- Form Group (username)-->
             <div class="row gx-3 mb-3">
               <div class="col-md-4">
                 <label class="small mb-1" for="servizioAdd">Servizio</label>
-                <input class="form-control cftr" name="servizioAdd" id="servizioAdd" type="text" value="">
+                <input class="form-control cfit" name="servizioAdd" id="servizioAdd" type="text" value="">
               </div>
               <div class="col-md-4">
                 <label class="small mb-1" for="quantitaAdd">Quantita</label>
-                <input class="form-control cftr" name="quantitaAdd" id="quantitaAdd" type="number" value="">
+                <input class="form-control cfit" name="quantitaAdd" id="quantitaAdd" type="number" value="">
               </div>
               <div class="col-md-4">
                 <label class="small mb-1" for="tguAdd">TGU</label>
-                <input class="form-control cftr" name="tguAdd" id="tguAdd" type="text" value="">
+                <input class="form-control cfit" name="tguAdd" id="tguAdd" type="text" value="">
               </div>
             </div>
             <!-- Form Row-->
@@ -1153,13 +1151,12 @@
               <!-- Form Group (first name)-->
               <div class="col-md-6">
                 <label class="small mb-1" for="dataAttivazioneAdd">Data Attivazione</label>
-                <input class="form-control cftr" name="dataAttivazioneAdd" id="dataAttivazioneAdd" type="date" value=""
-                  >
+                <input class="form-control cfit" name="dataAttivazioneAdd" id="dataAttivazioneAdd" type="date" value="">
               </div>
               <!-- Form Group (last name)-->
               <div class="col-md-6">
                 <label class="small mb-1" for="dataScadenzaAdd">Data Scadenza</label>
-                <input class="form-control cftr" name="dataScadenzaAdd" id="dataScadenzaAdd" type="date" value="">
+                <input class="form-control cfit" name="dataScadenzaAdd" id="dataScadenzaAdd" type="date" value="">
 
               </div>
             </div>
@@ -1168,22 +1165,20 @@
               <!-- Da mettere type float -->
               <div class="col-md-6">
                 <label class="small mb-1" for="canoneAnnuoAdd">Canone Annuo</label>
-                <input class="form-control cftr" name="canoneAnnuoAdd" id="canoneAnnuoAdd" type="number" value=""
-                  >
+                <input class="form-control cfit" name="canoneAnnuoAdd" id="canoneAnnuoAdd" type="number" value="">
               </div>
               <div class="col-md-6">
                 <label class="small mb-1" for="canoneMeseAdd">Canone Mese</label>
-                <input class="form-control cftr" name="canoneMeseAdd" id="canoneMeseAdd" type="number" value=""
-                  >
+                <input class="form-control cfit" name="canoneMeseAdd" id="canoneMeseAdd" type="number" value="">
               </div>
             </div>
             <!-- Save changes button-->
-            
+
           </div>
           <button class="btn btn-primary" type="submit" style="float: left;" id="btnCreaTrattativa">Aggiungi
             trattativa</button>
           <button class="btn btn-primary" type="button" style="float: right;" id="cleanFormTrattativa"
-            onclick="clean('cftr')">Pulisci
+            onclick="clean('cfit')">Pulisci
             tutto</button>
         </form>
       </div>
@@ -1202,7 +1197,7 @@
         <ul id="myUL2" class="myUL vertical-scrollable list-group">
           {% if contatti %}
           {% for contatto in contatti%}
-          <input type="hidden" value="{{contatto.idContatto}}">
+          <input type="hidden" value="{{contatto.idcontatto}}">
           <li class="list-group-item" onclick="getName(this,2, '{{contatto.nome}}')">
             {% if contatto.nome%}
             {{contatto.nome}}
@@ -1354,7 +1349,7 @@
     document.getElementById("categoriaOffertaITModify").value = selected;
     alert(selected);
   }
-
+  setLocal('cfit')
   function setLocal(val) {
     obj = document.getElementsByClassName(val)
     for (let item of obj) {
@@ -1415,6 +1410,27 @@
       if (result.isConfirmed) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", '/portafoglio/remove/' + val, false);
+        xhr.send();
+        location.reload();
+      }
+    });
+
+  }
+
+  function deleteItData(val) {
+    Swal.fire({
+      title: "Sei sicuro?",
+      text: "Una volta eliminato, non potrà essere ripristinato!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Elimina",
+      cancelButtonText: 'Indietro'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/portafoglio/removeIt/' + val, false);
         xhr.send();
         location.reload();
       }

@@ -80,7 +80,7 @@
                                             {% if trattative[i][27] %} {{trattative[i][27]}}{%endif%}</option>
                                           {% for a in clienti %}
 
-                                          <option value="{{a.idCliente}}">{{a.ragioneSociale}}</option>
+                                          <option value="{{a.idcliente}}">{{a.ragionesociale}}</option>
                                           {% endfor %}
                                         </select>
                                       </div>
@@ -160,7 +160,7 @@
                                             {% if trattative[i][25] %} {{trattative[i][25]}}{%endif%}</option>
                                           {% for a in andamento %}
 
-                                          <option value="{{a.idAndamento}}">{{a.nome}}</option>
+                                          <option value="{{a.idandamento}}">{{a.nome}}</option>
                                           {% endfor %}
                                         </select>
 
@@ -175,7 +175,7 @@
                                             selected>
                                             {% if trattative[i][12] %}{{trattative[i][26]}}{%endif%}</option>
                                           {% for c in categorie %}
-                                          <option value="{{c.idCategoria}}">{{c.nome}}</option>
+                                          <option value="{{c.idcategoria}}">{{c.nome}}</option>
                                           {% endfor %}
 
                                         </select>
@@ -267,38 +267,7 @@
 
                                     </div>
 
-                                    <!-- Save changes button-->
-
-
-                                    <!--{%if trattative[i][25] %}
-                                <h5 class="page-heading">Appuntamenti assocciati</h5>
-                                <div class="card-body text-muted">
-                                  <table class="table table-striped text-sm text-gray-700 mb-0" id="ordersDatatable">
-                                    <thead>
-                                      <tr>
-                                        <th data-sortable="" style="width: 60%;"><a href="#"
-                                            class="dataTable-sorter">Titolo</a></th>
-                                        <th data-sortable="" style="width: 40%;"><a href="#"
-                                            class="dataTable-sorter">Data</a>
-                                        </th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      {% for appuntamento in trattative[i][25] %}
-                                      <tr class="align-middle">
-                                        <td>
-                                          <div class="d-flex align-items-center">
-                                            <div class="pt-1"><strong>{{appuntamento.titolo}}</strong>
-                                            </div>
-                                          </div>
-                                        </td>
-                                        <td> <strong>{{appuntamento.dataApp}}</strong></td>
-                                      </tr>
-                                      {%endfor%}
-                                    </tbody>
-                                  </table>
-                                </div>
-                                {%endif%}-->
+                          
 
                                   </div>
                                 </div>
@@ -310,7 +279,7 @@
 
                                       <li class="list-group-item">
                                         <div class="row mb-2">{{ a.titolo }}</div>
-                                        <div class="row">{{a.dataApp}}</div>
+                                        <div class="row">{{a.dataapp}}</div>
 
                                       </li>
 

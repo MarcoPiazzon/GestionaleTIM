@@ -33,24 +33,26 @@ def home(idPort, id):
     t_len = 0
     getIt_len = 0
     #print()
-    contatti = conn.execute(select(contatto).where(contatto.c.idUtente == current_user.get_id()).order_by(contatto.c.nome)).fetchall()
+    contatti = conn.execute(select(contatto).where(contatto.c.idutente == current_user.get_id()).order_by(contatto.c.nome)).fetchall()
     categorie = conn.execute(select(categoria)).fetchall()
     andamento = conn.execute(select(andamentotrattativa)).fetchall()
     if(idPort != 0):
         #fare la query in modo che prenda solo ragioneSociale e idCliente (ora lo fa)
-        clienti = conn.execute(select(cliente.c.ragioneSociale, cliente.c.idCliente).where(cliente.c.idPortafoglio == idPort)).fetchall()
+        clienti = conn.execute(select(cliente.c.ragionesociale, cliente.c.idcliente).where(cliente.c.idportafoglio == idPort)).fetchall()
     if(id != 0):
-        current_cliente = conn.execute(select(cliente).where(cliente.c.idCliente == id)).fetchone()
+        current_cliente = conn.execute(select(cliente).where(cliente.c.idcliente == id)).fetchone()
         trattative = conn.execute(
             select(trattativa, andamentotrattativa.c.nome, categoria.c.nome).
                 join(andamentotrattativa).
                 join(categoria) 
-            .where(trattativa.c.idCliente == id)
-            .order_by(trattativa.c.nomeOpportunita)
+            .where(trattativa.c.idcliente == id)
+            .order_by(trattativa.c.nomeopportunita)
         ).fetchall()
-        getIt = conn.execute(select(it_table, cliente.c.ragioneSociale)
+        print("tra")
+        print(trattative)
+        getIt = conn.execute(select(it_table, cliente.c.ragionesociale)
                              .join(cliente)
-                             .where(it_table.c.idCliente == id)
+                             .where(it_table.c.idcliente == id)
                              ).fetchall()
         print(getIt)
         if not (getIt is None):
@@ -68,7 +70,7 @@ def home(idPort, id):
             #print(type(trattative))
             for i in range(0, t_len):
 
-                appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataApp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento)).where(trattativa.c.idTrattativa == trattative[i][0]).order_by(appuntamento.c.dataApp)).fetchall()
+                appuntamenti = conn.execute(select(appuntamento.c.titolo, appuntamento.c.dataapp).select_from(join(appuntamento,join(trattativaappuntamento,trattativa, trattativaappuntamento.c.idtrattativa == trattativa.c.idtrattativa), appuntamento.c.idappuntamento == trattativaappuntamento.c.idappuntamento)).where(trattativa.c.idtrattativa == trattative[i][0]).order_by(appuntamento.c.dataapp)).fetchall()
                 
                 #print(appuntamenti)
                 #print(type(appuntamenti))
@@ -103,10 +105,10 @@ def getCliente():
 def removeTrattativa(id):
     print("test trattativa")
     print(id)
-    getIdCliente = conn.execute(select(trattativa.c.idCliente).where(trattativa.c.idTrattativa == id)).fetchone()[0]
+    getIdCliente = conn.execute(select(trattativa.c.idcliente).where(trattativa.c.idtrattativa == id)).fetchone()[0]
     try:
         print("")
-        conn.execute(delete(trattativa).where(trattativa.c.idTrattativa == id))
+        conn.execute(delete(trattativa).where(trattativa.c.idtrattativa == id))
 
         #appuntamenti = conn.execute(select(trattativaappuntamento).where(trattativa.c.idTrattativa == id)).fetchall()
 
@@ -114,7 +116,6 @@ def removeTrattativa(id):
          #   for a in appuntamenti:
           #      conn.execute(delete(appuntamenti).where(appuntamenti.c.idAppuntamento == a.idAppuntamento))
 
-        conn.commit()
         print("ho fatto")
     except Exception as error:
         print("rip")
@@ -128,32 +129,32 @@ def removeTrattativa(id):
 def removeCliente(id):
     print("REMOVE CLIENTE")
     conn.execute(delete(appuntamento).\
-                                where(appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento).\
-                                where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
-                                where(trattativa.c.idCliente == cliente.c.idCliente).\
-                                where(cliente.c.idCliente == id)                                                    
+                                where(appuntamento.c.idappuntamento == trattativaappuntamento.c.idappuntamento).\
+                                where(trattativaappuntamento.c.idtrattativa == trattativa.c.idtrattativa).\
+                                where(trattativa.c.idcliente == cliente.c.idcliente).\
+                                where(cliente.c.idcliente == id)                                                    
     )
 
     #Cancello tabella trattativaappuntamento
 
 
     conn.execute(delete(trattativaappuntamento).\
-            where(trattativa.c.idCliente == cliente.c.idCliente).\
-            where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
-            where(trattativa.c.idCliente == cliente.c.idCliente).\
-            where(cliente.c.idCliente == id)
+            where(trattativa.c.idcliente == cliente.c.idcliente).\
+            where(trattativaappuntamento.c.idtrattativa == trattativa.c.idtrattativa).\
+            where(trattativa.c.idcliente == cliente.c.idcliente).\
+            where(cliente.c.idcliente == id)
     )
     
 
     #Cancello trattattive
     # delete trattativa from trattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
     conn.execute(delete(trattativa).\
-                where(trattativa.c.idCliente == cliente.c.idCliente).\
-                where(cliente.c.idCliente == id)
+                where(trattativa.c.idcliente == cliente.c.idcliente).\
+                where(cliente.c.idcliente == id)
     )
     
     #Cancello clienti
-    conn.execute(delete(cliente).where(cliente.c.idCliente == id))
+    conn.execute(delete(cliente).where(cliente.c.idcliente == id))
     print("HO FATTO TUTTO")
     return redirect(url_for('.home', idPort = current_user.idPort, id = 0))
 
@@ -210,6 +211,20 @@ def addCliente():
 
     return redirect(url_for('.home',idPort = idPort, id = newId))
 
+def checkDate(val):
+    if(isinstance(val, str)):
+        if val == '':
+            return None
+        else: 
+            return val 
+
+def checkNull(val):
+    print(type(val))
+    if val == '':
+        return 0
+    else: 
+        return val
+
 @portafoglio_bp.route('/modifyTrattativa/<int:id>', methods=['POST'])
 @login_required
 def modifyTrattativa(id):
@@ -221,23 +236,25 @@ def modifyTrattativa(id):
         idCliente = request.form['idClienteModify']
         codiceCtrDigitali = request.form['codiceCtrDigitaliModify']
         codiceSalesHub = request.form['codiceSalesHubModify']
-        areaManager = request.form['areaManagerModify']
         zona = request.form['zonaModify'] 
         tipo = request.form['tipoModify']
         nomeOpportunita = request.form['nomeOpportunitaModify']
         dataCreazioneOpportunita = request.form['dataCreazioneOpportunitaModify']
-        fix = request.form['fixModify']
-        mobile = request.form['mobileModify']
+        
+        fix = checkNull(request.form['fixModify'])
+        mobile = checkNull(request.form['mobileModify'])
         categoriaOffertaIT = request.form['categoriaOffertaITModify'] 
-        it = request.form['itModify']
-        lineeFoniaFix = request.form['lineeFoniaFixModify']
-        aom = request.form['aomModify']
-        mnp = request.form['mnpModify']
-        al = request.form['alModify']
+        it = checkNull(request.form['itModify'])
+        
+        lineeFoniaFix = checkNull(request.form['lineeFoniaFixModify'])
+        aom = checkNull(request.form['aomModify'])
+        mnp = checkNull(request.form['mnpModify'])
+        
+        al = checkNull(request.form['alModify'])
         dataChiusura = request.form['dataChiusuraModify']
         fase = request.form['faseModify']
         noteSpecialista = request.form['noteSpecialistaModify']
-        probabilita = (request.form['probabilitaModify'])
+        probabilita = checkNull(request.form['probabilitaModify'])
         if not (probabilita is None):
             if("%" in probabilita):
                 probabilita = probabilita[:-1]
@@ -245,37 +262,36 @@ def modifyTrattativa(id):
         fornitore = request.form['fornitoreModify']
         
         conn.execute(
-            update(trattativa).where(trattativa.c.idTrattativa==id).values(
-                idUtente = current_user.get_id(),
-                idCliente = idCliente,
-                codiceCtrDigitali = codiceCtrDigitali,
-                codiceSalesHub = codiceSalesHub,
-                areaManager = areaManager,
+            update(trattativa).where(trattativa.c.idtrattativa==id).values(
+                idutente = current_user.get_id(),
+                idcliente = idCliente,
+                codicectrdigitali = codiceCtrDigitali,
+                codicesaleshub = codiceSalesHub,
                 zona = zona,
                 tipo = tipo,
-                nomeOpportunita = nomeOpportunita,
-                dataCreazioneOpportunita = dataCreazioneOpportunita,
+                nomeopportunita = nomeOpportunita,
+                datacreazioneopportunita = dataCreazioneOpportunita,
                 fix = fix,
                 mobile = mobile,
-                categoriaOffertaIT = categoriaOffertaIT,
+                categoriaoffertait = categoriaOffertaIT,
                 it = it,
-                lineeFoniaFix = lineeFoniaFix,
+                lineefoniafix = lineeFoniaFix,
                 aom = aom,
                 mnp = mnp,
                 al = al,
-                dataChiusura = dataChiusura,
+                datachiusura = dataChiusura,
                 fase = fase,
-                noteSpecialista = noteSpecialista,
+                notespecialista = noteSpecialista,
                 probabilita = probabilita,
-                inPaf = inPaf,
+                inpaf = 1,
                 fornitore = fornitore
             )
         )
-        conn.commit()
         
         print("tutto bvene")
     except Exception as error:
         print("rip")
+        print(error)
         print(error.__cause__)
         conn.rollback()
 
@@ -309,28 +325,28 @@ def modifyCliente():
         
 
         conn.execute(
-            update(cliente).where(cliente.c.idCliente==idCliente).values(
-                idCliente = idCliente,
-                ragioneSociale = ragioneSociale,
+            update(cliente).where(cliente.c.idcliente==idCliente).values(
+                idcliente = idCliente,
+                ragionesociale = ragioneSociale,
                 cf = cf,
                 presidio = presidio,
-                indirizzoPrincipale = indirizzoPrincipale,
-                capPrincipale = capPrincipale,
-                comunePrincipale = comunePrincipale,
-                sediTot = sediTot,
+                indirizzoprincipale = indirizzoPrincipale,
+                capprincipale = capPrincipale,
+                comuneprincipale = comunePrincipale,
+                seditot = sediTot,
                 dipendenti = dipendenti,
-                nLineeTot = nLineeTot,
+                nlineetot = nLineeTot,
                 fisso = fisso,
                 mobile = mobile,
                 totale = totale,
-                fatturatoCerved = fatturatoCerved,
-                fatturatoTim = fatturatoTim,
+                fatturatocerved = fatturatoCerved,
+                fatturatotim = fatturatoTim,
             )
         )
-        conn.commit()
         print("tutto bvene")
     except Exception as error:
         print("rip")
+        print(error)
         print(error.__cause__)
         conn.rollback()
 
@@ -350,58 +366,63 @@ def addTrattativaForm():
         idCliente = request.form['idClienteAdd']
         codiceCtrDigitali = request.form['codiceCtrDigitaliAdd']
         codiceSalesHub = request.form['codiceSalesHubAdd']
-        areaManager = request.form['areaManagerAdd']
+        #areaManager = request.form['areaManagerAdd']
         zona = request.form['zonaAdd']
         tipo = request.form['tipoAdd']
         nomeOpportunita = request.form['nomeOpportunitaAdd']
         dataChiusuraOpportunita = request.form['dataCreazioneOpportunitaAdd']
         print("test data")
         print(dataChiusuraOpportunita)
-        fix = request.form['fixAdd']
-        mobile = request.form['mobileAdd']
+        fix = checkNull(request.form['fixAdd'])
+        mobile = checkNull(request.form['mobileAdd'])
         categoriaOffertaIT = request.form['categoriaOffertaITAdd']
-        it = request.form['itAdd']
-        lineeFoniaFix = request.form['lineeFoniaFixAdd']
-        aom = request.form['aomAdd']
-        mnp = request.form['mnpAdd']
-        al = request.form['alAdd']
+        it = checkNull(request.form['itAdd'])
+        lineeFoniaFix = checkNull(request.form['lineeFoniaFixAdd'])
+        aom = checkNull(request.form['aomAdd'])
+        mnp = checkNull(request.form['mnpAdd'])
+        al = checkNull(request.form['alAdd'])
         dataChiusura = request.form['dataChiusuraAdd']
         fase = request.form['faseAdd']
         noteSpecialista = request.form['noteSpecialistaAdd']
         probabilita = request.form['probabilitaAdd']
+        if not (probabilita is None):
+            if("%" in probabilita):
+                probabilita = probabilita[:-1]
         inPaf = request.form['inPafAdd']
+        if (inPaf is None):
+            inPaf = False
         fornitore = request.form['fornitoreAdd']
         
         conn.execute(insert(trattativa).values(
-            idUtente = current_user.get_id(),
-            idCliente = idCliente,
-            codiceCtrDigitali = codiceCtrDigitali,
-            codiceSalesHub = codiceSalesHub,
-            areaManager = areaManager,
+            idutente = current_user.get_id(),
+            idcliente = idCliente,
+            codicectrdigitali = codiceCtrDigitali,
+            codicesaleshub = codiceSalesHub,
+            areamanager = conn.execute(select(utente.c.areamanager).where(utente.c.idutente == current_user.get_id())).fetchone()[0],
             zona = zona,
             tipo = tipo,
-            nomeOpportunita = nomeOpportunita,
-            dataCreazioneOpportunita = dataChiusuraOpportunita,
+            nomeopportunita = nomeOpportunita,
+            datacreazioneopportunita = dataChiusuraOpportunita,
             fix = fix,
             mobile = mobile,
-            categoriaOffertaIT = categoriaOffertaIT,
+            categoriaoffertait = categoriaOffertaIT,
             it = it,
-            lineeFoniaFix = lineeFoniaFix,
+            lineefoniafix = lineeFoniaFix,
             aom = aom,
             mnp = mnp,
             al = al,
-            dataChiusura = dataChiusura,
+            datachiusura = dataChiusura,
             fase = fase,
-            noteSpecialista = noteSpecialista,
+            notespecialista = noteSpecialista,
             probabilita = probabilita,
-            inPaf = inPaf,
+            inpaf = 1,
             fornitore = fornitore
         ))
-        conn.commit()
         
         print("tutto bene add")
     except Exception as error:
         print("rip")
+        print(error)
         print(error.__cause__)
         conn.rollback()
     
@@ -415,24 +436,23 @@ def addItForm():
         #print(request.form)
         idCliente = request.form['idClienteAddIt']
         servizio = request.form['servizioAdd']
-        quantita = request.form['quantitaAdd']
+        quantita = checkNull(request.form['quantitaAdd'])
         tgu = request.form['tguAdd']
-        dataAttivazione = request.form['dataAttivazioneAdd']
-        dataScadenza = request.form['dataScadenzaAdd']
-        canoneAnnuo = request.form['canoneAnnuoAdd']
-        canoneMese = request.form['canoneMeseAdd']
+        dataAttivazione = checkDate(request.form['dataAttivazioneAdd'])
+        dataScadenza = checkDate(request.form['dataScadenzaAdd'])
+        canoneAnnuo = checkNull(request.form['canoneAnnuoAdd'])
+        canoneMese = checkNull(request.form['canoneMeseAdd'])
 
         conn.execute(insert(it_table).values(
-            idCliente = idCliente,
+            idcliente = idCliente,
             servizio = servizio,
             quantita = quantita,
             tgu = tgu,
-            dataAttivazione = dataAttivazione,
-            dataScadenza = dataScadenza,
-            canoneAnnuo = canoneAnnuo,
-            canoneMese = canoneMese
+            dataattivazione = dataAttivazione,
+            datascadenza = dataScadenza,
+            canoneannuo = canoneAnnuo,
+            canonemese = canoneMese
         ))
-        conn.commit()
         
         print("tutto bene add")
     except Exception as error:
@@ -443,12 +463,51 @@ def addItForm():
     
     return redirect(url_for('.home',idPort = current_user.idPort, id = idCliente))
 
+@portafoglio_bp.route('/modifyIt/<int:id>', methods=['POST'])
+def modifyIt(id):
+    idcliente = request.form['idClienteModifyIt']
+    servizio = request.form['servizioModify']
+    quantita = request.form['quantitaModify']
+    tgu = request.form['tguModify']
+    dataattivazione = request.form['dataAttivazioneModify']
+    datascadenza = request.form['dataScadenzaModify']
+    canoneannuo = request.form['canoneAnnuoModify']
+    canonemese = request.form['canoneMeseModify']
+
+    try:
+        conn.execute(update(it_table).values(
+            servizio = servizio,
+            quantita = quantita,
+            tgu = tgu,
+            dataattivazione = dataattivazione,
+            datascadenza = datascadenza,
+            canoneannuo = canoneannuo,
+            canonemese = canonemese
+        ).where(it_table.c.idit == id))
+    except Exception as error:
+        print("rip")
+        print(error)
+        print(error.__cause__)
+
+    return redirect(url_for('.home', idPort = current_user.idPort, id = idcliente))
+@portafoglio_bp.route('/removeIt/<int:id>', methods=['POST'])
+@login_required
+def deleteIt(id):
+    idcliente = 0
+    try:
+        idcliente= conn.execute(select(it_table.c.idcliente).where(it_table.c.idit == id)).fetchone()[0]
+        conn.execute(delete(it_table).where(it_table.c.idit == id))
+    except Exception as error:
+        print("rip")
+        print(error)
+        print(error.__cause__)
+    return redirect(url_for('.home', idPort = current_user.idPort, id = idcliente))
 
 @portafoglio_bp.route('/getExcel/<int:id>')
 def getExcel(id):
     print("sto creando il file")
     print(id)
-    res = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
+    res = conn.execute(select(cliente).where(cliente.c.idportafoglio == id)).fetchall()
 
     output = io.BytesIO()
 

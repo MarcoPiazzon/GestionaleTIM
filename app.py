@@ -27,7 +27,7 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     print("sono dentro a load user")
-    user = conn.execute(select(utente).where(utente.c.idUtente==user_id)).fetchone()._asdict()
+    user = conn.execute(select(utente).where(utente.c.idutente==user_id)).fetchone()._asdict()
     #idPort = conn.execute(select(portafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.idPortafoglio.desc())).fetchall()
     #print(idPort)
     return User(user_id,user['email'])

@@ -111,7 +111,7 @@ CREATE TABLE cliente (
   ragioneSociale text DEFAULT NULL,
   presidio text DEFAULT NULL,
   indirizzoPrincipale text DEFAULT NULL,
-  comunePrincipale int8 DEFAULT NULL,
+  comunePrincipale text DEFAULT NULL,
   capPrincipale text DEFAULT NULL,
   provinciaDescPrincipale text DEFAULT NULL,
   provinciaSiglaPrincipale text DEFAULT NULL,

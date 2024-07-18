@@ -16,8 +16,8 @@ def home(id):
     # valore di default, indica che non sto cercando nessun utente
     try:
         if(id != 0):
-            current_contatto = conn.execute(select(contatto).where(contatto.c.idContatto == id and contatto.c.idUtente == current_user.get_id())).fetchone()
-        contatti = conn.execute(select(contatto).where(contatto.c.idUtente == current_user.get_id()).order_by(contatto.c.nome)).fetchall()
+            current_contatto = conn.execute(select(contatto).where(contatto.c.idcontatto == id and contatto.c.idutente == current_user.get_id())).fetchone()
+        contatti = conn.execute(select(contatto).where(contatto.c.idutente == current_user.get_id()).order_by(contatto.c.nome)).fetchall()
     except Exception as error:
         conn.rollback()
         print("rip")
@@ -76,26 +76,25 @@ def addContatto():
     try:
         ris = conn.execute(insert(contatto).values(
             nome = nome,
-            idUtente = current_user.get_id(),
-            secondoNome = secondoNome,
+            idutente = current_user.get_id(),
+            secondonome = secondoNome,
             cognome = cognome,
-            viaUfficio1 = viaUfficio1,
-            viaUfficio2 = viaUfficio2,
-            viaUfficio3 = viaUfficio3,
+            viaufficio1 = viaUfficio1,
+            viaufficio2 = viaUfficio2,
+            viaufficio3 = viaUfficio3,
             provincia = provincia,
             cap = cap,
-            numUfficio = numUfficio,
-            numUfficio2 = numUfficio2,
-            telefonoPrincipale = telefonoPrincipale,
-            faxAbitazione = faxAbitazione,
+            numufficio = numUfficio,
+            numufficio2 = numUfficio2,
+            telefonoprincipale = telefonoPrincipale,
+            faxabitazione = faxAbitazione,
             abitazione = abitazione,
             cellulare = cellulare,
             note = note,
             email1 = email1,
             email2 = email2,
-            paginaWeb = paginaWeb
+            paginaweb = paginaWeb
         ))
-        conn.commit()
         print("tutto bene")
         id = ris.inserted_primary_key[0]
     except Exception as error:
@@ -127,24 +126,24 @@ def addContatti():
             try:
                 conn.execute(insert(contatto).values(
                     nome = list[0],
-                    idUtente = current_user.get_id(),
-                    secondoNome = list[1],
+                    idutente = current_user.get_id(),
+                    secondonome = list[1],
                     cognome = list[2],
-                    viaUfficio1 = list[3],
-                    viaUfficio2 = list[4],
-                    viaUfficio3 = list[5],
+                    viaufficio1 = list[3],
+                    viaufficio2 = list[4],
+                    viaufficio3 = list[5],
                     citta = list[6],
                     provincia = list[7],
                     cap = list[8],
                     #numUfficio = list[9],
                     #numUfficio2 = list[10],
-                    telefonoPrincipale = filterNumber(list[11]),
-                    faxAbitazione = filterNumber(list[12]),
+                    telefonoprincipale = filterNumber(list[11]),
+                    faxabitazione = filterNumber(list[12]),
                     abitazione = list[13],
                     abitazione2 = list[14],
                     cellulare = filterNumber(list[15]),
                     note = list[16],
-                    paginaWeb = list[17],
+                    paginaweb = list[17],
                     email1 = list[18],
                     email2 = list[19]
                 ))
@@ -154,7 +153,6 @@ def addContatti():
                 print(error.__cause__)
         print("okokoko")
         
-        conn.commit()
     except Exception as error:
         print("rip")
         print(error.__cause__)
@@ -187,28 +185,27 @@ def modifyCliente(id):
     paginaWeb = request.form['paginaWeb']
 
     try:
-        conn.execute(update(contatto).where(contatto.c.idContatto == id).values(
+        conn.execute(update(contatto).where(contatto.c.idcontatto == id).values(
             nome = nome,
-            idUtente = current_user.get_id(),
-            secondoNome = secondoNome,
+            idutente = current_user.get_id(),
+            secondonome = secondoNome,
             cognome = cognome,
-            viaUfficio1 = viaUfficio1,
-            viaUfficio2 = viaUfficio2,
-            viaUfficio3 = viaUfficio3,
+            viaufficio1 = viaUfficio1,
+            viaufficio2 = viaUfficio2,
+            viaufficio3 = viaUfficio3,
             provincia = provincia,
             cap = cap,
-            numUfficio = numUfficio,
-            numUfficio2 = numUfficio2,
-            telefonoPrincipale = telefonoPrincipale,
-            faxAbitazione = faxAbitazione,
+            numufficio = numUfficio,
+            numufficio2 = numUfficio2,
+            telefonoprincipale = telefonoPrincipale,
+            faxabitazione = faxAbitazione,
             abitazione = abitazione,
             cellulare = cellulare,
             note = note,
             email1 = email1,
             email2 = email2,
-            paginaWeb = paginaWeb
+            paginaweb = paginaWeb
         ))
-        conn.commit()
         print("tutto bene")
     except Exception as error:
         print("rip")
@@ -223,8 +220,7 @@ def removeContatto(id):
     print("ok")
     try:
         print(id)
-        conn.execute(delete(contatto).where(contatto.c.idContatto == id))
-        conn.commit()
+        conn.execute(delete(contatto).where(contatto.c.idcontatto == id))
     except Exception as error:
         print("rip")
         print(error.__cause__)

@@ -35,10 +35,10 @@ class User(UserMixin):
         self.email=email
         res =conn.execute(select(utente).where(utente.c.email==email)).fetchone()
         
-        res2 = conn.execute(select(portafoglio.c.idPortafoglio).where(portafoglio.c.idUtente == id).order_by(portafoglio.c.idPortafoglio.desc())).fetchone()
+        res2 = conn.execute(select(portafoglio.c.idportafoglio).where(portafoglio.c.idutente == id).order_by(portafoglio.c.idportafoglio.desc())).fetchone()
         if not (res2 is None):
             res2 = res2._asdict()
-            self.idPort = res2['idPortafoglio']
+            self.idPort = res2['idportafoglio']
         else:
             self.idPort = 0
         self.nome = res['nome']

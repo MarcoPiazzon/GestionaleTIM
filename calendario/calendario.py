@@ -12,19 +12,20 @@ titolo = "Calendario"
 def home():
     #events = conn.execute(select(appuntamento, utente.c.nome, utente.c.cognome).select_from(join(appuntamento, utente, appuntamento.c.idUtenteCreazione == utente.c.idUtente))).fetchall()
     events = conn.execute(
-        select(appuntamento, utente.c.nome, utente.c.cognome, trattativa.c.idTrattativa, trattativa.c.nomeOpportunita).select_from(
+        select(appuntamento, utente.c.nome, utente.c.cognome, trattativa.c.idtrattativa, trattativa.c.nomeopportunita).select_from(
             join(utente, outerjoin(appuntamento, 
-                 outerjoin(trattativa, trattativaappuntamento, trattativa.c.idTrattativa == trattativaappuntamento.c.idTrattativa), appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento),utente.c.idUtente == appuntamento.c.idUtenteCreazione
+                 outerjoin(trattativa, trattativaappuntamento, trattativa.c.idtrattativa == trattativaappuntamento.c.idtrattativa), appuntamento.c.idappuntamento == trattativaappuntamento.c.idappuntamento),utente.c.idutente == appuntamento.c.idutentecreazione
             )
         )
         ).fetchall()
+    print(events)
     trattative = []
     try:
         #trattative = conn.execute(select(trattativa).where(trattativa.c.fase == 1)).fetchall()
         #SELECT * FROM trattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6
         #trattative = conn.execute(select(trattativa)).fetchall()
         
-        trattative = conn.execute(select(trattativa).select_from(join(trattativa,cliente, trattativa.c.idCliente == cliente.c.idCliente)).where(cliente.c.idPortafoglio==current_user.idPort)).fetchall()
+        trattative = conn.execute(select(trattativa).select_from(join(trattativa,cliente, trattativa.c.idcliente == cliente.c.idcliente)).where(cliente.c.idportafoglio==current_user.idPort)).fetchall()
         
         print(trattativa)
     except Exception as error:
@@ -41,8 +42,8 @@ def removeAppuntamento(id):
     print("ok")
     try:
         print(id)
-        conn.execute(delete(appuntamento).where(appuntamento.c.idAppuntamento == id))
-        conn.execute(delete(trattativaappuntamento).where(trattativaappuntamento.c.idAppuntamento == id))
+        conn.execute(delete(appuntamento).where(appuntamento.c.idappuntamento == id))
+        conn.execute(delete(trattativaappuntamento).where(trattativaappuntamento.c.idappuntamento == id))
         conn.commit()
     except Exception as error:
         print("rip")
@@ -63,12 +64,13 @@ def addAppuntamento():
         preventivoDaFare = request.form['preventivoDaFare']
         dataApp = request.form['dataApp']
         idTrattativa = request.form['idtrattativaAdd']
+
         id = conn.execute(insert(appuntamento).values(
-                idUtenteCreazione = idUtenteCreazione,
+                idutentecreazione = idUtenteCreazione,
                 titolo = titolo,
-                varieDiscussioni = varieDiscussioni,
-                preventivoDaFare = preventivoDaFare,
-                dataApp = dataApp,
+                variediscussioni = varieDiscussioni,
+                preventivodafare = preventivoDaFare,
+                dataapp = dataApp,
             )
         )
         print("sto provando")
@@ -77,46 +79,61 @@ def addAppuntamento():
         print(id.inserted_primary_key[0])
         
         conn.execute(insert(trattativaappuntamento).values(
-            idTrattativa = idTrattativa,
-            idAppuntamento = id.inserted_primary_key[0]
+            idtrattativa = idTrattativa,
+            idappuntamento = id.inserted_primary_key[0]
         ))
-        conn.commit()
         print("tutto bvene")
         global message 
         message = "Appuntamento aggiunto"
     except Exception as error:
         print("rip")
+        print(error)
         print(error.__cause__)
         conn.rollback()
     
     return redirect(url_for('calendario_bp.home'))
+
+def checkDate(val):
+    if(isinstance(val, str)):
+        if val == '':
+            return None
+        else: 
+            return val 
+
+def checkNull(val):
+    print(type(val))
+    if val == '':
+        return 0
+    else: 
+        return val
+
 
 @calendario_bp.route('/modify', methods=['POST'])
 def modifyAppuntamento():
     try:
         idapp = request.form['idapp']
         titolo = request.form['titolo']
-        varieDiscussioni = request.form['varieDiscussioni']
-        preventivoDaFare = request.form['preventivoDaFare']
-        dataApp = request.form['dataApp']
-        idTrattativa = request.form['idtrattativa']
+        variediscussioni = request.form['varieDiscussioni']
+        preventivodafare = request.form['preventivoDaFare']
+        dataapp = checkDate(request.form['dataApp'])
+        idtrattativa = checkNull(request.form['idtrattativa'])
         conn.execute(
-            update(appuntamento).where(appuntamento.c.idAppuntamento==idapp).values(
+            update(appuntamento).where(appuntamento.c.idappuntamento==idapp).values(
                 titolo = titolo,
-                varieDiscussioni = varieDiscussioni,
-                preventivoDaFare = preventivoDaFare,
-                dataApp = dataApp,
+                variediscussioni = variediscussioni,
+                preventivodafare = preventivodafare,
+                dataapp = dataapp,
             )
         )
-        conn.execute(update(trattativaappuntamento).where(trattativaappuntamento.c.idAppuntamento == idapp).values(
-            idTrattativa = idTrattativa
+        conn.execute(update(trattativaappuntamento).where(trattativaappuntamento.c.idappuntamento == idapp).values(
+            idtrattativa = idtrattativa
         ))
-        conn.commit()
         print("tutto bvene")
         global message
         message = "Appuntamento modificato"
     except Exception as error:
         print("rip")
+        print(error)
         print(error.__cause__)
         conn.rollback()
 

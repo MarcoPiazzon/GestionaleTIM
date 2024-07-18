@@ -17,7 +17,7 @@ warnings.simplefilter(action='ignore', category=UserWarning)
 titolo = "Home"
 @home_bp.route('/', methods=['GET', 'POST'])
 def home():
-    contatti = conn.execute(select(contatto).where(contatto.c.idUtente == current_user.get_id())).fetchall()
+    contatti = conn.execute(select(contatto).where(contatto.c.idutente == current_user.get_id())).fetchall()
     
     """conn.execute(insert(utente).values(
         nome = 'Marco',
@@ -26,7 +26,7 @@ def home():
         psw=bcrypt.generate_password_hash('mp@gmail.com'+'ciao').decode('utf-8'),
         ))
     conn.commit()"""
-    getPortafogliUtente = conn.execute(select(portafoglio).where(portafoglio.c.idUtente == current_user.get_id()).order_by(portafoglio.c.idPortafoglio.desc())).fetchall()
+    getPortafogliUtente = conn.execute(select(portafoglio).where(portafoglio.c.idutente == current_user.get_id()).order_by(portafoglio.c.idportafoglio.desc())).fetchall()
     getPortafogliUtente = list(getPortafogliUtente)
     print(getPortafogliUtente)
     print(type(getPortafogliUtente))
@@ -44,38 +44,37 @@ def removePortafoglio(id):
         # DELETE appuntamento FROM appuntamento join trattativaappuntamento on appuntamento.idAppuntamento = trattativaappuntamento.idAppuntamento 
         # join trattativa on trattativa.idTrattativa = trattativaappuntamento.idTrattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
         conn.execute(delete(appuntamento).\
-                                    where(appuntamento.c.idAppuntamento == trattativaappuntamento.c.idAppuntamento).\
-                                    where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
-                                    where(trattativa.c.idCliente == cliente.c.idCliente).\
-                                    where(cliente.c.idPortafoglio == id)                                                    
+                                    where(appuntamento.c.idappuntamento == trattativaappuntamento.c.idappuntamento).\
+                                    where(trattativaappuntamento.c.idtrattativa == trattativa.c.idtrattativa).\
+                                    where(trattativa.c.idcliente == cliente.c.idcliente).\
+                                    where(cliente.c.idportafoglio == id)                                                    
         )
 
         #Cancello tabella trattativaappuntamento
 
 
         conn.execute(delete(trattativaappuntamento).\
-                where(trattativa.c.idCliente == cliente.c.idCliente).\
-                where(trattativaappuntamento.c.idTrattativa == trattativa.c.idTrattativa).\
-                where(trattativa.c.idCliente == cliente.c.idCliente).\
-                where(cliente.c.idPortafoglio == id)
+                where(trattativa.c.idcliente == cliente.c.idcliente).\
+                where(trattativaappuntamento.c.idtrattativa == trattativa.c.idtrattativa).\
+                where(trattativa.c.idcliente == cliente.c.idcliente).\
+                where(cliente.c.idportafoglio == id)
         )
         
 
         #Cancello trattattive
         # delete trattativa from trattativa join cliente on trattativa.idCliente = cliente.idCliente where cliente.idPortafoglio = 6;
         conn.execute(delete(trattativa).\
-                    where(trattativa.c.idCliente == cliente.c.idCliente).\
-                    where(cliente.c.idPortafoglio == id)
+                    where(trattativa.c.idcliente == cliente.c.idcliente).\
+                    where(cliente.c.idportafoglio == id)
         )
         
         #Cancello clienti
-        conn.execute(delete(cliente).where(cliente.c.idPortafoglio == id))
+        conn.execute(delete(cliente).where(cliente.c.idportafoglio == id))
 
         #Cancello portafoglio
 
-        conn.execute(delete(portafoglio).where(portafoglio.c.idPortafoglio == id))
+        conn.execute(delete(portafoglio).where(portafoglio.c.idportafoglio == id))
         
-        conn.commit()
         print("ho cancellato quello che dovevo fare")
     except Exception as error:
         print("rip")
@@ -92,7 +91,7 @@ def removePortafoglio(id):
 def goToPortafoglio(id, message):
     print("cviao")
     print(id)
-    clienti = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
+    clienti = conn.execute(select(cliente).where(cliente.c.idportafoglio == id)).fetchall()
     return render_template("/portafoglio/portafoglio.html", clienti=clienti, message = message, titolo ="Portafoglio")
 
 def filterNumber(val):
@@ -114,7 +113,7 @@ def getFase(andtra, value):
         return andtra[-1][0]
     for v in andtra:
         if(value.upper() == v.nome.upper()):
-            return v.idAndamento
+            return v.idandamento
     return andtra[-1][0]
 
 def getCategoria(getCateOff, value):
@@ -124,7 +123,7 @@ def getCategoria(getCateOff, value):
     for v in getCateOff:
         if(value.upper() == v.nome.upper()):
             print("trovato" + str(v[0]))
-            return v.idCategoria
+            return v.idcategoria
     return getCateOff[-1][0]
 """
 def convertDate(val):
@@ -149,6 +148,13 @@ def convertDate(val):
     
     return date(date.year, month, day) 
 """
+
+def setZero(val):
+    if val is None:
+        return 0
+    else: 
+        return val
+
 @home_bp.route('/addPortafoglio',methods=['POST'])
 @login_required
 def addPortafoglio():
@@ -173,8 +179,8 @@ def addPortafoglio():
     newid = 0
     try:
         res = conn.execute(insert(portafoglio).values(
-            idUtente = current_user.get_id(),
-            dataInserimento = date.today()
+            idutente = current_user.get_id(),
+            datainserimento = date.today()
         ))
 
         newid = res.inserted_primary_key[0]
@@ -191,27 +197,27 @@ def addPortafoglio():
            # print("sono qua 3")
            # print(listapp)
             conn.execute(insert(cliente).values(
-                idUtente = current_user.get_id(),
-                idPortafoglio = newid,
-                tipoCliente = conn.execute(select(tipocliente.c.idTipoCliente).where(tipocliente.c.nome == listapp[0])).fetchone()[0], #da testare
+                idutente = current_user.get_id(),
+                idportafoglio = newid,
+                tipocliente = conn.execute(select(tipocliente.c.idtipocliente).where(tipocliente.c.nome == listapp[0])).fetchone()[0], #da testare
                 cf = listapp[1],
-                ragioneSociale = listapp[2],
+                ragionesociale = listapp[2],
                 
                 presidio = listapp[3],
-                indirizzoPrincipale = (listapp[4]),
-                comunePrincipale = listapp[5],
-                capPrincipale = listapp[6],
-                provinciaDescPrincipale = listapp[7], 
-                provinciaSiglaPrincipale = listapp[8],
-                sediTot = (listapp[9]),
-                nLineeTot = (listapp[10]),
-                fisso = (listapp[11]),
-                mobile = (listapp[12]),
-                totale = (listapp[13]),
-                fatturatoCerved = (listapp[14]),
-                clienteOffMobScadenza = (listapp[15]),
-                fatturatoTim = (listapp[16]),
-                dipendenti = (listapp[17])
+                indirizzoprincipale = (listapp[4]),
+                comuneprincipale = listapp[5],
+                capprincipale = listapp[6],
+                provinciadescprincipale = listapp[7], 
+                provinciasiglaprincipale = listapp[8],
+                seditot = setZero(listapp[9]),
+                nlineetot = setZero(listapp[10]),
+                fisso = setZero(listapp[11]),
+                mobile = setZero(listapp[12]),
+                totale = setZero(listapp[13]),
+                fatturatocerved = setZero(listapp[14]),
+                clienteoffmobscadenza = (listapp[15]),
+                fatturatotim = setZero(listapp[16]),
+                dipendenti = setZero(listapp[17])
             ))
             print("insert")
         print("okokoko")
@@ -225,12 +231,10 @@ def addPortafoglio():
             dataframe3 = dataframe2.active
             #print(dataframe3.max_row)
             andtra = conn.execute(select(andamentotrattativa)).fetchall()
-            for m in andtra:
-                print(m.idAndamento)
-                print(m.nome)
-            print(andtra)
-            print(andtra[0][0])
-            print(type(andtra[0][0]))
+
+            #print(andtra)
+            #print(andtra[0][0])
+            #print(type(andtra[0][0]))
             
             getCateOff = conn.execute(select(categoria)).fetchall()
             print("dopo")
@@ -247,7 +251,7 @@ def addPortafoglio():
                     #print("sto testando id")
                     #print(listapp)
                     #print(listapp[3])
-                    idlist = conn.execute(select(cliente.c.idCliente,cliente.c.idPortafoglio).where(listapp[3] == cliente.c.ragioneSociale)).fetchall()
+                    idlist = conn.execute(select(cliente.c.idcliente,cliente.c.idportafoglio).where(listapp[3] == cliente.c.ragionesociale)).fetchall()
                     print(len(idlist))
                     #print(idlist)
                     idlist = list(idlist)
@@ -259,29 +263,28 @@ def addPortafoglio():
                         prob = listapp[19]*100
                     try:
                         conn.execute(insert(trattativa).values(
-                            idUtente = current_user.get_id(),
-                            idCliente = numero[0], #fare query che trova il nome e assegna l'id nella tabella cliente
-                            codiceCtrDigitali = listapp[0],
-                            codiceSalesHub = listapp[1],
-                            areaManager = conn.execute(select(utente.c.areaManager).where(utente.c.idUtente == current_user.get_id())),
+                            idutente = current_user.get_id(),
+                            idcliente = numero[0], #fare query che trova il nome e assegna l'id nella tabella cliente
+                            codicectrdigitali = listapp[0],
+                            codicesaleshub = listapp[1],
+                            areamanager = conn.execute(select(utente.c.areamanager).where(utente.c.idutente == current_user.get_id())).fetchone()[0],
                             zona = listapp[4],
                             tipo = (listapp[5]),
-                            nomeOpportunita = listapp[6],
-                            dataCreazioneOpportunita = (listapp[7]), # da testare
-                            fix = listapp[8],
-                            mobile = listapp[9],
-                            categoriaOffertaIT = getCategoria(getCateOff, listapp[10]),
-                            it = (listapp[11]),
-                            lineeFoniaFix = (listapp[12]),
-                            aom = (listapp[13]),
-                            mnp = (listapp[14]),
-                            al = (listapp[15]),
-                            dataChiusura = (listapp[16]),
+                            nomeopportunita = listapp[6],
+                            datacreazioneopportunita = (listapp[7]), # da testare
+                            fix = setZero(listapp[8]),
+                            mobile = setZero(listapp[9]),
+                            categoriaoffertait = getCategoria(getCateOff, listapp[10]),
+                            it = setZero(listapp[11]),
+                            lineefoniafix = setZero(listapp[12]),
+                            aom = setZero(listapp[13]),
+                            mnp = setZero(listapp[14]),
+                            al = setZero(listapp[15]),
+                            datachiusura = (listapp[16]),
                             fase = getFase(andtra, listapp[17]) ,
-                            noteSpecialista = (listapp[18]),
+                            notespecialista = (listapp[18]),
                             probabilita = prob,
-                            inPaf = None,
-                            record = listapp[21],
+                            inpaf = None,
                             fornitore = listapp[22],
                         ))
                     except Exception as error:
@@ -291,12 +294,10 @@ def addPortafoglio():
         print("okokoko")
         global message
         message = "Portafoglio creato"
-        conn.commit()
     except Exception as error:
         print("rip")
         print(error)
         print(error.__cause__)
-        conn.rollback()
     
     return redirect(url_for("portafoglio_bp.home", idPort = newid, id = 0))
 
@@ -305,7 +306,7 @@ def addPortafoglio():
 def getExcel(id):
     print("sto creando il file")
     print(id)
-    res = conn.execute(select(cliente).where(cliente.c.idPortafoglio == id)).fetchall()
+    res = conn.execute(select(cliente).where(cliente.c.idportafoglio == id)).fetchall()
 
     output = io.BytesIO()
 
@@ -335,23 +336,23 @@ def getExcel(id):
     idx = 0
     for row in res:
         print(row)
-        sh.write(idx+1, 0, row['tipoCliente'])
+        sh.write(idx+1, 0, row['tipocliente'])
         sh.write(idx+1, 1, row['cf'])
-        sh.write(idx+1, 2, row['ragioneSociale'])
+        sh.write(idx+1, 2, row['ragionesociale'])
         sh.write(idx+1, 3, row['presidio'])
-        sh.write(idx+1, 4, row['indirizzoPrincipale'])
-        sh.write(idx+1, 5, row['comunePrincipale'])
-        sh.write(idx+1, 6, row['capPrincipale'])
-        sh.write(idx+1, 7, row['provinciaDescPrincipale'])
-        sh.write(idx+1, 8, row['provinciaSiglaPrincipale'])
-        sh.write(idx+1, 9, row['sediTot'])
-        sh.write(idx+1, 10, row['nLineeTot'])
+        sh.write(idx+1, 4, row['indirizzoprincipale'])
+        sh.write(idx+1, 5, row['comuneprincipale'])
+        sh.write(idx+1, 6, row['capprincipale'])
+        sh.write(idx+1, 7, row['provinciadescprincipale'])
+        sh.write(idx+1, 8, row['provinciasiglaprincipale'])
+        sh.write(idx+1, 9, row['seditot'])
+        sh.write(idx+1, 10, row['nlineetot'])
         sh.write(idx+1, 11, row['fisso'])
         sh.write(idx+1, 12, row['mobile'])
         sh.write(idx+1, 13, row['totale'])
-        sh.write(idx+1, 14, row['fatturatoCerved'])
-        sh.write(idx+1, 15, row['clienteOffMobScadenza'])
-        sh.write(idx+1, 16, row['fatturatoTim'])
+        sh.write(idx+1, 14, row['fatturatocerved'])
+        sh.write(idx+1, 15, row['clienteoffmobscadenza'])
+        sh.write(idx+1, 16, row['fatturatotim'])
         sh.write(idx+1, 17, row['dipendenti'])
         idx += 1
     

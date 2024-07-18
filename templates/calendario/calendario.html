@@ -39,18 +39,18 @@
         {% for event in events %}
           {
             title: '{{event.titolo}}',
-            start: '{{event.dataApp}}',
-            end: '{{event.dataApp}}',
+            start: '{{event.dataapp}}',
+            end: '{{event.dataapp}}',
             extendedProps: {
-              description: '{{event.varieDiscussioni}}',
-              preventivoDaFare: '{{event.preventivoDaFare}}',
-              dataApp: '{{event.dataApp}}',
-              idAppuntamento: '{{event.idAppuntamento}}',
-              idUtenteCreazione: '{{event.idUtenteCreazione}}',
+              description: '{{event.variediscussioni}}',
+              preventivodafare: '{{event.preventivodafare}}',
+              dataapp : '{{event.dataapp}}',
+              idappuntamento: '{{event.idappuntamento}}',
+              idutentecreazione: '{{event.idutentecreazione}}',
               nome: '{{event.nome}}',
               cognome: '{{event.cognome}}',
-              idTrattativa: '{{event.idTrattativa}}',
-              nomeOpportunita: '{{event.nomeOpportunita}}'
+              idtrattativa: '{{event.idtrattativa}}',
+              nomeopportunita: '{{event.nomeopportunita}}'
             },
             rendering: 'background'
           },
@@ -65,15 +65,15 @@
         document.getElementById("title").value = info.event.title;
         if (info.event.extendedProps) {
           document.getElementById("userCreator").innerHTML = "Evento creato da " + info.event.extendedProps.nome + " " + info.event.extendedProps.cognome;
-          document.getElementById("idapp").value = info.event.extendedProps.idAppuntamento;
+          document.getElementById("idapp").value = info.event.extendedProps.idappuntamento;
           document.getElementById("description").value = info.event.extendedProps.description;
-          document.getElementById("preventivoDaFare").value = info.event.extendedProps.preventivoDaFare;
-          document.getElementById("dataApp").value = info.event.extendedProps.dataApp;
-          document.getElementById("idUtenteCreazione").value = info.event.extendedProps.idUtenteCreazione;
+          document.getElementById("preventivoDaFare").value = info.event.extendedProps.preventivodafare;
+          document.getElementById("dataApp").value = info.event.extendedProps.dataapp;
+          document.getElementById("idUtenteCreazione").value = info.event.extendedProps.idUtentecreazione;
           
-          if(info.event.extendedProps.idTrattativa != "None" && info.event.extendedProps.nomeOpportunita != "None"){
-            document.getElementById("idtrattativa").value = info.event.extendedProps.idTrattativa;
-          document.getElementById("myInputModify").value = info.event.extendedProps.nomeOpportunita;
+          if(info.event.extendedProps.idtrattativa != "None" && info.event.extendedProps.nomeopportunita != "None"){
+            document.getElementById("idtrattativa").value = info.event.extendedProps.idtrattativa;
+          document.getElementById("myInputModify").value = info.event.extendedProps.nomeopportunita;
   
           }
         } else {
@@ -177,7 +177,7 @@
                       {% if trattative%}
                       {% for t in trattative%}
                       <li class="list-group-item"
-                        onclick="getTrattativa(this,'{{t.idTrattativa}}',0)">{{t.nomeOpportunita}}</li>
+                        onclick="getTrattativa(this,'{{t.idtrattativa}}',0)">{{t.nomeopportunita}}</li>
                       {% endfor %}
                       {% endif %}
                     </ul>
@@ -252,7 +252,7 @@
                       {% if trattative%}
                       {% for t in trattative%}
                       <li class="list-group-item"
-                        onclick="getTrattativa(this,'{{t.idTrattativa}}',1)">{{t.nomeOpportunita}}</li>
+                        onclick="getTrattativa(this,'{{t.idtrattativa}}',1)">{{t.nomeopportunita}}</li>
                       {% endfor %}
                       {% endif %}
                     </ul>
